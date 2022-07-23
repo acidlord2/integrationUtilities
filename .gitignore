@@ -3,3 +3,5 @@ config.php
 _gsdata_/
 logs/
 uploads/
+print/files/
+report/reports/

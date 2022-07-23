@@ -304,9 +304,38 @@
 				$orderInfo = $ordersYandexClass->getOrder($orderData['name']);
 				$log->write(__LINE__ . ' orderInfo - ' . json_encode ($orderInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
+				// pack order
 				$packData = $ordersYandexClass->packOrder ($orderData['name'], $orderInfo['order']['delivery']);
 				$log->write(__LINE__ . ' packData - ' . json_encode ($packData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
+				//get label data
+				$labelData = $ordersYandexClass->getOrderLabelData($orderData['name']);
+				
+				//update ms order data
+				$ordersMSClass = new OrdersMS();
+				$data = array(
+				    'attributes' => array(
+				        // адрес
+				        array(
+				            'meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_ADDRESS_ATTR, 'attributemetadata'),
+				            'value' => (string)$labelData['result']['parcelBoxLabels'][0]['deliveryAddress']
+				        ),
+				        // ФИО
+				        array(
+				            'meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_FIO_ATTR, 'attributemetadata'),
+				            'value' => (string)$labelData['result']['parcelBoxLabels'][0]['recipientName']
+				        ),
+				        // delivery number
+				        array(
+				            'meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_DELIVERYNUMBER_ATTR, 'attributemetadata'),
+				            'value' => (string)$labelData['result']['parcelBoxLabels'][0]['fulfilmentId']
+				        )
+				    )
+				);
+				$updateOrderResult = $ordersMSClass->updateCustomerorder($orderData['id'], $data);
+				$log->write(__LINE__ . ' updateOrderResult - ' . json_encode ($updateOrderResult, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				
+				//update status
 				$return = $ordersYandexClass->updateStatus ($orderData['name'], 'PROCESSING', 'READY_TO_SHIP');
 				$log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}

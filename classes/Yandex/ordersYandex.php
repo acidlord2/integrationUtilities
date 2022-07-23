@@ -152,7 +152,7 @@ class OrdersYandex
 	        $url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_CAMPAIGNS . $this->campaign . '/' . BERU_API_ORDERS . '/' . $orderId . '/' . BERU_API_LABELS2 . '.JSON';
 	        $this->log->write(__LINE__ . " getOrdersLabels.url - " . $url);
 	        $pdf = $this->apiYandexClass->getDataBlob($url);
-	        $this->log->write(__LINE__ . ' orderLabel.pdf - ' . $pdf);
+	        $this->log->write(__LINE__ . ' getOrdersLabels.pdf - ' . $pdf);
 	        file_put_contents("files/labelsData" . $key . ".pdf", $pdf);
 	        array_push ($files, "files/labelsData" . $key . ".pdf");
 	    }
@@ -169,6 +169,25 @@ class OrdersYandex
 	    }
 	 
 	    return "files/labelsData.pdf";
+	}
+	/**
+	 * function getOrdersLabels - function get order labels
+	 *
+	 * @campaign string - yandex campaign id
+	 * @orderId string - yandex order id
+	 * @delivery array - yandex delivary struct
+	 * @return array - result as json
+	 */
+	public function getOrderLabelData($orderId)
+	{
+	    $this->log->write(__LINE__ . ' getOrderLabelData.orders - ' . $orderId);
+	    
+        $url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_CAMPAIGNS . $this->campaign . '/' . BERU_API_ORDERS . '/' . $orderId . '/' . BERU_API_LABELS . '.JSON';
+        $this->log->write(__LINE__ . " getOrderLabelData.url - " . $url);
+        $return = $this->apiYandexClass->getData($url);
+        $this->log->write(__LINE__ . ' getOrderLabelData.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+
+        return $return;
 	}
 }
 
