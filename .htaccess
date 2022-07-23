@@ -1,0 +1,18 @@
+#Options +FollowSymlinks
+#Options -Indexes
+
+# Prevent Direct Access to files
+#<FilesMatch "(?i)((\.tpl|\.ini|\.log|(?<!robots)\.txt))">
+# Require all denied
+## For apache 2.2 and older, replace "Require all denied" with these two lines :
+# Order deny,allow
+# Deny from all
+#</FilesMatch>
+
+# SEO URL Settings
+RewriteEngine On
+# If your opencart installation does not run on the main web folder make sure you folder it does run in ie. / becomes /shop/
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php
