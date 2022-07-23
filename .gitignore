@@ -1,0 +1,5 @@
+.settings/
+config.php
+_gsdata_/
+logs/
+uploads/
