@@ -62,7 +62,6 @@ class OrdersYandex
 	/**
 	* function getOrder - function get order data
 	*
-	* @campaign string - yandex campaign id 
 	* @orderId string - yandex order id 
 	* @return array - result as order object
 	*/
@@ -101,7 +100,6 @@ class OrdersYandex
 	/**
 	* function packOrder - function pack order
 	*
-	* @campaign string - yandex campaign id 
 	* @orderId string - yandex order id 
 	* @delivery array - yandex delivary struct 
 	* @return array - result as json
@@ -136,8 +134,7 @@ class OrdersYandex
 	/**
 	 * function getOrdersLabels - function get order labels
 	 *
-	 * @campaign string - yandex campaign id
-	 * @orderId string - yandex order id
+	 * @orders string - yandex order's ids
 	 * @delivery array - yandex delivary struct
 	 * @return array - result as json
 	 */
@@ -171,11 +168,9 @@ class OrdersYandex
 	    return "files/labelsData.pdf";
 	}
 	/**
-	 * function getOrdersLabels - function get order labels
+	 * function getOrderLabelData - function get order label's data
 	 *
-	 * @campaign string - yandex campaign id
 	 * @orderId string - yandex order id
-	 * @delivery array - yandex delivary struct
 	 * @return array - result as json
 	 */
 	public function getOrderLabelData($orderId)
