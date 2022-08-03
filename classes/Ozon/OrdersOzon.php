@@ -25,7 +25,7 @@ class OrdersOzon
 	public function findOrders ($since, $to, $status, $wearhouse)
 	{
 	    
-	    $postData = array ('dir' => 'asc',
+	    $postData = array ('dir' => 'ASC',
 	        'filter' => array ('since' => $since, 'to' => $to, 'status' => $status, 'warehouse_id' => (is_array($wearhouse) ? $wearhouse : array ($wearhouse))),
 	        'limit' => 50,
 	        'offset' => 0,

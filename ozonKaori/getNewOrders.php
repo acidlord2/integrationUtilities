@@ -10,7 +10,7 @@
 	$log = new Log ('ozonKaori - getNewOrders.log');
 	$ordersOzonClass = new OrdersOzon('kaori');
 	
-	$ordersOzon = $ordersOzonClass->findOrders(date ('Y-m-d', strtotime('-1 day')) . 'T00:00:00Z', date ('Y-m-d', strtotime('now')) . 'T23:59:59Z', "awaiting_packaging", OZON_WEARHOUSE1_ID);
+	$ordersOzon = $ordersOzonClass->findOrders(date ('Y-m-d', strtotime('-1 day')) . 'T00:00:00.000Z', date ('Y-m-d', strtotime('now')) . 'T23:59:59.999Z', "awaiting_packaging", OZON_WEARHOUSE1_ID);
 	$log->write (__LINE__ . ' ordersOzon - ' . json_encode ($ordersOzon, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (!count ($ordersOzon))
