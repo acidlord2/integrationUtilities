@@ -12,6 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiOrderCache.php');
 $logger = new Log('beru-abcasia - order - accept.log'); //just passed the file name as file_name.log
 $logger->write(__LINE__ . ' _GET - ' . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
@@ -47,7 +48,22 @@ if (!isset ($data['order']['items']))
     header('HTTP/1.0 400 Bad Request');
     echo 'Missing required parameter "items"';
     return;
+
 }
+
+$cacheOrder = APIOrderCache::getOrderCache($data['order']['id']);
+
+if (count($cacheOrder)) {
+    $logger->write(__LINE__ . ' order ' . $data['order']['id'] . ' is still processing. Returned OK');
+    $return ['order']['id'] = (string)$data['order']['id'];
+    $return ['order']['accepted'] = true;
+    
+    header('Content-Type: application/json');
+    echo json_encode($return);
+    
+}
+
+APIOrderCache::saveOrderCache($data['order']['id'], 'processing');
 
 $ok = true;
 $orderClass = new OrdersMS();
@@ -232,6 +248,7 @@ if ($ok)
     if (isset ($order['errors'][0]) ? ($order['errors'][0]['code'] == 3006 && $order['errors'][0]['parameter'] == 'name') : false) {
         $order['name'] = $data['order']['id'];
     }
+    APIOrderCache::saveOrderCache($data['order']['id'], 'done');
     $return ['order']['id'] = (string)$order['name'];
     $return ['order']['accepted'] = true;
     
