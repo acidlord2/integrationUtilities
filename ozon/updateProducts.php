@@ -1,7 +1,8 @@
 <?php
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/productsOzon.php');
 	//require_once('classes/log.php');
-	$products_ozon = Products::getOzonProducts();
+	$products_ozon = ProductsOzon::getOzonProducts();
 	if (count ($products_ozon) > 0) {
 		$ozoncodes = array ();
 		foreach ($products_ozon as $product_ozon)

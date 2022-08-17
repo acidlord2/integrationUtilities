@@ -10,8 +10,8 @@
 		$paramPeriod = 20;
 	
 	date_default_timezone_set('Europe/Moscow');
-	$from = date ('Y-m-d', strtotime('now -' . $paramPeriod . ' days')) . 'T00:00:00Z';
-	$to = date ('Y-m-d', strtotime('now')) . 'T23:59:59Z';
+	$from = date ('Y-m-d', strtotime('now -' . $paramPeriod . ' days')) . 'T00:00:00.000Z';
+	$to = date ('Y-m-d', strtotime('now')) . 'T23:59:59.999Z';
 	
 	$canceledOrdersOzon = OrdersOzon::orderList($from, $to, 'cancelled', true);
 	

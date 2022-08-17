@@ -188,7 +188,7 @@ class Products
 		// update ozon products
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('ozon.log');
+		$logger = new Log ('classes - products.log');
 		$prices = array ('prices' => array());
 		$stocks = array ('stocks' => array());
 		//$logger -> write ('updateOzonProducts.products_ms - ' . json_encode ($products_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

@@ -86,10 +86,10 @@ class OrdersOzon
 	    
 	    if (isset($data['products']))
 	        foreach ($data['products'] as $product)
-	            $postdata['packages'][0]['items'][] = array ('quantity' => $product['quantity'], 'sku' => $product['sku']);
+	            $postdata['packages'][0]['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku']);
 	            
 	            $this->log->write(__LINE__ . ' packOrder.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	            $url = OZON_MAINURL . OZON_API_V2 . 'posting/fbs/ship';
+	            $url = OZON_MAINURL . OZON_API_V3 . 'posting/fbs/ship';
 	            $i = 0;
 	            while (true)
 	            {

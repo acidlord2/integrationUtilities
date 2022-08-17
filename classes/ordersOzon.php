@@ -31,7 +31,7 @@ class OrdersOzon
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log(self::$logFilename);
 
-		$postData = array ('dir' => 'asc',
+		$postData = array ('dir' => 'ASC',
 							'filter' => array ('since' => $since, 'to' => $to, 'status' => $status),
 							'limit' => 50,
 							'offset' => 0,
@@ -39,14 +39,16 @@ class OrdersOzon
 		$orders = array();
 		while (true)
 		{	
-			$service_url = OZON_MAINURL . 'v2/posting/fbs/list';
+			$service_url = OZON_MAINURL . 'v3/posting/fbs/list';
 			$logger->write("orderList.service_url - " . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$logger->write("orderList.postData - " . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$order_list = ApiOzon::postOzonData ($service_url, $postData, $kaori);
 			$logger->write("orderList.order_list - " . json_encode ($order_list, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			if (count ($order_list['result']) == 0)
-				break;
-			$orders = array_merge($orders, $order_list['result']);
+			if (count ($order_list['result']['postings']) == 0){
+			    break;
+			}
+		  
+			$orders = array_merge($orders, $order_list['result']['postings']);
 			$postData['offset'] += 50;
 		}
 
@@ -72,7 +74,7 @@ class OrdersOzon
 			if (($key == count($postingNumbers) - 1) || (($key + 1) % 20 === 0))
 			{
 				$postData = array ('posting_number' => $postingNumberTmp);
-				$service_url = OZON_MAINURL . OZON_API_VERSION . OZON_API_PACKAGE_LABEL;
+				$service_url = OZON_MAINURL . OZON_API_V2 . OZON_API_PACKAGE_LABEL;
 				$logger->write("orderLabel.service_url - " . $service_url);
 				$logger->write("orderLabel.postData - " . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$pdf = ApiOzon::postOzonDataBlob ($service_url, $postData, $kaori);

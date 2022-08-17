@@ -10,18 +10,25 @@
 //    else 
 //        $codes[] = null;
 //}
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-$logger = new Log('test.log');
+// require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiOrderCache.php');
+// $logger = new Log('test.log');
 
-$data = json_decode (file_get_contents('php://input'), true);
-$logger->write(__LINE__ . ' _post - ' . file_get_contents('php://input'));
+APIOrderCache::saveOrderCache('123', 'done');
 
-$output = array(
-    'number' => $data['number'] * 2,
-    'text' => 'Результат умножения = ' . ($data['number'] * 2)
-);
-header('Content-Type: application/json');
-echo json_encode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+$a = APIOrderCache::getOrderCache('123');
+// $data = json_decode (file_get_contents('php://input'), true);
+// $logger->write(__LINE__ . ' _post - ' . file_get_contents('php://input'));
+
+// $output = array(
+//     'number' => $data['number'] * 2,
+//     'text' => 'Результат умножения = ' . ($data['number'] * 2)
+// );
+// header('Content-Type: application/json');
+
+
+
+echo __LINE__ . ' - ' . json_encode($a, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 
 /*
