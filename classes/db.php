@@ -49,7 +49,9 @@ class Db
 		if (self::$db == null)
 			self::$db = self::get_connection();
 		self::next_result();
+		//self::$db->beginTransaction();
 		$result = mysqli_query(self::$db, $sql);
+		//self::$db->commit();
 		return $result;
 	}
 	

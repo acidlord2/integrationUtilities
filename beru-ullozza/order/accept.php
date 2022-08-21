@@ -10,6 +10,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 //require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiOrderCache.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 $logger = new Log('beru-ullozza - order - accept.log'); //just passed the file name as file_name.log
@@ -48,6 +49,21 @@ if (!isset ($data['order']['items']))
 	echo 'Missing required parameter "items"';
 	return;
 }
+
+$cacheOrder = APIOrderCache::getOrderCache($data['order']['id']);
+
+if (count($cacheOrder)) {
+    $logger->write(__LINE__ . ' order ' . $data['order']['id'] . ' is still processing. Returned OK');
+    $return ['order']['id'] = (string)$data['order']['id'];
+    $return ['order']['accepted'] = true;
+    
+    header('Content-Type: application/json');
+    echo json_encode($return);
+    return;
+    
+}
+
+APIOrderCache::saveOrderCache($data['order']['id'], 'processing');
 
 $ok = true;
 $orderClass = new OrdersMS();
@@ -222,7 +238,7 @@ if ($ok)
     if (isset ($order['errors'][0]) ? ($order['errors'][0]['code'] == 3006 && $order['errors'][0]['parameter'] == 'name') : false) {
         $order['name'] = $data['order']['id'];
     }
-    $return ['order']['id'] = (string)$order['name'];
+    $return ['order']['id'] = (string)$data['order']['id'];
     $return ['order']['accepted'] = true;
     
 	header('Content-Type: application/json');

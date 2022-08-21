@@ -60,7 +60,7 @@ if (count($cacheOrder)) {
     
     header('Content-Type: application/json');
     echo json_encode($return);
-    
+    return;
 }
 
 APIOrderCache::saveOrderCache($data['order']['id'], 'processing');
@@ -249,7 +249,7 @@ if ($ok)
         $order['name'] = $data['order']['id'];
     }
     APIOrderCache::saveOrderCache($data['order']['id'], 'done');
-    $return ['order']['id'] = (string)$order['name'];
+    $return ['order']['id'] = (string)$data['order']['id'];
     $return ['order']['accepted'] = true;
     
     header('Content-Type: application/json');

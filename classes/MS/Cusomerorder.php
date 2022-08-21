@@ -7,8 +7,8 @@
  */
 namespace MS\Cusomerorder;
 
-use MS\Meta as MetaMS;
-use MS\Api as ApiMS;
+use MS\Meta as Meta;
+use MS\Api as Api;
 use MS\Attribute as AttributeMS;
 use MS\File as FileMS;
 use MS\CusomerorderPosition as CoPositionMS;
@@ -21,7 +21,7 @@ class Customerorder
 	private $log;
 	private $apiMSClass;
 	
-	private MetaMS $meta;
+	private Meta $meta;
 	private string $name;
 	private string $id;
 	private float $sum;
@@ -36,17 +36,17 @@ class Customerorder
 	private bool $applicable;
 	private bool $vatEnabled;
 	private bool $vatIncluded;
-	private MetaMS $rate;
-	private MetaMS $owner;
+	private Meta $rate;
+	private Meta $owner;
 	private bool $shared;
-	private MetaMS $group;
-	private MetaMS $organization;
-	private MetaMS $store;
-	private MetaMS $agent;
-	private MetaMS $contract;
-	private MetaMS $state;
-	private MetaMS $organizationAccount;
-	private MetaMS $agentAccount;
+	private Meta $group;
+	private Meta $organization;
+	private Meta $store;
+	private Meta $agent;
+	private Meta $contract;
+	private Meta $state;
+	private Meta $organizationAccount;
+	private Meta $agentAccount;
 	private array $attributes;
 	private array $files;
 	private DateTime $created;
@@ -59,7 +59,7 @@ class Customerorder
 	private float $shippedSum;
 	private float $invoicedSum;
 	private float $reservedSum;
-	private MetaMS $project;
+	private Meta $project;
 	private string $taxSystem;
 	private array $demands;
 	private array $payments;
