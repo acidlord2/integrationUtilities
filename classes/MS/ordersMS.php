@@ -97,6 +97,17 @@ class OrdersMS
 		
 	}
 	
+	public function deleteCustomerorder($id)
+	{
+	    
+	    $service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . '/' . $id;
+	    $this->log->write(__LINE__ . ' deleteCustomerorder.id - ' . $id);
+	    $return = $this->apiMSClass->deleteData($service_url);
+	    $this->log->write(__LINE__ . ' deleteCustomerorder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    return $return;
+	    //$logger->write("curl_response - " . $curl_response);
+	    
+	}
 	public function findOrdersByNames($names)
 	{
 	    $this->log->write (__LINE__ . ' findOrdersByNames.names - ' . json_encode ($names, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

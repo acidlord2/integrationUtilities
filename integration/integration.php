@@ -63,12 +63,15 @@
 
 			</div>
 			<div class = "integration-block">
-				<p class = "integration-block-header">Беру</p>
+				<p class = "integration-block-header">Яндекс</p>
 				<button class = "integration-button" onclick = "window.open('http://kids-universe.ru/beru/readytoship', '_blank')">
-					Подтверждение заказов Беру ЮЛЛО
+					Подтверждение заказов Яндекс ЮЛЛО
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/beru/readytoship', '_blank')">
-					Подтверждение заказов Беру 4cleaning
+					Подтверждение заказов Яндекс 4cleaning
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ms-duplicates/remove-duplicates', '_blank')">
+					Удаление дублей заказов
 				</button>
 			</div>
 			<div class = "integration-block">
@@ -87,7 +90,7 @@
 				</button>
 			</div>
 			<div class = "integration-block">
-				<p class = "integration-block-header">Интеграция с Ozon</p>
+				<p class = "integration-block-header">Интеграция с Ozon Каори</p>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonKaori/updateProducts.php', '_blank')">
 					Обновить остатки и цены Ozon
 				</button>
