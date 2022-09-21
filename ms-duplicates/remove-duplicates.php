@@ -12,7 +12,7 @@ foreach ($orders as $order)
     
     foreach ($duplicates as $duplicate)
     {
-        if ($order['name'] == $duplicate['name'] && $order['agent'] == $duplicate['agent'])
+        if ($order['name'] == $duplicate['name'] && $order['agent'] == $duplicate['agent'] && $order['id'] != $duplicate['id'])
         {
             if ($duplicate['updated'] > DateTime::createFromFormat('Y-m-d H:i:s.v', $order['updated']))
             {
@@ -33,12 +33,17 @@ foreach ($orders as $order)
     }
     else
     {
-        $duplicates[] = array (
-            'id' => $order['id'],
-            'name' => $order['name'],
-            'updated' => DateTime::createFromFormat('Y-m-d H:i:s.v', $order['updated']),
-            'agent' => $order['agent']
-        );
+        $key = array_search($order['id'], array_column($duplicates, 'id'));
+        
+        if ($key === false)
+        {
+            $duplicates[] = array (
+                'id' => $order['id'],
+                'name' => $order['name'],
+                'updated' => DateTime::createFromFormat('Y-m-d H:i:s.v', $order['updated']),
+                'agent' => $order['agent']
+            );
+        }
     }
     
 }
