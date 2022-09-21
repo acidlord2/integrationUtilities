@@ -9,7 +9,7 @@ class ApiOzon
 {
 	private $log;
 	private $header;
-	
+	// organization: ullo kaori
 	public function __construct($organization)
 	{
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');

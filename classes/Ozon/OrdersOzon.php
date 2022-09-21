@@ -11,6 +11,7 @@ class OrdersOzon
 	private $apiOzonClass;
 	private $organization;
 	
+	// organization: ullo kaori
 	public function __construct($organization) {
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/ApiOzon.php');

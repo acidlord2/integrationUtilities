@@ -1,17 +1,15 @@
 <?php
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	//	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/OrdersOzon.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	//require_once('classes/log.php');
 	//$newOrdersOzon = Orders::getOzonOrders('2019-12-16T10:57:21Z', '2020-12-16T11:57:21Z', "awaiting_packaging");
-	$log = new Log ('ozonKaori - getNewOrders.log');
-	$ordersOzonClass = new OrdersOzon('kaori');
-	
-	$ordersOzon = $ordersOzonClass->findOrders(date ('Y-m-d', strtotime('-1 day')) . 'T00:00:00.000Z', date ('Y-m-d', strtotime('now')) . 'T23:59:59.999Z', "awaiting_packaging", OZON_WEARHOUSE1_ID);
-	$log->write (__LINE__ . ' ordersOzon - ' . json_encode ($ordersOzon, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger = new Log ('ozonUllo-getNewOrders.log');
+
+	$ordersOzon = Orders::getOzonOrders(date ('Y-m-d', strtotime('-1 day')) . 'T00:00:00Z', date ('Y-m-d', strtotime('now')) . 'T23:59:59Z', "awaiting_packaging");
+	$logger->write ('01-ordersOzon - ' . json_encode ($ordersOzon, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (!count ($ordersOzon))
 	{
@@ -21,14 +19,13 @@
 	
 	$ordersClass = new OrdersMS();
 	$productsClass = new ProductsMS();
-		
+	
 	foreach ($ordersOzon as $order)
 	{
 		$orderMS = $ordersClass->findOrders('name=' . $order['posting_number']);
 		if (count ($orderMS))
 		{
-		    $log -> write (__LINE__ . ' Order already exists - ' . $order['posting_number']);
-		    $orderMS['id'] = $orderMS[0]['id'];
+			$logger -> write ('02-Order already exists - ' . $order['posting_number']);
 		}
 		else
 		{
@@ -36,13 +33,14 @@
 			$data['name'] = (string)$order['posting_number'];
 			$data['organization'] = array(
 				'meta' => array(
-					'href' => MS_KAORI,
+					'href' => MS_ULLO,
 					'type' => 'organization',
 					'mediaType' => 'application/json'
 				)
 			);
 			$data['externalCode'] = (string)$order['order_id'];
-			$date = DateTime::createFromFormat('Y-m-d\TH:i:sO', $order['in_process_at'])->setTimezone(new DateTimeZone('Europe/Moscow'));
+			
+			$date = DateTime::createFromFormat('Y-m-d\TH:i:sO', $order['created_at'])->setTimezone(new DateTimeZone('Europe/Moscow'));
 			$data['moment'] = $date->format('Y-m-d H:i:s');
 			
 			$date = DateTime::createFromFormat('Y-m-d\TH:i:sO', $order['shipment_date'])->setTimezone(new DateTimeZone('Europe/Moscow'));
@@ -168,12 +166,12 @@
 			}
 			
 			$orderMS = $ordersClass->createCustomerorder ($data);
-			$log -> write (__LINE__ . ' orderMS - ' . json_encode ($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger -> write ('03-orderMS - ' . json_encode ($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		}
 		
 		if (isset ($orderMS['id']))
 		{
-		    $ordersOzonClass->packOrder($order);
+			Orders::packOzonOrder($order);
 			//Orders::getPackageLabel($order, $ms_order['id']);
 		}
 		//break;
