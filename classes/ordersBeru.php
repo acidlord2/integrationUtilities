@@ -44,6 +44,28 @@ class OrdersBeru
 		$logger->write (__LINE__ . ' getOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $orders;
 	}
+	// get order by id
+	public static function getOrder($campaign, $order)
+	{
+	    require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiBeru.php');
+	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
+	    $logger = new Log (self::$logFilename);
+	    $logger->write (__LINE__ . ' getOrder.order - ' . $order);
+	    
+	    $service_url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_CAMPAIGNS . $campaign . '/' . BERU_API_ORDERS . '/' . $order . '.JSON';
+        $logger->write (__LINE__ . ' getOrder.service_url - ' . $service_url);
+        APIBeru::getBeruData ($campaign, $service_url, $ordersJson, $ordersArray);
+	            
+        if (isset ($ordersArray['error']))
+        {
+            $logger->write (__LINE__ . ' getOrder.ordersJson - ' . $ordersJson);
+            return;
+        }
+	        
+        $logger->write (__LINE__ . ' getOrder.orders - ' . json_encode ($ordersArray['order'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        return $ordersArray['order'];
+	}
 	// pack order
     public static function packOrder($campaign, $orderId, $shipmentId, $boxes)
     {

@@ -36,19 +36,24 @@
 		$orderMSKey = array_search ($orderBeru['id'], array_column ($ordersMS, 'name'));
 		if ($orderMSKey === false)
 		{
-			$logger->write ('orderBeru[id] doesn\'t exists in MS - ' . json_encode ($orderBeru['id'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		    $logger->write (__LINE__ . ' orderBeru[id] doesn\'t exists in MS - ' . json_encode ($orderBeru['id'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			continue;
+		}
+		$items = array();
+		foreach ($orderBeru['items'] as $item)
+		{
+		    $items[] = array ('id' => $item['id'], 'count' => $item['count']);
 		}
 		// compile boxes
 		$boxes = array(
 			'boxes' => array(
 				0 => array (
 					'fulfilmentId' => $orderBeru['id'] . '-1',
-					'weight' => $orderBeru['delivery']['shipments'][0]['weight'] + 200,
-					'width' => $orderBeru['delivery']['shipments'][0]['width'] + 10,
-					'height' => $orderBeru['delivery']['shipments'][0]['height'] + 10,
-					'depth' => $orderBeru['delivery']['shipments'][0]['depth'] + 10,
-					'items' => $orderBeru['delivery']['shipments'][0]['items']
+				    'weight' => isset($orderBeru['delivery']['shipments'][0]['weight']) ? $orderBeru['delivery']['shipments'][0]['weight'] + 200 : 1000,
+				    'width' => isset($orderBeru['delivery']['shipments'][0]['width']) ? $orderBeru['delivery']['shipments'][0]['width'] + 10 : 20,
+				    'height' => isset($orderBeru['delivery']['shipments'][0]['height']) ? $orderBeru['delivery']['shipments'][0]['height'] + 10 : 20,
+				    'depth' => isset($orderBeru['delivery']['shipments'][0]['depth']) ? $orderBeru['delivery']['shipments'][0]['depth'] + 10 : 20,
+				    'items' => isset($orderBeru['delivery']['shipments'][0]['items']) ? $orderBeru['delivery']['shipments'][0]['items'] : $items
 				)
 			)
 		);
