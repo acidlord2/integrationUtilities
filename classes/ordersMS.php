@@ -7,7 +7,7 @@
  */
 class OrdersMS
 {
-	private static $logFilename = 'ordersMS.log';
+	private static $logFilename = 'classes - ordersMS.log';
 	/**
 	* function findOrders - function find ms orders by ms filter passed
 	*

@@ -31,7 +31,7 @@ table, tr, th, td {
 	border: 1px solid black;
 	padding: 4px;
 	border-collapse: collapse;
-	font-size: 13px;
+	font-size: 12px;
 }
 table {
 	width: 98%;
@@ -142,7 +142,7 @@ td.input {
 }
 .price-input {
 	max-width: 100%;
-	font-size: 13px;
+	font-size: 12px;
 	padding: 4px;
 	background-color: lightyellow;
 	border: none;

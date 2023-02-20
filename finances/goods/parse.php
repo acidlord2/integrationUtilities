@@ -159,6 +159,24 @@
 		    $paymentType = '8';
 		    $commission3 += $amount;
 		}
+		if ($worksheets[0]->getCell($classCol . $row->getRowIndex())->getCalculatedValue() == 'Комиссия за доставку на лот')
+		{
+		    $amount = (float)$worksheets[0]->getCell($sellerCol . $row->getRowIndex())->getCalculatedValue() ? (float)$worksheets[0]->getCell($sellerCol . $row->getRowIndex())->getCalculatedValue() : - (float)$worksheets[0]->getCell($mpCol . $row->getRowIndex())->getCalculatedValue();
+		    $paymentType = '9';
+		    $commission3 += $amount;
+		}
+		if ($worksheets[0]->getCell($classCol . $row->getRowIndex())->getCalculatedValue() == 'Комиссия за региональную доставку')
+		{
+		    $amount = (float)$worksheets[0]->getCell($sellerCol . $row->getRowIndex())->getCalculatedValue() ? (float)$worksheets[0]->getCell($sellerCol . $row->getRowIndex())->getCalculatedValue() : - (float)$worksheets[0]->getCell($mpCol . $row->getRowIndex())->getCalculatedValue();
+		    $paymentType = '10';
+		    $commission3 += $amount;
+		}
+		if ($worksheets[0]->getCell($classCol . $row->getRowIndex())->getCalculatedValue() == 'Комиссия за сортировку отправлений')
+		{
+		    $amount = (float)$worksheets[0]->getCell($sellerCol . $row->getRowIndex())->getCalculatedValue() ? (float)$worksheets[0]->getCell($sellerCol . $row->getRowIndex())->getCalculatedValue() : - (float)$worksheets[0]->getCell($mpCol . $row->getRowIndex())->getCalculatedValue();
+		    $paymentType = '11';
+		    $commission3 += $amount;
+		}
 		if ($worksheets[0]->getCell($classCol . $row->getRowIndex())->getCalculatedValue() == 'Вознаграждение за предоставление поощрения')
 		{
 			$amount = (int)$worksheets[0]->getCell($mpCol . $row->getRowIndex())->getCalculatedValue() ? (int)$worksheets[0]->getCell($mpCol . $row->getRowIndex())->getCalculatedValue() : - (int)$worksheets[0]->getCell($sellerCol . $row->getRowIndex())->getCalculatedValue();

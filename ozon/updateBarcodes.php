@@ -8,7 +8,8 @@
 		'agent' => MS_OZON_AGENT,
 		'organization' => MS_ULLO,
 		'state' => MS_PACKED_STATE,
-		MS_BARCODE_ATTR => ''
+		MS_BARCODE_ATTR => '',
+	    MS_BARCODE_ATTR => urlencode('%101%0')
 	);
 	
 

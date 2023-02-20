@@ -85,7 +85,7 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/cancelOrder', '_blank')">
 					Обновить статус по отмененным Ozon
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/updateBarcodes', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/updateBarcodes', '_blank')">
 					Обновить Штрихкоды заказов
 				</button>
 			</div>

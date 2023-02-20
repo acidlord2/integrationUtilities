@@ -3,14 +3,9 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('updateBarcodes.log');
-	$filters = array (
-		'agent' => MS_OZON_AGENT,
-		'organization' => MS_ULLO,
-		'state' => MS_PACKED_STATE,
-		MS_BARCODE_ATTR => ''
-	);
+	$logger = new Log ('ozonUllo - updateBarcodes.log');
 	
+	$filters = 'agent=' . MS_OZON_AGENT . ';organization=' . MS_ULLO . ';state=' . MS_PACKED_STATE . ';' . MS_BARCODE_ATTR . '=' . ';' . MS_BARCODE_ATTR . '=' . urlencode('%101%0');
 
 	$ordersMS = OrdersMS::findOrders($filters);
 	//$logger->write ('findOrders.ordersMS - ' . json_encode ($ordersMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

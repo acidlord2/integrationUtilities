@@ -2,7 +2,7 @@
 	$_SESSION['cols'] = array();	
 
 	$colsCount = count ($_SESSION['productAttributes']) + (count ($_SESSION['productPriceTypes']) * 2) + 2;
-	$pricesCols = count ($_SESSION['productPriceTypes']) * 2 * 5;
+	$pricesCols = count ($_SESSION['productPriceTypes']) * 2 * 4;
 	$tmpColSize = (100 - $pricesCols - 5) / (count ($_SESSION['productAttributes']) + 1);
 	
 	if($productTypeUrl != 'all') {
@@ -18,11 +18,11 @@
 	}
 	foreach ($_SESSION['productPriceTypes'] as $productPriceType)
 	{
-		array_push ($_SESSION['cols'], '5%');
+		array_push ($_SESSION['cols'], '4%');
 	}
 	foreach ($_SESSION['productPriceTypes'] as $productPriceType)
 	{
-		array_push ($_SESSION['cols'], '5%');
+		array_push ($_SESSION['cols'], '4%');
 	}
 ?>
 
