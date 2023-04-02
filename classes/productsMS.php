@@ -7,7 +7,7 @@
  */
 class ProductsMS
 {
-	private static $logFilename = 'productsMS.log';
+	private static $logFilename = 'classes - productsMS.log';
 	public static function getAssortment ($filter = false)
 	{
 		// get ms products
@@ -21,8 +21,8 @@ class ProductsMS
 		{
 			$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT . '?filter='. ($filter !== false ? $filter : '') .'stockMode=all;quantityMode=all;&offset=' . $offset;
 			APIMS::getMSData($service_url, $product_msJson, $product_ms);
-			$logger -> write ('01-getAssortment.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			//$logger -> write ('02-getAssortment.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger -> write (__LINE__ . ' getAssortment.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			//$logger -> write (__LINE__ . ' getAssortment.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$products = array_merge($products, $product_ms['rows']);
 			$offset += $product_ms['meta']['limit'];
 			
@@ -47,9 +47,9 @@ class ProductsMS
 		else
 			$filter .= 'code=' . $codes;
 		$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PRODUCT . $filter;
-		$logger -> write ('findProductsByCode.service_url - ' . $service_url);
+		$logger -> write (__LINE__ . ' findProductsByCode.service_url - ' . $service_url);
 		APIMS::getMSData($service_url, $product_msJson, $product_ms);
-		$logger -> write ('findProductsByCode.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' findProductsByCode.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $product_ms['rows'];
 	}
 }

@@ -8,6 +8,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 	// check auth-token
 	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('4cleaning-auth-token') : true)
 	{
@@ -49,19 +50,19 @@
 	$order = Orders::findOrder($data['order']['id']);
 	
 	if ($order || $data['order']['status'] == 'CANCELLED') {
-		if ($order['state']['meta']['href'] == 'https://online.moysklad.ru/api/remap/1.1/entity/customerorder/metadata/states/9d61e479-013c-11e9-9107-504800115e4b' || $order['state']['meta']['href'] == 'https://online.moysklad.ru/api/remap/1.1/entity/customerorder/metadata/states/dd93ea57-4f86-11e6-7a69-8f5500000969')
+	    if (strpos($order['state']['meta']['href'], MS_CONFIRMBERU_STATE_ID) || strpos($order['state']['meta']['href'], MS_CONFIRM_STATE_ID))
 			
 			$post_data = array (
 				'state' => array(
 					'meta' => array(
-						'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/customerorder/metadata/states/dd940025-4f86-11e6-7a69-8f550000096e',
+					    'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDERSTATE . '/' . MS_CANCEL_STATE_ID,
 						'type' => 'state',
 						'mediaType' => 'application/json'
 					)
 				),
 				'attributes' => array(
 					0 => array (
-						'id' => '05d3f45a-518d-11e9-9109-f8fc000a2635',
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'attributemetadata'),
 						'value' => true
 					)
 				)
@@ -70,7 +71,7 @@
 			$post_data = array (
 				'attributes' => array(
 					0 => array (
-						'id' => '05d3f45a-518d-11e9-9109-f8fc000a2635',
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'attributemetadata'),
 						'value' => true
 					)
 				)
@@ -83,7 +84,7 @@
 		$post_data = array (
 			'state' => array(
 				'meta' => array(
-					'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/customerorder/metadata/states/dd93f734-4f86-11e6-7a69-8f550000096c',
+				    'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDERSTATE . '/' . MS_DELIVERED_STATE_ID,
 					'type' => 'state',
 					'mediaType' => 'application/json'
 				)

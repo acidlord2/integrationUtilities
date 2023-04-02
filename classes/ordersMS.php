@@ -23,7 +23,7 @@ class OrdersMS
 		
 		$orders = array();
 		$offset = 0;
-		$logger->write ('findOrders.filters - ' . json_encode ($filters, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write (__LINE__ . ' findOrders.filters - ' . json_encode ($filters, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		while (true)
 		{
 			$filter = '';
@@ -44,7 +44,7 @@ class OrdersMS
 				break;			
 		}
 
-		$logger->write ('findOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write (__LINE__ . ' findOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $orders;
 	}
 
@@ -55,7 +55,7 @@ class OrdersMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
 		
-		$logger->write ('findOrdersByNames.names - ' . json_encode ($names, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write (__LINE__ . ' findOrdersByNames.names - ' . json_encode ($names, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$orders = array();
 		$filter = '';
 		foreach ($names as $key => $value)
@@ -64,7 +64,7 @@ class OrdersMS
 			if ($key + 1 == count ($names) || ($key + 1) % 50 == 0)
 			{
 				$service_url = MS_COURL . '?filter=' . $filter . '&limit=' . MS_LIMIT;
-				$logger->write ('findOrdersByNames.service_url - ' . $service_url);
+				$logger->write (__LINE__ . ' findOrdersByNames.service_url - ' . $service_url);
 				APIMS::getMSData($service_url, $msOrdersJson, $msOrdersArray);
 				if (isset ($msOrdersArray['rows'][0])) {
 					$orders = array_merge ($orders, $msOrdersArray['rows']);
@@ -76,7 +76,7 @@ class OrdersMS
 			}
 		}
 
-		$logger->write ('findOrdersByNames.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write (__LINE__ . ' findOrdersByNames.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $orders;
 	}
 
@@ -88,10 +88,10 @@ class OrdersMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
 		$service_url = MS_COURL . $orderId;
-		$logger -> write ('updateOrder.service_url - ' . $service_url);
-		$logger -> write ('updateOrder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' updateOrder.service_url - ' . $service_url);
+		$logger -> write (__LINE__ . ' updateOrder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		APIMS::putMSData($service_url, $data, $resultJson, $result);
-		$logger -> write ('updateOrder.resultJson - ' . $resultJson);
+		$logger -> write (__LINE__ . ' updateOrder.resultJson - ' . $resultJson);
 		return $result;
 	}
 	// update order mass
@@ -102,13 +102,13 @@ class OrdersMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
 		$service_url = MS_COURL;
-		$logger -> write ('updateOrderMass.service_url - ' . $service_url);
-		$logger -> write ('updateOrderMass.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' updateOrderMass.service_url - ' . $service_url);
+		$logger -> write (__LINE__ . ' updateOrderMass.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$result = array();
 		foreach (array_chunk ($data, 50) as $chunkPostdata)
 		{
 			APIMS::postMSData($service_url, $chunkPostdata, $resultJson, $resultArray);
-			$logger -> write ('updateOrderMass.resultJson - ' . $resultJson);
+			$logger -> write (__LINE__ . ' updateOrderMass.resultJson - ' . $resultJson);
 			$result = array_merge ($result, $resultArray);
 		}
 		return $result;
@@ -121,8 +121,8 @@ class OrdersMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
 		$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER;
-		$logger -> write ('createOrders.service_url - ' . $service_url);
-		$logger -> write ('createOrders.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' createOrders.service_url - ' . $service_url);
+		$logger -> write (__LINE__ . ' createOrders.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$result = array();
 		foreach (array_chunk ($data, 50) as $chunkPostdata)
 		{
@@ -143,9 +143,9 @@ class OrdersMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiMS.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
-		$logger -> write ('1 getOrderPositions.order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' getOrderPositions.order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		APIMS::getMSData($order['positions']['meta']['href'], $posJson, $positions);
-		$logger -> write ('2 getOrderPositions.positions - ' . json_encode ($positions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' getOrderPositions.positions - ' . json_encode ($positions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		if (!isset($positions['rows'][0]))
 			return false;
 
@@ -160,7 +160,7 @@ class OrdersMS
 				'productPathName' => $product['pathName']
 			);
 		}
-		$logger -> write ('2 getOrderPositions.rows - ' . json_encode ($positions['rows'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' getOrderPositions.rows - ' . json_encode ($positions['rows'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $positions['rows'];
 	}
 }

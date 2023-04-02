@@ -55,7 +55,7 @@ class OrdersMS
 			{
 			    $size = $response_order['meta']['size'];
 			    $limit = $response_order['meta']['limit'];
-			    break;			
+			    break;
 			}
 		}
        

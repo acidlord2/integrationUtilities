@@ -52,7 +52,7 @@
 				),
 				'attributes' => array(
 					0 => array (
-						'id' => '05d3f45a-518d-11e9-9109-f8fc000a2635',
+					    'id' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'attributemetadata'),
 						'value' => true
 					)
 				)
@@ -61,7 +61,7 @@
 			$post_data = array (
 				'attributes' => array(
 					0 => array (
-						'id' => '05d3f45a-518d-11e9-9109-f8fc000a2635',
+					    'id' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'attributemetadata'),
 						'value' => true
 					)
 				)

@@ -7,8 +7,9 @@
 	*/
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log('beru-10kids-stocks.log'); //just passed the file name as file_name.log
-	$logger->write("_GET - " . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	$logger = new Log('beru-10kids - stocks.log'); //just passed the file name as file_name.log
+	$logger->write(__LINE__ . ' _GET - ' . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	// check auth-token
 	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_22064982') : true)
@@ -28,7 +29,7 @@
 	}
 
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger->write("data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	if (!isset ($data['warehouseId']))
 	{
@@ -49,7 +50,6 @@
 
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
 
-	date_default_timezone_set('Europe/Moscow');
 	$products = Products::getMSStock ($data['skus']);
 	foreach ($data['skus'] as $sku)
 	{
@@ -89,7 +89,7 @@
 		}
 
 	}
-	$logger->write("return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if ($ok)
 	{

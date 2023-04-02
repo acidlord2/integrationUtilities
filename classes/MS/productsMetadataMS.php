@@ -21,7 +21,7 @@ class ProductsMetadataMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
 		date_default_timezone_set('Europe/Moscow');
-		$this->logger = new Log('classes-ms-productsMetadataMS.log');
+		$this->logger = new Log('classes - MS - productsMetadataMS.log');
 		$this->apiMSClass = new APIMS();
 
 		$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PRODUCT . MS_API_METADATA;

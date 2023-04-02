@@ -8,8 +8,9 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log('beru-10kids-status.log'); //just passed the file name as file_name.log
-	$logger->write("01 _GET - " . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
+	$logger = new Log('beru-10kids - order - status.log'); //just passed the file name as file_name.log
+	$logger->write(__LINE__ . ' _GET - ' . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	// check auth-token
 	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_22064982') : true)
 	{
@@ -28,7 +29,7 @@
 	}
 	
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger->write("02 data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (!isset ($data['order']))
 	{
@@ -58,17 +59,17 @@
 		// фио
 		if (isset($data['order']['buyer']['lastName']) || isset ($data['order']['buyer']['firstName']))
 			$order_data['attributes'][] = array ( 
-				'id' => MS_FIO_ATTR,
+			    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_FIO_ATTR, 'attributemetadata'),
 				'value' => (isset($data['order']['buyer']['lastName']) ? $data['order']['buyer']['lastName'] : '') . (isset ($data['order']['buyer']['firstName']) ? ' ' . $data['order']['buyer']['firstName'] : '')
 			);
 		// телефон
 		if (isset ($data['order']['buyer']['phone']))
 			$order_data['attributes'][] = array (
-				'id' => MS_PHONE_ATTR,
+			    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_PHONE_ATTR, 'attributemetadata'),
 				'value' => $data['order']['buyer']['phone']);
 		// адрес
 			$order_data['attributes'][] = array (
-				'id' => MS_ADDRESS_ATTR,
+			    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_ADDRESS_ATTR, 'attributemetadata'),
 				'value' => (isset ($data['order']['delivery']['address']['city']) ? 'г. ' . $data['order']['delivery']['address']['city'] : '') . 
 				(isset ($data['order']['delivery']['address']['subway']) ? ' м. ' . $data['order']['delivery']['address']['subway'] : '') .
 				(isset ($data['order']['delivery']['address']['street']) ? ' ' . $data['order']['delivery']['address']['street'] : '') . 
@@ -82,13 +83,13 @@
 		// комментарий
 		$order_data['description'] = (isset ($data['order']['delivery']['address']['recipient']) ? 'Получатель ' . $data['order']['delivery']['address']['recipient'] : '') . (isset ($data['order']['delivery']['address']['phone']) ? ' телефон получателя ' . $data['order']['delivery']['address']['phone'] : '');
 		
-		$logger->write("04 order_data - " . json_encode ($order_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' order_data - ' . json_encode ($order_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		if (isset ($order_data['attributes']))
 		{
 			
 			$orderMS = Orders::findOrder($data['order']['id']);
 			$orderUpd = Orders::updateOrder($orderMS['id'], $order_data);
-			$logger->write("05 orderUpd - " . json_encode ($orderUpd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger->write(__LINE__ . ' orderUpd - ' . json_encode ($orderUpd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		}
 	}
 	
@@ -110,7 +111,7 @@
 				),
 				'attributes' => array(
 					0 => array (
-						'id' => '05d3f45a-518d-11e9-9109-f8fc000a2635',
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'attributemetadata'),
 						'value' => true
 					)
 				)
@@ -119,7 +120,7 @@
 			$post_data = array (
 				'attributes' => array(
 					0 => array (
-						'id' => '05d3f45a-518d-11e9-9109-f8fc000a2635',
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'attributemetadata'),
 						'value' => true
 					)
 				)
@@ -141,6 +142,6 @@
 		$return = Orders::updateOrder ($order['id'], $post_data);
 	}
 	
-	$logger->write("06 return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 ?>

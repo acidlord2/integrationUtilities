@@ -2,14 +2,14 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('cancelOrdersUllo.log');
+//	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
+	$logger = new Log ('ozonUllo - cancelOrders.log');
 
 	if (isset($_GET['period']))
 		$paramPeriod = ($_GET['period']);
 	else
 		$paramPeriod = 20;
 	
-	date_default_timezone_set('Europe/Moscow');
 	$from = date ('Y-m-d', strtotime('now -' . $paramPeriod . ' days')) . 'T00:00:00Z';
 	$to = date ('Y-m-d', strtotime('now')) . 'T23:59:59Z';
 	
@@ -50,8 +50,12 @@
 						),
 						'attributes' => array(
 							0 => array (
-								'id' => MS_CANCEL_ATTR,
-								'value' => true
+							    'meta' => array(
+    							    'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CANCEL_ATTR,
+    							    'type' => 'attributemetadata',
+    							    'mediaType' => 'application/json'
+                                ),
+							    'value' => true
 							)
 						)
 					);
@@ -63,8 +67,12 @@
 						'meta' => $msOrder['meta'],
 						'attributes' => array(
 							0 => array (
-								'id' => MS_CANCEL_ATTR,
-								'value' => true
+							    'meta' => array(
+							         'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CANCEL_ATTR,
+    							     'type' => 'attributemetadata',
+    							     'mediaType' => 'application/json'
+                                ),
+							    'value' => true
 							)
 						)
 					);

@@ -66,7 +66,7 @@ class Feedbacks
     {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('feedbacks.log');
+		$logger = new Log ('classes - feedbacks.log');
 		
 		// get feedbacks
 		
@@ -116,7 +116,7 @@ class Feedbacks
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		
-		$logger = new Log ('feedbacks.log');
+		$logger = new Log ('classes - feedbacks.log');
 		$logger -> write ('searchFeedbacks.orderNumbers - ' . json_encode ($orderNumbers));
 		
 		// get feedbacks

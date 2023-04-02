@@ -2,7 +2,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/login/auth.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('cancelOrder.log');
+	$logger = new Log ('shipping2 - cancelOrder.log');
 
 	$shippingDate = $_REQUEST["shippingDate"];
 	$agent = $_REQUEST["agent"];

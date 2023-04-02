@@ -24,7 +24,7 @@
 	require_once ($_SERVER['DOCUMENT_ROOT'] . '/login/auth.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/payments.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('finances-yandex-parse.log');
+	$logger = new Log ('finances - yandex - parseOrders.log');
 	
 	$target_dir = $_SERVER['DOCUMENT_ROOT'] . '/finances/uploads/';
 	
@@ -33,7 +33,7 @@
 	$uploadOk = 1;
 	$str = '';
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-	$logger->write ('01-target_file - ' . $target_file);
+	$logger->write (__LINE__ . ' target_file - ' . $target_file);
 
 	// Allow certain file formats
 	if($imageFileType != "xlsx") {

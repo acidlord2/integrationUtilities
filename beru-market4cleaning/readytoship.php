@@ -3,7 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersBeru.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('beru-market4cleaning-readytoship.log');
+	$logger = new Log ('beru-market4cleaning - readytoship.log');
 	
 	if (isset($_GET['date']))
 		$date = $_GET['date'];
@@ -80,7 +80,7 @@
 			$notUpdated++; */
 	}
 	// update ms orders
-	OrdersMS::updateOrderMass($ordersMSUpdate);
+	//OrdersMS::updateOrderMass($ordersMSUpdate);
 
 	echo 'Packed: ' . $readyToShip . ' not found: ' . $notFound . ' not updated: ' . $notUpdated;
 ?>

@@ -31,7 +31,7 @@
 	}
 	
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger->write(__LINE__ . " data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (!isset ($data['order']))
 	{
@@ -83,7 +83,7 @@
 	$order_data['vatEnabled'] = true;
 	$order_data['vatIncluded'] = true;
 	$order_data['attributes'] = array();
-	$order_data['attributes'][MS_PAYMENTTYPE_ATTR] = 'https://online.moysklad.ru/api/remap/1.1/entity/customentity/e0430541-d622-11e8-9109-f8fc00212299/27155816-dd0b-11e8-9109-f8fc0015616b';
+	$order_data['attributes'][MS_PAYMENTTYPE_ATTR] = MS_PAYMENTTYPE_SBERBANK;
 	$order_data['attributes'][MS_DELIVERYTIME_ATTR] = MS_DELIVERYTIME_VALUE1;
 	$order_data['attributes'][MS_DELIVERY_ATTR] = MS_SHIPTYPE_BERU;
 	
@@ -120,9 +120,9 @@
 	
 	if ($ok)
 	{
-	    $logger->write(__LINE__ . " order_data - " . json_encode ($order_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    $logger->write(__LINE__ . ' order_data - ' . json_encode ($order_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$order = Orders::createMSOrder2($order_data);
-		$logger->write(__LINE__ . " order - " . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$return ['order']['accepted'] = true;
 		// если повторное добавление заказа - отдаем обратно номер заказа
 		if (isset ($order['errors'][0]) ? ($order['errors'][0]['code'] == 3006 && $order['errors'][0]['parameter'] == 'name') : false)

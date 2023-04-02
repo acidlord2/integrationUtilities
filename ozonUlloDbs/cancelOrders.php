@@ -3,6 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/OrdersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 	$log = new Log ('ozonUlloDbs - cancelOrders.log');
 	
 	$ordersOzonClass = new OrdersOzon('ullo');
@@ -47,7 +48,7 @@
 		        'meta' => $msOrder['meta'],
 		        'attributes' => array(
 		            array(
-		                'id' => MS_CANCEL_ATTR,
+		                'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CANCEL_ATTR, 'attributemetadata'),
 		                'value' => true
 		            )
 		        )

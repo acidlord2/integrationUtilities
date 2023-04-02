@@ -20,7 +20,7 @@ class CustomerOrder
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
 		date_default_timezone_set('Europe/Moscow');
-		$this->logger = new Log('classes-ms-ordersMS.log');
+		$this->logger = new Log('classes - MS - Meta.log');
 		$this->apiMSClass = new APIMS();
 	}	
 	/**
@@ -33,7 +33,7 @@ class CustomerOrder
     {
 		$orders = array();
 		$offset = 0;
-		$this->logger->write ('01-findOrders.filters - ' . json_encode ($filters, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->logger->write (__LINE__ . ' findOrders.filters - ' . json_encode ($filters, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		while (true)
 		{
 			$filter = '';
@@ -43,7 +43,7 @@ class CustomerOrder
 			else
 				$filter = $filters;
 			$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . '?filter=' . $filter . '&limit=' . MS_LIMIT . '&offset=' . $offset;
-			$this->logger->write ('02-findOrders.service_url - ' . $service_url);
+			$this->logger->write (__LINE__ . ' findOrders.service_url - ' . $service_url);
 			$response_order = $this->apiMSClass->getData($service_url);
 			$offset += MS_LIMIT;
 			$orders = array_merge ($orders, $response_order['rows']);
@@ -51,31 +51,27 @@ class CustomerOrder
 				break;			
 		}
 
-		$this->logger->write ('03-findOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->logger->write (__LINE__ . ' findOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $orders;
 	}
 	
 	public function createCustomerorder($data)
 	{
-		$this->logger->write("01-createCustomerorder.data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    $this->logger->write(__LINE__ . ' createCustomerorder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER;
 		$return = $this->apiMSClass->postData ($service_url, $data);
-		$this->logger->write("02-createCustomerorder.return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->logger->write(__LINE__ . ' createCustomerorder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $return;
-		//$logger->write("curl_response - " . $curl_response);
-		
 	}
 	public function updateCustomerorder($id, $data)
 	{
-		$this->logger->write("01-updateCustomerorder.data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->logger->write(__LINE__ . ' updateCustomerorder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . '/' . $id;
 		$return = $this->apiMSClass->putData ($service_url, $data);
-		$this->logger->write("02-updateCustomerorder.return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->logger->write(__LINE__ . ' updateCustomerorder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $return;
-		//$logger->write("curl_response - " . $curl_response);
-		
 	}
 }
 

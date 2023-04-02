@@ -9,7 +9,7 @@
 	date_default_timezone_set('Europe/Moscow');
 	while (true) {
 	
-		$service_url = 'https://online.moysklad.ru/api/remap/1.1/entity/customerorder/?filter=deliveryPlannedMoment' . urlencode ('>') . '=' . date('Y-m-d', strtotime("now")) . ';state=' . MS_SHIPPED_MP_STATE . ';agent=' . MS_BERU_AGENT . ';organization=' . MS_KAORI . '&limit=100&offset=' . $page;
+	    $service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . '/?filter=deliveryPlannedMoment' . urlencode ('>') . '=' . date('Y-m-d', strtotime("now")) . ';state=' . MS_SHIPPED_MP_STATE . ';agent=' . MS_BERU_AGENT . ';organization=' . MS_KAORI . '&limit=100&offset=' . $page;
 		MSAPI::getMSData ($service_url, $backJson, $back);
 		
 		if (!count ($back['rows']))

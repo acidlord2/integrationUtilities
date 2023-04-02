@@ -60,17 +60,17 @@ class Products
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('products.log');
+		$logger = new Log ('classes - products.log');
 		
 		$products = array();
 
 		$result = Db::exec_query_array ("select * from prices_list where brand = '" . $brendDB . "' order by sort_order");
-		$logger -> write ('getPriceList.result - ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' getPriceList.result - ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$priceTypes = self::getPriceTypes();
 		$service_url = MS_PRODUCTURL . '?filter=pathName~' . urlencode($brend) . '&limit=' . MS_LIMIT;			
-		$logger -> write ('getPriceList.service_url - ' . $service_url);
+		$logger -> write (__LINE__ . ' getPriceList.service_url - ' . $service_url);
 		MSAPI::getMSData($service_url, $response_productsJson, $response_products);
-		$logger -> write ('getPriceList.response_products - ' . json_encode($response_products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' getPriceList.response_products - ' . json_encode($response_products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		foreach ($result as $price) {
 			$key = array_search($price['code'], array_column($response_products['rows'], 'code'), true);
 			$temp = $price;
@@ -104,7 +104,7 @@ class Products
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('products.log');
+		$logger = new Log ('classes - products.log');
 		$service_url = MS_PRODUCTURL . $productId;
 		//echo $service_url;
 		//$logger->write ('productId - ' . $productId);
@@ -113,15 +113,15 @@ class Products
 		);
 		
 		$priceTypes = self::getPriceTypes();
-		$logger->write ('updateProduct.priceTypes - ' . json_encode ($priceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write (__LINE__ . ' updateProduct.priceTypes - ' . json_encode ($priceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		foreach ($prices as $key => $price)
 		{
 			$priceKey = array_search($key, array_column($priceTypes, 'sort_order')); 
-			$logger -> write ('updateProduct.priceKey - ' . $priceKey);
+			$logger -> write (__LINE__ . ' updateProduct.priceKey - ' . $priceKey);
 			if ($priceKey !== false)
 				$postdata['salePrices'][] = array ('value' => (int)$price * 100, 'priceType' => $priceTypes[$priceKey]['ms_price_name']);
-			$logger -> write ('updateProduct.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger -> write (__LINE__ . ' updateProduct.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		}
 		
 		MSAPI::putMSData($service_url, $postdata, $returnJson, $return);
@@ -135,7 +135,7 @@ class Products
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('products.log');
+		$logger = new Log ('classes - products.log');
 
 		$codes = '';
 		$products_ms = array();
@@ -145,7 +145,7 @@ class Products
 				$codes .= 'code=' . $productCode. ';';
 			if (($key + 1) % 99 === 0 || $key == count ($productCodes) - 1)
 			{
-				$logger -> write ('getMSStock.codes - ' . $codes);
+			    $logger -> write (__LINE__ . ' getMSStock.codes - ' . $codes);
 				$service_url = MS_ASSORTURL . '?filter=' . $codes . '&limit=' . MS_LIMIT;
 				MSAPI::getMSData($service_url, $product_msJson, $product_ms);
 				//$logger -> write ('getMSStock.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -166,7 +166,7 @@ class Products
 		$products_ozon = array();
 
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('ozon.log');
+		$logger = new Log ('classes - products.log');
 		
 		$postdata = array ('page_size' => 1000, 'page' => 1);
 		//$logger -> write ('getOzonProducts.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -211,12 +211,12 @@ class Products
 			//array_push ($stocks['stocks'], array ('offer_id' => $product_ms['code'], 'stock' => 0)); // обнуляем
 			if (count ($stocks['stocks']) == 100 || count ($products_ms) == $i)
 			{
-				$logger -> write ('updateOzonProducts.prices: ' . json_encode ($prices, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-				$logger -> write ('updateOzonProducts.stocks: ' . json_encode ($stocks, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    $logger -> write (__LINE__ . ' updateOzonProducts.prices: ' . json_encode ($prices, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    $logger -> write (__LINE__ . ' updateOzonProducts.stocks: ' . json_encode ($stocks, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				self::postOzonData(OZON_MAINURL . 'v1/product/import/prices', $prices, $return, $kaori);
-				$logger -> write ('updateOzonProducts.returnprices: ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$logger -> write (__LINE__ . ' updateOzonProducts.returnprices: ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				self::postOzonData(OZON_MAINURL . 'v1/product/import/stocks', $stocks, $return, $kaori);
-				$logger -> write ('updateOzonProducts.returnstocks: ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$logger -> write (__LINE__ . ' updateOzonProducts.returnstocks: ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$prices = array ('prices' => array());
 				$stocks = array ('stocks' => array());
 			}

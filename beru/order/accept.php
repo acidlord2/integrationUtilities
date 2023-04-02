@@ -30,7 +30,7 @@
 	
 	$data = json_decode (file_get_contents('php://input'), true);
 	$logger = new Log('beru - order - accept.log'); //just passed the file name as file_name.log
-	$logger->write("data - " . json_encode ($data));
+	$logger->write(__LINE__ . ' data - ' . json_encode ($data));
 	
 	if (!isset ($data['order']))
 	{
@@ -63,7 +63,6 @@
 
 	$order_data['posting_number'] = $data['order']['id'];
 	$order_data['order_id'] = '';
-	date_default_timezone_set('Europe/Moscow');
 	$order_data['created_at'] = date('Y-m-d\TH:i:sO', strtotime('now'));
 	if (isset($data['order']['delivery']['shipments'][0]['shipmentDate']))
 	{
@@ -118,7 +117,7 @@
 	if ($ok)
 	{
 		$order = Orders::createMSOrder($order_data);
-		$logger->write("order - " . json_encode ($order));
+		$logger->write(__LINE__ . ' order - ' . json_encode ($order));
 		$return ['order']['accepted'] = true;
 		$return ['order']['id'] = (string)$order['name'];
 		

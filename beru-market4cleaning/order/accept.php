@@ -10,9 +10,9 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/ordersYandex.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log('beru-market4cleaning-accept.log'); //just passed the file name as file_name.log
+	$logger = new Log('beru-market4cleaning - order - accept.log'); //just passed the file name as file_name.log
 	$ordersYandex = new OrdersYandex(BERU_API_MARKET4CLEANING_CAMPAIGN);
-	$logger->write("01 _GET - " . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' _GET - ' . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	// check auth-token
 	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_22113023') : true)
@@ -32,7 +32,7 @@
 	}
 	
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger->write("02 data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (!isset ($data['order']))
 	{
@@ -49,7 +49,7 @@
 	}
 	
 	$orderData = $ordersYandex->getOrder ($data['order']['id']);
-	$logger->write("03 orderData - " . json_encode ($orderData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' orderData - ' . json_encode ($orderData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	$ok = true;
 	
@@ -58,7 +58,6 @@
 
 	$order_data['name'] = $data['order']['id'];
 	$order_data['order_id'] = '';
-	date_default_timezone_set('Europe/Moscow');
 	$order_data['moment'] = date('Y-m-d H:i:s', strtotime('now'));
 	if (isset ($data['order']['delivery']['shipments'][0]['shipmentDate']))
 		$order_data['deliveryPlannedMoment'] = DateTime::createFromFormat('d-m-Y', $data['order']['delivery']['shipments'][0]['shipmentDate'])->format('Y-m-d H:i:s');
@@ -139,9 +138,9 @@
 	
 	if ($ok)
 	{
-		$logger->write("04 order_data - " . json_encode ($order_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    $logger->write(__LINE__ . ' order_data - ' . json_encode ($order_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$order = Orders::createMSOrder2($order_data);
-		$logger->write("05 order - " . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 		if (!isset ($order['name']))
 		{

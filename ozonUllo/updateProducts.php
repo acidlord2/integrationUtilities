@@ -3,7 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/productsOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	
-	$logger = new Log ('ozonUlloUpdateProducts.log');
+	$logger = new Log ('ozonUllo - updateProducts.log');
 	$productsOzon = ProductsOzon::getOzonProducts(false);
 	if (count ($productsOzon) > 0) {
 		$filter = '';

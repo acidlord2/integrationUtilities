@@ -84,7 +84,7 @@ class Orders
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		static $orders;
 		
-		$logger = new Log('orders.log');
+		$logger = new Log('classes - orders.log');
 		// get orders
 		if ($agent == 'Goods')
 			$agentFilter = 'agent=' . MS_GOODS_AGENT . ';';
@@ -262,7 +262,7 @@ class Orders
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		//require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('orders.log');
+		$logger = new Log ('classes - orders.log');
 		// 50 orders get
 		$i = 0;
 		$n = 80;
@@ -329,7 +329,7 @@ class Orders
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('orders.log');
+		$logger = new Log ('classes - orders.log');
 		// 50 orders get
 		$service_url = MS_COURL . '?filter=name=' . $orderNumber . ';';
 		$logger->write ($service_url);
@@ -339,8 +339,8 @@ class Orders
 		//MSAPI::getMSData($service_url, $response_orderJson, $response_order);
 		if (!isset ($response_order['rows'][0]))
 		{
-			$service_url = MS_COURL . '?filter=https://online.moysklad.ru/api/remap/1.1/entity/customerorder/metadata/attributes/51ec2167-e895-11e8-9ff4-31500000db84=' . str_replace('%', '%25', $orderNumber) . ';';
-			$logger->write ('findOrder.service_url - ' . $service_url);
+		    $service_url = MS_COURL . '?filter=' . MS_BARCODE_ATTR . '=' . str_replace('%', '%25', $orderNumber) . ';';
+			$logger->write (__LINE__ . ' findOrder.service_url - ' . $service_url);
 			MSAPI::getMSData($service_url, $response_orderJson, $response_order);
 		}
 		if (isset ($response_order['rows'][0])) {
@@ -383,7 +383,7 @@ class Orders
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('orders.log');
+		$logger = new Log ('classes - orders.log');
 		// 50 orders get
 		$service_url = MS_COURL . '?filter=deliveryPlannedMoment%3E' . date('Y-m-d%20H:i:s', strtotime("-5 days")) . ';name=' . str_replace('%', '%25', $orderNumber) . ';';
 		//$logger->write ($service_url);
@@ -393,8 +393,8 @@ class Orders
 		//self::getMSData($service_url, $response_orderJson, $response_order);
 		if (!isset ($response_order['rows'][0]))
 		{
-			$service_url = MS_COURL . '?filter=deliveryPlannedMoment%3E' . date('Y-m-d%20H:i:s', strtotime("-5 days")) . ';https://online.moysklad.ru/api/remap/1.1/entity/customerorder/metadata/attributes/51ec2167-e895-11e8-9ff4-31500000db84=' . str_replace('%', '%25', $orderNumber) . ';';
-			$logger->write ('findOrders2.service_url - ' . $service_url);
+			$service_url = MS_COURL . '?filter=deliveryPlannedMoment%3E' . date('Y-m-d%20H:i:s', strtotime("-5 days")) . ';' . MS_BARCODE_ATTR . '=' . str_replace('%', '%25', $orderNumber) . ';';
+			$logger->write (__LINE__ . ' findOrders2.service_url - ' . $service_url);
 			MSAPI::getMSData($service_url, $response_orderJson, $response_order);
 		}
 		
@@ -500,6 +500,7 @@ class Orders
     {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 		//require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		//$logger = new Log ('tmp.log');
 		$service_url = MS_COURL . $order['id'];
@@ -511,25 +512,25 @@ class Orders
 		// Комиссия за товарную категорию
 		if (isset ($order['catComm']))
 			$postdata['attributes'][] = array(
-				'id' => MS_CATCOMM,
+			    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CATCOMM, 'attributemetadata'),
 				'value' => $order['catComm'] > 0 ? $order['catComm'] : $order['catCommStorno'] + $order['catComm']
 			);
 		// Комиссия за транзакции
 		if (isset ($order['trComm']))
 			$postdata['attributes'][] = array(
-				'id' => MS_TRCOMM,
+			    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_TRCOMM, 'attributemetadata'),
 				'value' => $order['trComm'] > 0 ? $order['trComm'] : $order['trCommStorno'] + $order['trComm']
 			);
 		// Вознаграждение оператора ПЛ
 		if (isset ($order['plComm']))
 			$postdata['attributes'][] = array(
-				'id' => MS_PLCOMM,
+			    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_PLCOMM, 'attributemetadata'),
 				'value' => $order['plComm'] > 0 ? $order['plComm'] : $order['plCommStorno'] + $order['plComm']
 			);
 		// Комиссия за логистику
 		if (isset ($order['logComm']))
 			$postdata['attributes'][] = array(
-				'id' => MS_LOGCOMM,
+			    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_LOGCOMM, 'attributemetadata'),
 				'value' => $order['logComm'] > 0 ? $order['logComm'] : $order['logCommStorno'] + $order['logComm']
 			);
 		
@@ -545,11 +546,11 @@ class Orders
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('orders.log');
+		$logger = new Log ('classes - orders.log');
 		$service_url = MS_COURL . $orderId;
 		// put
 		MSAPI::putMSData($service_url, $data, $backJson, $back);
-		$logger -> write ('updateOrder.backJson - ' . $backJson);
+		$logger -> write (__LINE__ . ' updateOrder.backJson - ' . $backJson);
 		//$logger -> write ('postdata: ' . json_encode($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $back;
 	}
@@ -576,7 +577,7 @@ class Orders
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		//require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log ('orders.log');
+		$logger = new Log ('classes - orders.log');
 		//echo $service_url;
 		//$logger->write ($service_url);
 		// demand post body
@@ -592,12 +593,12 @@ class Orders
 		$service_url = MS_SRURL . 'new';
 		MSAPI::putMSData($service_url, $postdata, $json, $salesreturnData);
 		
-		$logger -> write ('createReturn.json - ' . $json);
+		$logger -> write (__LINE__ . ' createReturn.json - ' . $json);
 		//echo $salesreturnData;
 		$service_url = MS_SRURL;
 		MSAPI::postMSData($service_url, $salesreturnData, $back, $back2);
 		//echo $back2;
-		$logger -> write ('createReturn.back - ' . $back);
+		$logger -> write (__LINE__ . ' createReturn.back - ' . $back);
 		return 'Ok';
 	}
 	// cancel order
@@ -691,10 +692,10 @@ class Orders
 	}
 
 
-	public static function getOzonOrders ($since, $to, $status, $kaori = false)
+	public static function getOzonOrders($since, $to, $status, $kaori = false)
 	{
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log('orderozon.log'); //just passed the file name as file_name.log
+		$logger = new Log('classes - orders.log'); //just passed the file name as file_name.log
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
 		$postData = array ('dir' => 'asc',
@@ -726,8 +727,9 @@ class Orders
 	public function createMSOrder($data) {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log('orderozon.log'); //just passed the file name as file_name.log
-		$logger->write("createMSOrder.data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
+		$logger = new Log('classes - orders.log'); //just passed the file name as file_name.log
+		$logger->write(__LINE__ . ' createMSOrder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		// add order in moysklad.ru
 		
 		$positions = array();
@@ -785,21 +787,21 @@ class Orders
 			),
 			'state' => array(
 				'meta' => array(
-					'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/customerorder/metadata/states/9d61e479-013c-11e9-9107-504800115e4b',
+				    'href' => MS_CONFIRMGOODS_STATE,
 					'type' => 'state',
 					'mediaType' => 'application/json'
 				)
 			),
 			'store' => array(
 				'meta' => array(
-					'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/store/dd7ce917-4f86-11e6-7a69-8f550000094d',
+				    'href' => MS_STORE,
 					'type' => 'store',
 					'mediaType' => 'application/json'
 				)
 			),
 			'group' => array(
 				'meta' => array(
-					'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/group/dd4ce7fe-4f86-11e6-7a69-971100000043',
+				    'href' => MS_GROUP,
 					'type' => 'group',
 					'mediaType' => 'application/json'
 				)
@@ -817,10 +819,10 @@ class Orders
 			'attributes' => array(
 				// тип оплаты
 				0 => array(
-					'id' => '2ada6f00-d623-11e8-9109-f8fc0021e4d1',
+				    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_PAYMENTTYPE_ATTR, 'attributemetadata'),
 					'value' => array(
 						'meta' => array(
-							'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/customentity/e0430541-d622-11e8-9109-f8fc00212299/27155816-dd0b-11e8-9109-f8fc0015616b',
+						    'href' => MS_PAYMENTTYPE_SBERBANK,
 							'type' => 'customentity',
 							'mediaType' => 'application/json'
 						)
@@ -828,10 +830,10 @@ class Orders
 				),
 				// время доставки
 				1 => array(
-					'id' => '1f394750-d62e-11e8-9ff4-3150002139c8',
+				    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_DELIVERYTIME_ATTR, 'attributemetadata'),
 					'value' => array(
 						'meta' => array(
-							'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/customentity/e7a5f365-d62d-11e8-9107-50480021c6c8/e0460dd7-d62e-11e8-9ff4-34e8002207d8',
+						    'href' => MS_DELIVERYTIME_9_21,
 							'type' => 'customentity',
 							'mediaType' => 'application/json'
 						)
@@ -839,10 +841,10 @@ class Orders
 				),
 				// способ доставки
 				2 => array(
-					'id' => '5c01b362-d61f-11e8-9107-504800214d3f',
+				    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_SHIPTYPE_ATTR_ID, 'attributemetadata'),
 					'value' => array(
 						'meta' => array(
-							'href' => isset ($data['agent']) ? 'https://online.moysklad.ru/api/remap/1.1/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/ec17ba6f-f3fd-11e9-0a80-0477001d4b07' : 'https://online.moysklad.ru/api/remap/1.1/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/3172d6aa-6fac-11ea-0a80-02c2000cf9f2',
+						    'href' => isset ($data['agent']) ? MS_SHIPTYPE_BERU : MS_SHIPTYPE_OZON,
 							'type' => 'customentity',
 							'mediaType' => 'application/json'
 						)
@@ -850,17 +852,17 @@ class Orders
 				),
 				// штрихкод
 				3 => array(
-					'id' => '51ec2167-e895-11e8-9ff4-31500000db84',
+				    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_BARCODE_ATTR_ID, 'attributemetadata'),
 					'value' => (string)$data['barcodes']['upper_barcode']
 				)
 			)
 		);
 		
-		$logger->write('createMSOrder.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' createMSOrder.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		//echo (json_encode($curl_post_data));
 		$service_url = MS_COURL;
 		MSAPI::postMSData ($service_url, $postdata, $returnJson, $return);
-		$logger->write("createMSOrder.return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' createMSOrder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $return;
 		//$logger->write("curl_response - " . $curl_response);
 		
@@ -869,8 +871,9 @@ class Orders
 	public function createMSOrder2($data) {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log('orders.log'); //just passed the file name as file_name.log
-		$logger->write("createMSOrder2.data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
+		$logger = new Log('classes - orders.log'); //just passed the file name as file_name.log
+		$logger->write(__LINE__ . ' createMSOrder2.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		// add order in moysklad.ru
 		
 		$positions = array();
@@ -940,14 +943,14 @@ class Orders
 			),
 			'store' => array(
 				'meta' => array(
-					'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/store/dd7ce917-4f86-11e6-7a69-8f550000094d',
+				    'href' => MS_STORE,
 					'type' => 'store',
 					'mediaType' => 'application/json'
 				)
 			),
 			'group' => array(
 				'meta' => array(
-					'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/group/dd4ce7fe-4f86-11e6-7a69-971100000043',
+				    'href' => MS_GROUP,
 					'type' => 'group',
 					'mediaType' => 'application/json'
 				)
@@ -971,13 +974,13 @@ class Orders
 			{
 				if (in_array ($attribute, [MS_FIO_ATTR, MS_PHONE_ATTR, MS_ADDRESS_ATTR, MS_MPAMOUNT_ATTR]))
 					$postdata['attributes'][] = array (
-						'id' => $attribute,
+					    'meta' => APIMS::createMeta ($attribute, 'attributemetadata'),
 						'value' => $attributeValue
 					);
 					
 				if (in_array ($attribute, [MS_DELIVERY_ATTR, MS_DELIVERYTIME_ATTR, MS_PAYMENTTYPE_ATTR]))
 					$postdata['attributes'][] = array (
-						'id' => $attribute,
+					    'meta' => APIMS::createMeta ($attribute, 'attributemetadata'),
 						'value' => array(
 							'meta' => array(
 								'href' => $attributeValue,
@@ -989,11 +992,11 @@ class Orders
 			}
 		}
 		
-		$logger->write('createMSOrder2.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' createMSOrder2.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		//echo (json_encode($curl_post_data));
 		$service_url = MS_COURL;
 		MSAPI::postMSData ($service_url, $postdata, $returnJson, $return);
-		$logger->write("createMSOrder2.return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' createMSOrder2.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $return;
 		//$logger->write("curl_response - " . $curl_response);
 		
@@ -1002,8 +1005,9 @@ class Orders
 	public function packOzonOrder($data, $kaori = false) {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log('orderozon.log'); //just passed the file name as file_name.log
-		$logger->write("packOzonOrder.data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
+		$logger = new Log('classes - orders.log'); //just passed the file name as file_name.log
+		$logger->write(__LINE__ . ' packOzonOrder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		$postdata = array(
 			'packages' => array (
@@ -1026,7 +1030,7 @@ class Orders
 		{
 			$i += 1;
 			self::postOzonData ($service_url, $postdata, $return, $kaori);
-			$logger->write("packOzonOrder.return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger->write(__LINE__ . ' packOzonOrder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if (isset ($return['error']) && $i < 3)
 			{
 				usleep (500000);
@@ -1042,8 +1046,8 @@ class Orders
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log('orderozon.log'); //just passed the file name as file_name.log
-		$logger->write("getPackageLable.data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger = new Log('classes - orders.log'); //just passed the file name as file_name.log
+		$logger->write(__LINE__ . ' getPackageLable.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		$postdata = array(			
 			'posting_number' => array (0 => $data['posting_number'])
@@ -1079,14 +1083,15 @@ class Orders
 	public function cancelMSOrder($data) {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-		$logger = new Log('orders.log'); //just passed the file name as file_name.log
-		$logger->write("cancelMSOrder.data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
+		$logger = new Log('classes - orders.log'); //just passed the file name as file_name.log
+		$logger->write(__LINE__ . ' cancelMSOrder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		// get order in moysklad.ru
 		
 		$service_url = MS_COURL . '?filter=name=' . $data['posting_number'];
-		$logger->write("cancelMSOrder.service_url - " . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' cancelMSOrder.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		MSAPI::getMSData ($service_url, $productMSjson, $orderMS);
-		$logger->write("cancelMSOrder.orderMS - " . json_encode ($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' cancelMSOrder.orderMS - ' . json_encode ($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		if (!isset($orderMS['rows'][0]['id']))
 		{
 			return false;
@@ -1110,7 +1115,7 @@ class Orders
 				),
 				'attributes' => array(
 					0 => array (
-						'id' => MS_CANCEL_ATTR,
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CANCEL_ATTR, 'attributemetadata'),
 						'value' => true
 					)
 				)
@@ -1120,7 +1125,7 @@ class Orders
 			$postdata = array (
 				'attributes' => array(
 					0 => array (
-						'id' => '05d3f45a-518d-11e9-9109-f8fc000a2635',
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CANCEL_ATTR, 'attributemetadata'),
 						'value' => true
 					)
 				)
@@ -1128,9 +1133,9 @@ class Orders
 			$return ['marked'] += 1;
 		}
 		$service_url = MS_COURL . $orderMS['rows'][0]['id'];
-		$logger->write("cancelMSOrder.service_url - " . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger->write(__LINE__ . ' cancelMSOrder.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		MSAPI::putMSData($service_url, $postdata, $backJson, $back);
-		$logger->write("cancelMSOrder.back - " . $backJson);
+		$logger->write(__LINE__ . ' cancelMSOrder.back - ' . $backJson);
 		return $return;
 		
 		

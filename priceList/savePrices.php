@@ -11,7 +11,7 @@
 	$apiMSClass = new APIMS();
 	
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger = new Log ('priceList-savePrices.log');
+	$logger = new Log ('priceList - savePrices.log');
 	$logger->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	$postData = array();

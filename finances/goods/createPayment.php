@@ -3,14 +3,14 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/paymentsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	
-	$logger = new Log ('finances-goods-createPayment.log');
+	$logger = new Log ('finances - goods - createPayment.log');
 
 	$ordersClass = new OrdersMS();
 	$paymentsClass = new PaymentsMS();
 
 	// create payments
 	$payment = json_decode (file_get_contents('php://input'), true);
-	$logger->write ('01-payment - ' . json_encode ($payment, JSON_UNESCAPED_SLASHES));
+	$logger->write (__LINE__ . ' payment - ' . json_encode ($payment, JSON_UNESCAPED_SLASHES));
 	//$logger->write ('start - ' . json_encode ($payments['number'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	//if ((int)explode ('-', $payments ['number'])[1] < 43380)
@@ -18,7 +18,7 @@
 	
 	$order = $ordersClass->findOrders (array ('name' => $payment['orderNumber']));
 
-	$logger->write ('02-order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write (__LINE__ . ' order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (count ($order) === 0)
 	{
@@ -88,7 +88,7 @@
 			);
 
 			$out = $paymentsClass->createPayment ($postData);
-			$logger->write ('02-out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger->write (__LINE__ . ' out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if (!isset($out['errors']))
 			{
 				echo 'Заказ ' . $payment['orderNumber'] . '. Платеж №' . $payment['incomingNumber'] . ' от ' . $payment['incomingDate'] . ' успешно создан';
@@ -124,7 +124,7 @@
 				)
 			);
 			$out = $ordersClass->updateCustomerorder ($order[0]['id'], $postData);
-			$logger->write ('02-out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger->write (__LINE__ . ' out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if (!isset($out['errors']))
 			{
 				echo 'Комиссия ' . $payment['paymentType'] . ' для заказа ' . $payment['orderNumber'] . ' успешно обновлена';
@@ -136,7 +136,7 @@
 				return;
 			}
 		}
-		if ($payment['paymentType'] == '7' || $payment['paymentType'] == '8')
+		else
 		{
 		    echo 'Комиссия ' . $payment['paymentType'] . ' для заказа ' . $payment['orderNumber'] . ' без обновления';
 		    return;
@@ -154,7 +154,7 @@
 				return;
 			} else {
 				$currentPayments = $paymentsClass->matchStornoPaymentsByOrder ($payment, $order[0]);
-				$logger->write ('04-currentPayments - ' . json_encode ($currentPayments, JSON_UNESCAPED_SLASHES));
+				$logger->write (__LINE__ . ' currentPayments - ' . json_encode ($currentPayments, JSON_UNESCAPED_SLASHES));
 				if (!$currentPayments)
 				{
 					echo ('Заказ ' . $payment['orderNumber'] . '. Для сторно ' . $payment ['incomingNumber'] . ' от ' . $payment['incomingDate'] . ' не найден платеж');
@@ -204,7 +204,7 @@
 						
 						$out = $paymentsClass->updatePayment ($currentPayments['id'], $updateData);
 						
-						$logger->write ('03-out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+						$logger->write (__LINE__ . ' out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 						if (!isset($out['errors']) && $out)
 						{
 							echo 'Заказ ' . $payment['orderNumber'] . '. Платеж №' . $payment['incomingNumber'] . ' от ' . $payment['incomingDate'] . ' успешно сторнирован';
@@ -248,7 +248,7 @@
 					)
 				);
 				$out = $ordersClass->updateCustomerorder ($order[0]['id'], $postData);
-				$logger->write ('02-out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$logger->write (__LINE__ . ' out - ' . json_encode ($out, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				if (!isset($out['errors']))
 				{
 					echo 'Комиссия ' . $payment['paymentType'] . ' для заказа ' . $payment['orderNumber'] . ' успешно сторнирована';

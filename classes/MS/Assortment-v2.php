@@ -34,7 +34,6 @@ class Assortment
 	        $url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT . '?stockMode=all;quantityMode=all;&offset=' . $offset;
 	        $assortment = $this->apiMSClass->getData($url);
 	        $this->log->write(__LINE__ . ' updateAssortment.url - ' . $url);
-	        //$logger -> write ('02-getAssortment.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	        $products = array_merge($products, $assortment['rows']);
 	        $offset += $assortment['meta']['limit'];
 	        

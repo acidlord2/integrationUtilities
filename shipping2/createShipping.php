@@ -3,7 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/demands.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('createShipping.log');
+	$logger = new Log ('shipping2 - createShipping.log');
 	
 	$shippingDate = $_REQUEST["shippingDate"];
 	$agent = $_REQUEST["agent"];
@@ -21,7 +21,7 @@
 	else
 		$orders = $_SESSION['orders'][$shippingDate . $agent . $curier . $org];
 	
-	$logger -> write ('orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	foreach ($orders as $key => $order)
 	{
@@ -29,9 +29,9 @@
 			continue;
 		
 		$demandTemplate = Demands::getDemandTemplate ($order);
-		$logger -> write ('demandTemplate - ' . json_encode ($demandTemplate, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' demandTemplate - ' . json_encode ($demandTemplate, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$backDemand = Demands::createDemand ($demandTemplate);
-		$logger -> write ('backDemand - ' . json_encode ($backDemand, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' backDemand - ' . json_encode ($backDemand, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		$orderData = array (
 			'state' => array (
@@ -42,7 +42,7 @@
 			)
 		);
 		$backUpdateOrder = Orders::updateOrder ($order['id'], $orderData);
-		$logger -> write ('backUpdateOrder - ' . json_encode ($backUpdateOrder, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$logger -> write (__LINE__ . ' backUpdateOrder - ' . json_encode ($backUpdateOrder, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		if (isset ($_REQUEST["order"]) && isset ($orderKey) ? $orderKey !== false : false)
 			$orderKey2 = $orderKey;
 		else

@@ -6,7 +6,7 @@
 	$productAttributesClass = new ProductAttributes();
 
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger = new Log ('priceList-saveAttributes.log');
+	$logger = new Log ('priceList - saveAttributes.log');
 	$logger->write (json_encode ($data));
 	foreach ($data as $productId => $attributes)
 		foreach ($attributes as $attributeid => $attributeValue)

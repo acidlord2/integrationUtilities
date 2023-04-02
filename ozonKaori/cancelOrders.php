@@ -2,7 +2,8 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('cancelOrdersKaori.log');
+	//require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
+	$logger = new Log ('ozonKaori - cancelOrders.log');
 
 	if (isset($_GET['period']))
 		$paramPeriod = ($_GET['period']);
@@ -28,7 +29,7 @@
 		foreach ($postingNumbers as $postingNumber)
 			if (!in_array ($postingNumber, $namesMS))
 			{
-				$logger -> write ('notFound postingNumber - ' . $postingNumber);
+				$logger -> write (__LINE__ . ' notFound postingNumber - ' . $postingNumber);
 				$notFound++;
 			}
 		$postdata = array();
@@ -50,8 +51,12 @@
 						),
 						'attributes' => array(
 							0 => array (
-								'id' => MS_CANCEL_ATTR,
-								'value' => true
+							    'meta' => array(
+							        'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CANCEL_ATTR,
+							        'type' => 'attributemetadata',
+							        'mediaType' => 'application/json'
+							    ),
+							    'value' => true
 							)
 						)
 					);
@@ -63,8 +68,12 @@
 						'meta' => $msOrder['meta'],
 						'attributes' => array(
 							0 => array (
-								'id' => MS_CANCEL_ATTR,
-								'value' => true
+							    'meta' => array(
+							        'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_CANCEL_ATTR,
+							        'type' => 'attributemetadata',
+							        'mediaType' => 'application/json'
+							    ),
+							    'value' => true
 							)
 						)
 					);

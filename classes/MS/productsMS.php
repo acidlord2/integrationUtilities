@@ -16,7 +16,6 @@ class ProductsMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
-		date_default_timezone_set('Europe/Moscow');
 		$this->logger = new Log('classes - MS - productsMS.log');
 		$this->apiMSClass = new APIMS();
 	}	
@@ -41,7 +40,6 @@ class ProductsMS
 		    $url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT . ($codes !== false ? $filter : '') .'stockMode=all;quantityMode=all;&offset=' . $offset;
 			$product_ms = $this->apiMSClass->getData($url);
 			$this->logger->write (__LINE__ . ' getAssortment.url - ' . json_encode ($url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			//$logger -> write ('02-getAssortment.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$products = array_merge($products, $product_ms['rows']);
 			$offset += $product_ms['meta']['limit'];
 			

@@ -6,7 +6,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	
-	$logger = new Log ('aliexpress-importOrders.log');
+	$logger = new Log ('aliexpress - importOrders.log');
 	$ordersClass = new OrdersMS();
 	$productsClass = new ProductsMS();
 	$aliOrders = array();

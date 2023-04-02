@@ -2,7 +2,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/beruApi.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('readytoship.log');
+	$logger = new Log ('beru2 - readytoship.log');
 	
 	if (isset($_GET['date']))
 		$date = $_GET['date'];
@@ -66,7 +66,7 @@
 					$postData = array (
 						'attributes' => array (
 							0 => array (
-								'id' => 'e8df1e60-b268-11ea-0a80-052600006e80',
+							    'id' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_DELIVERYSERVICE_ATTR, 'attributemetadata'),
 								'value' => $back['result']['parcelBoxLabels'][0]['deliveryServiceId']
 							)
 						)

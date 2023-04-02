@@ -13,7 +13,7 @@
 	$uploadOk = 1;
 	$str = '';
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-	$logger->write ('01-target_file - ' . $target_file);
+	$logger->write (__LINE__ . ' target_file - ' . $target_file);
 
 	// Allow certain file formats
 	if($imageFileType != "xlsx") {
@@ -40,6 +40,6 @@
 		'payments' => array_merge ($parsePayment->getChargeData(), $parsePayment->getStornoData())
 	);
 	
-	$logger->write ('02-payments - ' . json_encode ($payments, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write (__LINE__ . ' payments - ' . json_encode ($payments, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	echo json_encode (json_encode ($payments, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 ?>

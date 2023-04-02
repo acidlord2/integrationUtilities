@@ -21,7 +21,7 @@ class APIMS
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
 		date_default_timezone_set('Europe/Moscow');
-		$this->logger = new Log('api-apiMS.log');
+		$this->logger = new Log('api - apiMS.log');
 	}	
 	
 	private function getCache ($item)
@@ -178,9 +178,9 @@ class APIMS
 
 			if (isset($arrayOut['errors']))
 			{
-				$this->logger->write ('01-postData.service_url - ' . $service_url);
-				$this->logger->write ('02-postData.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-				$this->logger->write ('03-postData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    $this->logger->write (__LINE__ . ' postData.service_url - ' . $service_url);
+			    $this->logger->write (__LINE__ . ' postData.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    $this->logger->write (__LINE__ . ' postData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$tmp = false;
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
@@ -250,7 +250,7 @@ class APIMS
  			
 			if (isset($arrayOut['errors']))
 			{
-				$this->logger->write ('01-putData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    $this->logger->write (__LINE__ . ' putData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$tmp = false;
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
@@ -319,7 +319,7 @@ class APIMS
  			
 			if (isset($arrayOut['errors']))
 			{
-				$this->logger->write ('01-deleteData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    $this->logger->write (__LINE__ . ' deleteData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$tmp = false;
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
@@ -390,7 +390,7 @@ class APIMS
 			
 			if (isset($arrayOut['errors']))
 			{
-				$this->logger->write ('01-postBlobData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    $this->logger->write (__LINE__ . ' postBlobData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$tmp = false;
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)

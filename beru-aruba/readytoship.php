@@ -3,7 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersBeru.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('readytoshipAruba.log');
+	$logger = new Log ('beru-aruba - readytoship.log');
 	
 	if (isset($_GET['date']))
 		$date = $_GET['date'];
@@ -68,7 +68,7 @@
 				'meta' => $ordersMS[$orderMSKey]['meta'],
 				'attributes' => array (
 					0 => array (
-						'id' => MS_DELIVERYSERVICE_ATTR,
+					    'id' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_DELIVERYSERVICE_ATTR, 'attributemetadata'),
 						'value' => $orderLabels['result']['parcelBoxLabels'][0]['deliveryServiceId']
 					)
 				)

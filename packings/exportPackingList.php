@@ -4,7 +4,7 @@
 	//require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/productsWB.php');
 	//require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/productsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('packings-exportPackingList.log');
+	$logger = new Log ('packings - exportPackingList.log');
 	use PhpOffice\PhpSpreadsheet\Spreadsheet;
 	use PhpOffice\PhpSpreadsheet\IOFactory;
 

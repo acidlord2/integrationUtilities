@@ -70,7 +70,6 @@
 
 	$order_data['name'] = $data['order']['id'];
 	$order_data['order_id'] = '';
-	date_default_timezone_set('Europe/Moscow');
 	$order_data['moment'] = date('Y-m-d H:i:s', strtotime('now'));
 	if (isset ($data['order']['delivery']['shipments'][0]['shipmentDate'])) {
 	    $deliveryPlannedMoment = DateTime::createFromFormat('d-m-Y', $data['order']['delivery']['shipments'][0]['shipmentDate']);
