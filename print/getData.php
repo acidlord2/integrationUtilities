@@ -65,20 +65,25 @@
 				if (strpos($assortment['pathName'], 'Гиена и Косметика'))
 				{
 					$vclass = 1;
-					break;
 				}
 				if (strpos($assortment['pathName'], '0 - ИЛЬЯ (ПОДГ+ПИТАНИЕ)'))
-					$vcount += $position['quantity'];
+				{
+				    $vclass = 2;
+				}
+				break;
+				//if (strpos($assortment['pathName'], '0 - ИЛЬЯ (ПОДГ+ПИТАНИЕ)'))
+				//	$vcount += $position['quantity'];
 					
-				if ($vcount == 1)
-					$vclass = 2;
-				else if ($vcount > 1 && $vcount <= 4)
-					$vclass = 3;
-				else if ($vcount > 4)
-					$vclass = 4;
+				//if ($vcount == 1)
+				//	$vclass = 2;
+				//else if ($vcount > 1 && $vcount <= 4)
+				//	$vclass = 3;
+				//else if ($vcount > 4)
+				//	$vclass = 4;
 			}
 
 			$_SESSION['orders'][$shippingDate . $agent . $org][$key]['class'] = $vclass;
+			$_SESSION['orders'][$shippingDate . $agent . $org][$key]['product'] = $assortment['name'];
 			
 			APIMS::getMSData($order['state']['meta']['href'], $response_Json, $response);
 			$_SESSION['orders'][$shippingDate . $agent . $org][$key]['state']['name'] = $response['name'];
@@ -107,9 +112,10 @@
 			}
 		}
 		uasort  ($_SESSION['orders'][$shippingDate . $agent . $org], function($a, $b) {
-			if($a['class'] != $b['class'])return ($a['class'] < $b['class']) ? -1 : 1;
-			return 0;}
-		);
+		    if ($a['class'] === $b['class'])
+		        return $a['product'] <=> $b['product'];
+	        return $a['class'] <=> $b['class'];
+		});
 	}
 	$logger->write(__LINE__ . ' orders - ' . json_encode ($_SESSION['orders'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	echo json_encode ($_SESSION['orders'][$shippingDate . $agent . $org], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

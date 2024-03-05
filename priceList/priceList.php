@@ -18,14 +18,14 @@
 		$productTypeUrl = $_GET['productType'];
     }
     else {
-		$productTypeUrl = 'all';
+		$productTypeUrl = 'manualLoad';
     }
     
     if ($productTypeUrl == 'all'){
         $_SESSION['productAttributes'] = array();
         $_SESSION['productBrands'] = $productBrandsClass->getProductBrands();
     }
-    else {
+    elseif ($productTypeUrl != 'manualLoad') {
         $_SESSION['productAttributes'] = $productAttributesClass->getProductAttributes($productTypesClass->getProductTypeByCode($productTypeUrl)['productType_id']);
         $_SESSION['productBrands'] = $productBrandsClass->getProductBrands($productTypesClass->getProductTypeByCode($productTypeUrl)['productType_id']);
     }
@@ -46,16 +46,18 @@
 		</div>
 
 		<div class="tab">
-				<button class="tablinks<?php if (isset ($productTypeUrl)) echo $productTypeUrl == 'all' ? ' active' : ''; ?>" name="all" onclick="openLink(this, 'all')">Все товары</button>
+			<button class="tablinks<?php if (isset ($productTypeUrl)) echo $productTypeUrl == 'manualLoad' ? ' active' : ''; ?>" name="manualLoad" onclick="openLink(this, 'manualLoad')">Загрузка из MS Excel</button>
+			<button class="tablinks<?php if (isset ($productTypeUrl)) echo $productTypeUrl == 'all' ? ' active' : ''; ?>" name="all" onclick="openLink(this, 'all')">Все товары</button>
 			<?php foreach ($_SESSION['productTypes'] as $productType) { ?>
 				<button class="tablinks<?php if (isset ($productTypeUrl)) echo $productTypeUrl == $productType['code'] ? ' active' : ''; ?>" name="<?php echo $productType['code']; ?>" onclick="openLink(this, '<?php echo $productType['code']; ?>')"><?php echo $productType['name']; ?></button>
 			<?php }	?>
 		</div>
-		
 		<div id="tabcontent" class="tabcontent">
+			<?php if (isset ($productTypeUrl) && $productTypeUrl != 'manualLoad') { ?>
 			<?php if (isset ($productType)) include ($_SERVER['DOCUMENT_ROOT'] . '/priceList/View/filter.php'); ?>
+			<?php } ?>
 		</div>
-
+		
 		<div class="footer">
 			<button class="buttons" type="button" id = "save" disabled="true" onclick="save()">Сохранить</button></td>
 			<button class="buttons" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/prices/impprices', '_blank')">Обновить цены 4cleaning</button>
@@ -123,12 +125,24 @@
 				var url = new URL(location);
 				var productType = url.searchParams.get("productType");
 
-				var resp = await fetch("renewPriceList.php?productType=" + productType);
-
-				if (resp.ok)
+				if (productType != "manualLoad")
 				{
-					var html =  await resp.text();
-					document.getElementById("orderBody").innerHTML = html;
+    				var resp = await fetch("renewPriceList.php?productType=" + productType);
+    
+    				if (resp.ok)
+    				{
+    					var html =  await resp.text();
+    					document.getElementById("orderBody").innerHTML = html;
+    				}
+				}
+				else
+				{
+    				var resp = await fetch("View/view.php");
+					if (resp.ok)
+					{
+    					var html =  await resp.text();
+    					document.getElementById("tabcontent").innerHTML = html;
+    				}
 				}
 			}
 		</script>

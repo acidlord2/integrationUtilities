@@ -71,7 +71,7 @@
 						<option value="10" <?php echo $curier=='10' ? ' selected' : ''; ?>>Курьер № 10</option>
 						<option value="2" <?php echo $curier=='2' ? ' selected' : ''; ?>>Курьер № 2</option>
 					</select></span>
-					<span id="s2" style="display:<?php echo $agent=='Beru' || $agent=='Ozon' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
+					<span id="s2" style="display:<?php echo $agent=='Beru' || $agent=='Ozon' || $agent=='Goods' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
 						<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
 						<option value="4cleaning" <?php echo $org=='4cleaning' ? ' selected' : ''; ?>>4cleaning</option>
 						<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>

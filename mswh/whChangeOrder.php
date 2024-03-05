@@ -50,6 +50,23 @@
 			        $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			    }
 			}
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_14DAYS_ALIANS : false)
+			{
+			    $campaign = BERU_API_ALIANS_CAMPAIGN;
+			    
+			    $log->write(__LINE__ . ' campaign - ' . $campaign);
+			    
+			    $ordersYandexClass = new OrdersYandex($campaign);
+			    $orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
+			    $log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    
+			    if ($orderDataYandex['order']['status'] != 'CANCELLED')
+			    {
+			        //$return = $ordersYandexClass->updateStatus ($orderData['name'], 'CANCELLED', 'USER_CHANGED_MIND');
+			        $return = $ordersYandexClass->updateStatus ($campaign, $orderData['name'], 'CANCELLED', 'SHOP_FAILED');
+			        $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			    }
+			}
 			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_YANDEX_DBS_ID : false)
 			{
 				$organizationId = APIMS::getIdFromHref($orderData['organization']['meta']['href']);
@@ -341,7 +358,7 @@
 			}
 		}
 		// заказ собран (доставка)
-		else if ($state == MS_PACKEDDELIVERY_STATE_ID)
+		else if ($state == MS_PACKEDDELIVERY_STATE_ID || $state == MS_PACKEDMP_STATE)
 		{
 		    // озон дбс
 		    if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_OZON_DBS_ID : false)

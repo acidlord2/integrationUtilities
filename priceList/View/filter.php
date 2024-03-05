@@ -25,7 +25,7 @@
 		array_push ($_SESSION['cols'], '4%');
 	}
 ?>
-
+	
 <div align="center">
 	<div id="header" class="sticky">
 		<div class = "title">
@@ -56,7 +56,6 @@
 					<?php foreach ($_SESSION['productPriceTypes'] as $productPriceType) { ?>
 						<th><?php echo $productPriceType['name']; ?></th>
 					<?php } ?>
-					
 				</tr>
 			</thead>
 		</table>

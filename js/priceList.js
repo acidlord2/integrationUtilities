@@ -177,3 +177,134 @@ async function save() {
 	//	console.log (await resp2.text());
 	location.reload();
 }
+async function parse(element)
+{
+	disableFileInfo();
+	disableInputs();
+	enableLoading (element, 'Парсинг файла...');
+	var file = document.getElementById("fileToUpload").files;
+	if (file.length == 0)
+	{
+		alert("Please select a file");
+		disableLoading();
+		enableInputs();
+		return;
+	}
+	
+	var formData = new FormData();
+    formData.append("file", file[0]);
+
+	var resp = await fetch('parse/parse.php',
+	{
+		method: 'POST',
+		//headers: {'Content-Type': 'multipart/form-data'},
+		body: formData
+	});
+	
+	if (!resp.ok)
+	{
+		alert ('can\'t parse file');
+		disableLoading();
+		enableInputs();
+		return;
+	}
+    
+	var str = await resp.text();
+	
+	try {
+        var json = JSON.parse(str);
+        var prices = JSON.parse(json);
+    } catch (e) {
+        console.log (str);
+		disableLoading();
+		enableInputs();
+		return;
+    }
+	
+	document.getElementById("priceTypesCount").innerText = 'Типов цен распознано: ' + Object.keys(prices.fileInfo).length;
+	document.getElementById("pricesCount").innerText = 'Цен товаров на загрузку: ' + prices.prices.length;
+	
+	var resp2 = await fetch('View/viewContent.php',
+	{
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: str
+	});
+	
+	if (!resp2.ok)
+	{	
+		alert ('can\'t parse file');
+		disableLoading();
+		enableInputs();
+		return;
+	}
+	
+	var str2 = await resp2.text();
+	document.getElementById("tableContainer").innerHTML = str2;
+	//upload("upload_iframe", "loading", "loading2");
+	
+	var allInput = document.querySelectorAll('input[id^="i"]');
+	var event = new Event('change');
+	for (let i = 0; i < allInput.length; i++)
+	{
+		allInput[i].dispatchEvent(event);
+	}
+	
+	enableFileInfo();
+	disableLoading();
+	enableInputs();
+	
+	if (prices.prices.length == 0)
+		document.getElementById('uploadSubmit').disabled = true;
+	localStorage.prices = JSON.stringify (prices);
+}
+async function enableLoading(element, text)
+{
+	var div = document.createElement('div');
+	var loading = document.createElement('span');
+	loading.id = 'loading';
+	loading.className = 'loading';
+	var loadingText = document.createElement('span');
+	loadingText.id = 'loadingText';
+	loadingText.className = 'loadingText';
+	loadingText.innerHTML = text;
+	div.appendChild (loading);
+	div.appendChild (loadingText);
+	element.after (div);
+}
+async function updateLoading(text)
+{
+	document.getElementById('loadingText').innerHTML = text;
+}
+
+async function enableFileInfo()
+{
+	document.getElementById('fileInfo').style.display = 'block';
+}
+
+async function disableFileInfo()
+{
+	document.getElementById('fileInfo').style.display = 'none';
+}
+async function enableInputs()
+{
+	var inputs = document.getElementsByTagName('input');
+	for (var input of inputs)
+	{
+		input.disabled = false;
+	}
+}
+async function disableInputs()
+{
+	var inputs = document.getElementsByTagName('input');
+	for (var input of inputs)
+	{
+		input.disabled = true;
+	}
+}
+
+async function disableLoading()
+{
+	document.getElementById('loading').remove();
+	document.getElementById('loadingText').remove();
+}

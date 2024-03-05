@@ -57,7 +57,8 @@
 		if ($idKey !== false)
 		{
 			$product = $products[$idKey];
-			$beruPriceKey = array_search ('Цена Беру.ру', array_column ($product['salePrices'], 'priceType'));
+			$prices = array_column ($product['salePrices'], 'priceType');
+			$beruPriceKey = array_search ('Цена Беру.ру', array_column ($prices, 'name'));
 			$skus = array (
 				'sku' => (string)$product['code'],
 				'warehouseId' => (string)$data['warehouseId'],

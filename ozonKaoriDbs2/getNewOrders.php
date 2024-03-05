@@ -100,7 +100,7 @@
 		// штрихкод
 		$data['attributes'][] = array (
 		    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_BARCODE2_ATTR, 'attributemetadata'),
-			'value' => (string)$order['barcodes']['upper_barcode']
+			'value' => (string)$order['barcodes']['lower_barcode']
 		);
 		// ФИО
 		$data['attributes'][] = array (

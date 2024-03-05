@@ -27,7 +27,8 @@
 				<?php } ?>
 				<?php if ($agent == 'Goods') { ?>
 					<select id="org" value="Kaori">
-						<option value="Kaori" selected>Каори</option>
+						<option value="Kaori" <?php echo $org=='Kaori' ? 'selected' : ''; ?>>Каори</option>
+						<option value="Ullo" <?php echo $org=='Ullo' ? 'selected' : ''; ?>>Юлло</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Ali') { ?>

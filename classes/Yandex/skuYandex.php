@@ -53,7 +53,7 @@ class SkuYandex
     		}
 	    }
 	    return $offers;
-	    //$logger->write("curl_response - " . $curl_response);
+	    $logger->write("curl_response - " . $curl_response);
 		
 	}
 	/**

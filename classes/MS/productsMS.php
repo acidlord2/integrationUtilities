@@ -51,21 +51,33 @@ class ProductsMS
 	
 	public function findProductsByCode($codes)
 	{
+	    $return = array();
 		$offset = 0;
 		$filter = '?filter=';
-		if (is_array($codes)){
-		    foreach ($codes as $code){
-				$filter .= 'code=' . $code . ';';
+		if (is_array($codes))
+		{
+		    foreach(array_chunk($codes, 40) as $chunk)
+		    {
+		        $filter = '?filter=';
+		        foreach ($chunk as $code){
+				    $filter .= 'code=' . $code . ';';
+		        }
+                $service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PRODUCT . $filter;
+                $this->logger->write (__LINE__ . ' findProductsByCode.service_url - ' . $service_url);
+                $product_ms = $this->apiMSClass->getData($service_url);
+                //$this->logger->write (__LINE__ . ' findProductsByCode.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+                $return = array_merge($return, $product_ms['rows']);
 		    }
 		}
 		else {
 			$filter .= 'code=' . $codes;
+			$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PRODUCT . $filter;
+			$this->logger->write (__LINE__ . ' findProductsByCode.service_url - ' . $service_url);
+			$product_ms = $this->apiMSClass->getData($service_url);
+			//$this->logger->write (__LINE__ . ' findProductsByCode.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$return = array_merge($return, $product_ms['rows']);
 		}
-		$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PRODUCT . $filter;
-		$this->logger->write (__LINE__ . ' findProductsByCode.service_url - ' . $service_url);
-		$product_ms = $this->apiMSClass->getData($service_url);
-		$this->logger -> write (__LINE__ . ' findProductsByCode.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		return $product_ms['rows'];
+		return $return;
 	}
 
 	public function findServicesByCode ($codes)

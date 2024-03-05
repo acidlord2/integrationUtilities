@@ -57,7 +57,22 @@
 				<p class = "integration-block-header">Сбермегамаркет</p>
 				<!-- <button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/importorders/importorders10kids', '_blank')"> -->
 				<button class = "integration-button" onclick = "getSberOrders(this)">
-					Ипортировать заказы
+					Ипортировать заказы Каори
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/goods/updatePrices', '_blank')">
+					Обновить цены Каори
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/goods/updateStocks', '_blank')">
+					Обновить остатки Каори
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/importorders/importorders', '_blank')">
+					Ипортировать заказы Юлло
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/goods/updatePrices', '_blank')">
+					Обновить цены Юлло
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/goods/updateStocks', '_blank')">
+					Обновить остатки Юлло
 				</button>
 				<div id="sberInfo"></div>
 

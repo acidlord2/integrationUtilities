@@ -54,7 +54,7 @@
 	$order_data['order_id'] = '';
 	$order_data['created_at'] = date('Y-m-d\TH:i:sO', strtotime('now'));
 	$order_data['shipment_date'] = DateTime::createFromFormat('d-m-Y', $data['order']['delivery']['shipments'][0]['shipmentDate'])->format('Y-m-d\TH:i:sO');
-	$order_data['barcodes']['upper_barcode'] = '';
+	$order_data['barcodes']['lower_barcode'] = '';
 	
 
 	$return = array();

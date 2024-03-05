@@ -3,8 +3,8 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger = new Log ('save_prices.log');
-	$logger -> write (json_encode ($data));
+	$logger = new Log ('prices - save_prices.log');
+	$logger -> write (__LINE__ . ' data - ' . json_encode ($data));
 	foreach ($data as $product => $prices)
 	{
 		//$logger -> write (json_encode ($product));

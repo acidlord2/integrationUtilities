@@ -115,14 +115,14 @@ foreach ($newOrders as $order)
 		),
 		'store' => array(
 			'meta' => array(
-				'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/store/dd7ce917-4f86-11e6-7a69-8f550000094d',
+				'href' => 'https://api.moysklad.ru/api/remap/1.1/entity/store/dd7ce917-4f86-11e6-7a69-8f550000094d',
 				'type' => 'store',
 				'mediaType' => 'application/json'
 			)
 		),
 		'group' => array(
 			'meta' => array(
-				'href' => 'https://online.moysklad.ru/api/remap/1.1/entity/group/dd4ce7fe-4f86-11e6-7a69-971100000043',
+				'href' => 'https://api.moysklad.ru/api/remap/1.1/entity/group/dd4ce7fe-4f86-11e6-7a69-971100000043',
 				'type' => 'group',
 				'mediaType' => 'application/json'
 			)

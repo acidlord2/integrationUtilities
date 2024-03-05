@@ -79,7 +79,7 @@ class OrdersOzon
 	    $postdata = array(
 	        'packages' => array (
 	            array (
-	                'items' => array ()
+	                'products' => array ()
 	            )
 	        ),
 	        'posting_number' => $data['posting_number']
@@ -90,7 +90,7 @@ class OrdersOzon
 	            $postdata['packages'][0]['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku']);
 	            
 	            $this->log->write(__LINE__ . ' packOrder.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	            $url = OZON_MAINURL . OZON_API_V3 . 'posting/fbs/ship';
+	            $url = OZON_MAINURL . OZON_API_V4 . 'posting/fbs/ship';
 	            $i = 0;
 	            while (true)
 	            {

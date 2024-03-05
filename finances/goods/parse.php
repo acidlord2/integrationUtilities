@@ -110,7 +110,7 @@
 			continue;
 		}
 		
-		preg_match ('/^\d{9,10}$/', $worksheets[0]->getCell($orderCol . ($row->getRowIndex()))->getCalculatedValue(), $matches);
+		preg_match ('/^\d{9,13}$/', $worksheets[0]->getCell($orderCol . ($row->getRowIndex()))->getCalculatedValue(), $matches);
 		
 		if (!$matches)
 			continue;

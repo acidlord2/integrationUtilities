@@ -73,8 +73,11 @@
 				'meta' => $ordersMS[$orderMSKey]['meta'],
 				'attributes' => array (
 					0 => array (
-					    'id' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_DELIVERYSERVICE_ATTR, 'attributemetadata'),
-						'value' => $orderLabels['result']['parcelBoxLabels'][0]['deliveryServiceId']
+					    'meta' => array(
+					        'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_DELIVERYSERVICE_ATTR,
+    					    'type' => 'attributemetadata',
+    					    'mediaType' => 'application/json'),
+					    'value' => $orderLabels['result']['parcelBoxLabels'][0]['deliveryServiceId']
 					)
 				)
 			);

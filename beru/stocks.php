@@ -49,7 +49,6 @@
 
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
 
-	date_default_timezone_set('Europe/Moscow');
 	$products = Products::getMSStock ($data['skus']);
 	foreach ($data['skus'] as $sku)
 	{
@@ -57,14 +56,15 @@
 		if ($idKey !== false)
 		{
 			$product = $products[$idKey];
-			$beruPriceKey = array_search ('Цена Беру ullo', array_column ($product['salePrices'], 'priceType'));
+			$prices = array_column ($product['salePrices'], 'priceType');
+			$beruPriceKey = array_search ('Цена Беру ullo', array_column ($prices, 'name'));
 			$skus = array (
 				'sku' => (string)$product['code'],
 				'warehouseId' => (string)$data['warehouseId'],
 				'items' => array (
 					0 => array (
 						'type' => 'FIT',
-						'count' => $beruPriceKey !== false ? (string)$product['quantity'] : '0',
+					    'count' => $beruPriceKey !== false ? ($product['quantity'] < 0 ? '0' : (string)$product['quantity']) : '0',
 						//'count' => '0',
 						'updatedAt' => date ('Y-m-d\TH:i:sP', strtotime("now"))
 					)

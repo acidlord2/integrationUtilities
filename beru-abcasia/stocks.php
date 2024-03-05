@@ -7,8 +7,8 @@
 	*/
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log('beruRomashkaStocks.log'); //just passed the file name as file_name.log
-	$logger->write("_GET - " . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger = new Log('beru-abcasia - stocks.log'); //just passed the file name as file_name.log
+	$logger->write(__LINE__ . ' _GET - ' . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	// check auth-token
 	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('romashka_beru_auth_token') : true)
@@ -28,7 +28,7 @@
 	}
 
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger->write("data - " . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	if (!isset ($data['warehouseId']))
 	{
@@ -49,22 +49,23 @@
 
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
 
-	date_default_timezone_set('Europe/Moscow');
 	$products = Products::getMSStock ($data['skus']);
+	//$logger->write(__LINE__ . ' products - ' . json_encode ($products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	foreach ($data['skus'] as $sku)
 	{
 		$idKey = array_search ($sku, array_column ($products, 'code'));
 		if ($idKey !== false)
 		{
 			$product = $products[$idKey];
-			$beruPriceKey = array_search ('Цена Беру ullo', array_column ($product['salePrices'], 'priceType'));
+			$prices = array_column ($product['salePrices'], 'priceType');
+			$beruPriceKey = array_search ('Цена Беру ullo', array_column ($prices, 'name'));
 			$skus = array (
 				'sku' => (string)$product['code'],
 				'warehouseId' => (string)$data['warehouseId'],
 				'items' => array (
 					0 => array (
 						'type' => 'FIT',
-						'count' => $beruPriceKey !== false ? (string)$product['quantity'] : '0',
+					    'count' => $beruPriceKey !== false ? ($product['quantity'] < 0 ? '0' : (string)$product['quantity']) : '0',
 						//'count' => '0',
 						'updatedAt' => date ('Y-m-d\TH:i:sP', strtotime("now"))
 					)
@@ -89,7 +90,7 @@
 		}
 
 	}
-	$logger->write("return - " . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if ($ok)
 	{

@@ -79,8 +79,9 @@ class APIMS
 		$client_pass = $this->client_pass;
 		// REST Header
 		$curl_post_headerms = array (
-				'Content-type: application/json', 
-				'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
+			'Content-type: application/json',
+		    'Accept-Encoding: gzip',
+			'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
 		);
 
 		//$logger->write ('getMSData.cache - ' . json_encode (self::$cache, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -96,7 +97,10 @@ class APIMS
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			$jsonOut = curl_exec($curl);
-			$arrayOut = json_decode ($jsonOut, true);
+			//$this->logger->write (__LINE__ . ' getMSData.jsonOut - ' . $jsonOut);
+			if(gzdecode($jsonOut))
+			    $jsonOut = gzdecode($jsonOut);
+            $arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl);			
 			curl_close($curl);
 			
@@ -105,7 +109,7 @@ class APIMS
 
 			if (isset($arrayOut['errors']))
 			{
-				$this->logger->write ('01-getData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->logger->write (__LINE__ . ' getData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$tmp = false;
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
@@ -161,8 +165,9 @@ class APIMS
 		$client_pass = $this->client_pass;
 		// REST Header
 		$curl_post_headerms = array (
-				'Content-type: application/json', 
-				'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
+			'Content-type: application/json', 
+		    'Accept-Encoding: gzip',
+		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
 		);
 
 		while (true)
@@ -173,7 +178,9 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 			$jsonOut = curl_exec($curl);
-			$arrayOut = json_decode ($jsonOut, true);
+			if(gzdecode($jsonOut))
+			    $jsonOut = gzdecode($jsonOut);
+		    $arrayOut = json_decode ($jsonOut, true);
 			curl_close($curl);
 
 			if (isset($arrayOut['errors']))
@@ -233,8 +240,9 @@ class APIMS
 		$client_pass = $this->client_pass;
 		// REST Header
 		$curl_post_headerms = array (
-				'Content-type: application/json', 
-				'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
+			'Content-type: application/json', 
+		    'Accept-Encoding: gzip',
+		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
 		);
 
 		while (true)
@@ -245,7 +253,9 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 			$jsonOut = curl_exec($curl);
-			$arrayOut = json_decode ($jsonOut, true);
+			if(gzdecode($jsonOut))
+			    $jsonOut = gzdecode($jsonOut);
+            $arrayOut = json_decode ($jsonOut, true);
 			curl_close($curl);
  			
 			if (isset($arrayOut['errors']))
@@ -303,8 +313,9 @@ class APIMS
 		$client_pass = $this->client_pass;
 		// REST Header
 		$curl_post_headerms = array (
-				'Content-type: application/json', 
-				'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
+			'Content-type: application/json', 
+		    'Accept-Encoding: gzip',
+		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
 		);
 
 		while (true)
@@ -314,7 +325,9 @@ class APIMS
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			$jsonOut = curl_exec($curl);
-			$arrayOut = json_decode ($jsonOut, true);
+			if(gzdecode($jsonOut))
+			    $jsonOut = gzdecode($jsonOut);
+		    $arrayOut = json_decode ($jsonOut, true);
 			curl_close($curl);
  			
 			if (isset($arrayOut['errors']))
@@ -372,21 +385,24 @@ class APIMS
 		$client_pass = $this->client_pass;
 		// REST Header
 		$curl_post_headerms = array (
-				'Content-type: application/json', 
-				'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
+			'Content-type: application/json', 
+		    'Accept-Encoding: gzip',
+		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
 		);
 
 		while (true)
 		{
-			$curl_order = curl_init($service_url);
-			curl_setopt($curl_order, CURLOPT_HTTPHEADER, $curl_post_headerms);
-			curl_setopt($curl_order, CURLOPT_POST, true);
-			curl_setopt($curl_order, CURLOPT_RETURNTRANSFER, true); 
-			curl_setopt($curl_order, CURLOPT_POSTFIELDS, json_encode($postdata));
-			$jsonOut = curl_exec($curl_order);
-			$arrayOut = json_decode ($jsonOut, true);
-			$info = curl_getinfo($curl_order);
-			curl_close($curl_order);
+		    $curl = curl_init($service_url);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+			curl_setopt($curl, CURLOPT_POST, true);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			$jsonOut = curl_exec($curl);
+			if(gzdecode($jsonOut))
+			    $jsonOut = gzdecode($jsonOut);
+		    $arrayOut = json_decode ($jsonOut, true);
+		    $info = curl_getinfo($curl);
+		    curl_close($curl);
 			
 			if (isset($arrayOut['errors']))
 			{

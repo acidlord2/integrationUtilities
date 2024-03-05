@@ -35,6 +35,7 @@ class Api
 		// REST Header
 		$this->header = array (
 		    'Content-type: application/json',
+		    'Accept-Encoding: gzip',
 		    'Authorization: Bearer ' . $this->token
 		);
 		
@@ -80,7 +81,7 @@ class Api
 			//$this->logger->write (__LINE__ . ' header - ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
-			$jsonOut = curl_exec($curl);
+			$jsonOut = gzdecode(curl_exec($curl));
 			$arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl);			
 			curl_close($curl);
@@ -122,7 +123,7 @@ class Api
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
-			$jsonOut = curl_exec($curl);
+			$jsonOut = gzdecode(curl_exec($curl));
 			$arrayOut = json_decode ($jsonOut, true);
 			curl_close($curl);
 
@@ -159,7 +160,7 @@ class Api
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
-			$jsonOut = curl_exec($curl);
+			$jsonOut = gzdecode(curl_exec($curl));
 			$arrayOut = json_decode ($jsonOut, true);
 			curl_close($curl);
  			
@@ -193,7 +194,7 @@ class Api
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
-			$jsonOut = curl_exec($curl);
+			$jsonOut = gzdecode(curl_exec($curl));
 			$arrayOut = json_decode ($jsonOut, true);
 			curl_close($curl);
  			
@@ -228,7 +229,7 @@ class Api
 			curl_setopt($curl_order, CURLOPT_POST, true);
 			curl_setopt($curl_order, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl_order, CURLOPT_POSTFIELDS, json_encode($postdata));
-			$jsonOut = curl_exec($curl_order);
+			$jsonOut = gzdecode(curl_exec($curl_order));
 			$arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl_order);
 			curl_close($curl_order);

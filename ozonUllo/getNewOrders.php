@@ -138,7 +138,7 @@
 					'type' => 'attributemetadata',
 					'mediaType' => 'application/json'
 				),
-				'value' => (string)$order['barcodes']['upper_barcode']
+				'value' => (string)$order['barcodes']['lower_barcode']
 			);
 			
 			$data['positions'] = array();

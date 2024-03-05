@@ -28,10 +28,10 @@
 		if (isset ($order['mpcancelFlag']) ? $order['mpcancelFlag'] : false)
 			continue;
 		
-		$demandTemplate = Demands::getDemandTemplate ($order);
-		$logger -> write (__LINE__ . ' demandTemplate - ' . json_encode ($demandTemplate, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		$backDemand = Demands::createDemand ($demandTemplate);
-		$logger -> write (__LINE__ . ' backDemand - ' . json_encode ($backDemand, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		//$demandTemplate = Demands::getDemandTemplate ($order);
+		//$logger -> write (__LINE__ . ' demandTemplate - ' . json_encode ($demandTemplate, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		//$backDemand = Demands::createDemand ($demandTemplate);
+		//$logger -> write (__LINE__ . ' backDemand - ' . json_encode ($backDemand, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		$orderData = array (
 			'state' => array (

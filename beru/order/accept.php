@@ -78,7 +78,7 @@
 	    echo 'Shipment date is not set';
 	    
 	}
-	$order_data['barcodes']['upper_barcode'] = '';
+	$order_data['barcodes']['lower_barcode'] = '';
 	
 
 	$return = array();

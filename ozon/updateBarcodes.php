@@ -3,7 +3,6 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 	$logger = new Log ('ozon - updateBarcodes.log');
 	$filters = array (
 		'agent' => MS_OZON_AGENT,
@@ -31,12 +30,16 @@
 
 		$orderOzon = OrdersOzon::getOrder($parameters);
 		
-		if (isset ($orderOzon['result']['barcodes']['upper_barcode']))
+		if (isset ($orderOzon['result']['barcodes']['lower_barcode']))
 			OrdersMS::updateOrder ($orderMS['id'], array (
 				'attributes' => array (
 					0 => array(
-					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_BARCODE_ATTR_ID, 'attributemetadata'),
-						'value' => (string)$orderOzon['result']['barcodes']['upper_barcode']
+					    'meta' => array (
+					        'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_BARCODE_ATTR_ID,
+					        'type' => 'attributemetadata',
+					        'mediaType' => 'application/json'
+					    ),
+					    'value' => (string)$orderOzon['result']['barcodes']['lower_barcode']
 					)
 				)
 			));

@@ -113,16 +113,7 @@ class Orders
 		else
 			$curierFilter = '';
 		
-		if ($agent == 'Beru')
-		{
-			if ($org == 'ullo')
-				$orgFilter = 'organization=' . MS_ULLO . ';';
-			if ($org == '4cleaning')
-				$orgFilter = 'organization=' . MS_4CLEANING . ';';
-			if ($org == 'kaori')
-				$orgFilter = 'organization=' . MS_KAORI . ';';
-		}
-		else if ($agent == 'Ozon')
+			if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods')
 		{
 			if ($org == 'ullo')
 				$orgFilter = 'organization=' . MS_ULLO . ';';
@@ -853,7 +844,7 @@ class Orders
 				// штрихкод
 				3 => array(
 				    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_BARCODE_ATTR_ID, 'attributemetadata'),
-					'value' => (string)$data['barcodes']['upper_barcode']
+					'value' => (string)$data['barcodes']['lower_barcode']
 				)
 			)
 		);
@@ -974,13 +965,13 @@ class Orders
 			{
 				if (in_array ($attribute, [MS_FIO_ATTR, MS_PHONE_ATTR, MS_ADDRESS_ATTR, MS_MPAMOUNT_ATTR]))
 					$postdata['attributes'][] = array (
-					    'meta' => APIMS::createMeta ($attribute, 'attributemetadata'),
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . $attribute, 'attributemetadata'),
 						'value' => $attributeValue
 					);
 					
 				if (in_array ($attribute, [MS_DELIVERY_ATTR, MS_DELIVERYTIME_ATTR, MS_PAYMENTTYPE_ATTR]))
 					$postdata['attributes'][] = array (
-					    'meta' => APIMS::createMeta ($attribute, 'attributemetadata'),
+					    'meta' => APIMS::createMeta (MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . $attribute, 'attributemetadata'),
 						'value' => array(
 							'meta' => array(
 								'href' => $attributeValue,

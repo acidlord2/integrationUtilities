@@ -23,7 +23,8 @@
 					if ($order['class'] == 1)
 						echo 'Заказы с косметикой';
 					if ($order['class'] == 2)
-						echo 'Подгузники с 1 шт.';
+					    echo 'Подгузники';
+					    //echo 'Подгузники с 1 шт.';
 					if ($order['class'] == 3)
 						echo 'Подгузники от 2 до 4 шт.';
 					if ($order['class'] == 4)

@@ -40,13 +40,13 @@ class Controllerextensionberuupdatedate extends Controller
 				$post_data = array (
 					'deliveryPlannedMoment' => DateTime::createFromFormat('d-m-Y', $response_beruorder['order']['delivery']['shipments'][0]['shipmentDate'])->format('Y-m-d H:i:s')
 				);
-				$service_urlMS = 'https://online.moysklad.ru/api/remap/1.1/entity/customerorder/'. $order['id'];
+				$service_urlMS = 'https://api.moysklad.ru/api/remap/1.1/entity/customerorder/'. $order['id'];
 				$curl = curl_init($service_urlMS);
 				curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
 				curl_setopt($curl, CURLOPT_POSTFIELDS,json_encode($post_data));
-				$curl_response = curl_exec($curl);
+				$curl_response = gzdecode(curl_exec($curl));
 				curl_close($curl);
 			}
 		}

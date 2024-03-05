@@ -148,8 +148,8 @@ class Products
 			    $logger -> write (__LINE__ . ' getMSStock.codes - ' . $codes);
 				$service_url = MS_ASSORTURL . '?filter=' . $codes . '&limit=' . MS_LIMIT;
 				MSAPI::getMSData($service_url, $product_msJson, $product_ms);
-				//$logger -> write ('getMSStock.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-				//$logger -> write ('getMSStock.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$logger -> write (__LINE__ . ' getMSStock.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				//$logger -> write (__LINE__ . ' getMSStock.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				if (isset ($product_ms['rows']))
     				$products_ms = array_merge($products_ms, $product_ms['rows']);
 				$codes = '';
@@ -198,7 +198,8 @@ class Products
 		{
 			$i++;
 			//get ozon price
-			$keyozon = array_search('Цена Ozon', array_column($product_ms['salePrices'], 'priceType')); 
+			$pricesMS = array_column ($product_ms['salePrices'], 'priceType');
+			$keyozon = array_search('Цена Ozon', array_column($pricesMS, 'name')); 
 			//$logger -> write ('updateOzonProducts.key4cl: ' . $product_ms['code'] . ' - ' . json_encode ($key4cl));
 			//$logger -> write ('updateOzonProducts.keyozon: ' . $product_ms['code'] . ' - ' . json_encode ($keyozon));
 			$price = $keyozon !== false ? $product_ms['salePrices'][$keyozon]['value'] / 100 : 0;

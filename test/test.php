@@ -11,12 +11,17 @@
 //        $codes[] = null;
 //}
 // require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiOrderCache.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 // $logger = new Log('test.log');
 
-APIOrderCache::saveOrderCache('123', 'done');
+$apiMSClass = new APIMS();
+$product_ms = $apiMSClass->getData('https://api.moysklad.ru/api/remap/1.2/entity/product?filter=code=000-0000');
 
-$a = APIOrderCache::getOrderCache('123');
+
+//APIOrderCache::saveOrderCache('123', 'done');
+
+//$a = APIOrderCache::getOrderCache('123');
 // $data = json_decode (file_get_contents('php://input'), true);
 // $logger->write(__LINE__ . ' _post - ' . file_get_contents('php://input'));
 
@@ -28,7 +33,7 @@ $a = APIOrderCache::getOrderCache('123');
 
 
 
-echo __LINE__ . ' - ' . json_encode($a, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+echo __LINE__ . ' product_ms - ' . json_encode($product_ms, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 
 /*

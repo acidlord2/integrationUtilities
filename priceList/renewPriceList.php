@@ -7,13 +7,13 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/priceList/Classes/ProductTypes.php');
 	
 	$logger = new Log ('priceList - renewPriceList.log');
+	
 	$productType = $_REQUEST["productType"];
 	$priceListClass = new PriceList();
 	$productAttributesClass = new ProductAttributes();
 	$productTypesClass = new ProductTypes();
 
-?>
-	<?php foreach ($_SESSION['productBrands'] as $brand)
+	foreach ($_SESSION['productBrands'] as $brand)
 		{
 			$products = $priceListClass->getPriceList ($brand['productType_id'], $brand['productBrand_id'], $_SESSION['productPriceTypes']);
 			$logger->write (__LINE__ . ' products - ' . json_encode ($products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

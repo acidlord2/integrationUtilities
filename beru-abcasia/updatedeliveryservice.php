@@ -2,7 +2,8 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/beruApi.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	$logger = new Log ('updatedeliveryservice.log');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	$logger = new Log ('beru-abcasia - updatedeliveryservice.log');
 	
 	if (isset($_GET['date']))
 		$date = $_GET['date'];
@@ -37,8 +38,12 @@
 				$postData = array (
 					'attributes' => array (
 						0 => array (
-							'id' => 'e8df1e60-b268-11ea-0a80-052600006e80',
-							'value' => $back['result']['parcelBoxLabels'][0]['deliveryServiceId']
+						    'meta' => array(
+						        'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDERSTATE . '/' . MS_DELIVERYSERVICE_ATTR,
+						        'type' => 'state',
+						        'mediaType' => 'application/json'
+						    ),
+						    'value' => $back['result']['parcelBoxLabels'][0]['deliveryServiceId']
 						)
 					)
 				);

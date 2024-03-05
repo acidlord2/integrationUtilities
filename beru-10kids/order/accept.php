@@ -79,7 +79,7 @@
 	    $deliveryPlannedMoment = DateTime::createFromFormat('d-m-Y', $data['order']['delivery']['dates']['toDate']);
 	    $order_data['deliveryPlannedMoment'] = $deliveryPlannedMoment->format('Y-m-d H:i:s');
 	}
-	$order_data['barcodes']['upper_barcode'] = '';
+	$order_data['barcodes']['lower_barcode'] = '';
 	
 	$return = array();
 	$fakeOrder = isset ($data['order']['fake']) ? (bool)$data['order']['fake'] : false;

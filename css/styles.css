@@ -84,6 +84,7 @@ td.input {
 .sticky {
   position: sticky;
   top: 0;
+  background: white;
 }
 #header {
 	background: white;
