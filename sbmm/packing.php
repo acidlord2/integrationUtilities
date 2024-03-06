@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Creates new order
+	 * pack order
 	 *
 	 * @author GPOLYAN <acidlord@yandex.ru>
 	 */
@@ -10,8 +10,8 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-	
-	$log = new Log('sbermegamarketDSM - new.log');
+
+	$log = new Log('sbermegamarketDSM - packing.log'); //just passed the file name as file_name.log
 	
 	$data = json_decode(file_get_contents('php://input'), true);
 	$log->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -50,7 +50,7 @@
 	    $order_data['deliveryPlannedMoment'] = date('Y-m-d H:i:s', strtotime('+1 day'));
 	    $order_data['organization'] = array('meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ORGANIZATION . '/' . MS_KAORI_ID, 'organization'));
 	    $order_data['agent'] = array('meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_COUNTERPARTY . '/' . MS_GOODS_AGENT_ID, 'counterparty'));
-	    $order_data['state'] = array('meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDERSTATE . '/' . MS_NEW_STATE_ID, 'state'));
+	    $order_data['state'] = array('meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDERSTATE . '/' . MS_CONFIRMBERU_STATE_ID, 'state'));
 	    $order_data['store'] = array('meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_STORE . '/' . MS_API_STORE_ID, 'store'));
 	    $order_data['group'] = array('meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_GROUP . '/' . MS_GROUP_ID, 'group'));
 	    $order_data['project'] = array('meta' => APIMS::createMeta(MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PROJECT . '/' . MS_PROJECT_SBMMDSM_ID, 'project'));
@@ -146,7 +146,7 @@
 	if ($ok)
 	{
 		header('Content-Type: application/json');
-		echo '{"success":1,"meta":{"source":"10kids.ru (ДСМ)"}}';
+		echo json_encode('{"success":1,"meta":{"source":"10kids.ru (ДСМ)"}}');
 	}
 	else
 	{

@@ -21,11 +21,31 @@ class Order
 		$this->log = new \Log('classes - Sbermegamarket - Orders.log');
 		$this->apiSMMClass = new \Classes\Sbermegamarket\API($shop);
 	}
-	
+
+	public function searchOrders($statuses)
+	{
+	    $this->log->write(__LINE__ . ' searchOrders.statuses - ' . json_encode ($statuses, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_SEARCH;
+
+	    $data = array (
+	        'data' => array (
+	            'statuses' => $statuses,
+				'count' => 1000
+	        )
+	    );
+	    
+	    $orders = $this->apiSMMClass->postData($url, $data);
+	    $this->log->write(__LINE__ . ' searchOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    if (isset($orders['success']) && $orders['success'] == 1)
+			return $orders['data'];
+		else
+			return array('shipments' => array());
+	}
+
 	public function getOrders($orderNumbers)
 	{
 	    $this->log->write(__LINE__ . ' getOrders.orderNumbers - ' . json_encode ($orderNumbers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION . SBMM_API_ORDERS_GET;
+	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_GET;
 	    if (is_array($orderNumbers)) {
 	        $ordersNumbersArray = $orderNumbers;
 	    }
@@ -46,7 +66,7 @@ class Order
 	public function packing($data)
 	{
 	    $this->log->write(__LINE__ . ' packing.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION . SBMM_API_ORDERS_PACKING;
+	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_PACKING;
 	    $return = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' packing.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    return $return;
@@ -55,7 +75,7 @@ class Order
 	public function confirm($data)
 	{
 	    $this->log->write(__LINE__ . ' confirm.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION . SBMM_API_ORDERS_CONFIRM;
+	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_CONFIRM;
 	    $return = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' confirm.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    return $return;
@@ -64,7 +84,7 @@ class Order
 	public function reject($data)
 	{
 	    $this->log->write(__LINE__ . ' reject.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION . SBMM_API_ORDERS_REJECT;
+	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_REJECT;
 	    $return = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' reject.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    return $return;
@@ -73,7 +93,7 @@ class Order
 	public function cancelResult($data)
 	{
 	    $this->log->write(__LINE__ . ' cancelResult.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION . SBMM_API_ORDERS_CANCELRESULT;
+	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_CANCELRESULT;
 	    $return = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' cancelResult.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    return $return;
@@ -82,7 +102,7 @@ class Order
 	public function close($data)
 	{
 	    $this->log->write(__LINE__ . ' close.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION . SBMM_API_ORDERS_CLOSE;
+	    $url = SBMM_API_BASE_URL . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_CLOSE;
 	    $return = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' close.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    return $return;
