@@ -19,4 +19,4 @@ jobs:
         ftp-username: ${{ secrets.FTP_USERNAME }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
         local-dir: .
-        entryPoint: /www/kids-universe.ru
+        entryPoint: "www/kids-universe.ru/"
