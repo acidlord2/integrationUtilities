@@ -19,3 +19,12 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: "./www/kids-universe.ru/"
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/logs/**
+          **/print/files/**
+          **/report/reports/**
+          **/uploads/**
+          **/finances/uploads/**
