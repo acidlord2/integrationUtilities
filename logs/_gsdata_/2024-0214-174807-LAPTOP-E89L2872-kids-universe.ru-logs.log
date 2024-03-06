@@ -1,0 +1,31 @@
+2024-02-14 17:48:28: Done.
+2024-02-14 17:48:29: Done.
+2024-02-14 17:48:29: TPath: /priceList - Classes - parsePrices.log
+Lnew: [file] size=6,016 accu-time=2023-12-29 12:15:20 attr=Archive cktype=0
+Lold: [file] size=6,016 accu-time=2023-12-29 12:15:20 attr= cktype=0
+Rnew: [file] size=466 accu-time=2024-02-14 13:31:14 fs-item-name=priceList - Classes - ParsePrices.log attr= cktype=0
+Rold: [file] size=6,016 accu-time=2023-12-29 12:15:20 attr= cktype=0
+Lgen: c=6 @231227-214642 @231227-220318 @231227-222410 @231227-230306 @231228-224953 @231229-121556 
+Rgen: c=6 @231227-214642 @231227-220318 @231227-222410 @231227-230306 @231228-224953 @231229-121556 NewGen 
+2024-02-14 17:48:29: 
+2024-02-14 17:48:51: == Sync Started by User Command
+2024-02-14 17:49:02: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/archive/classes - productsOzon.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/archive/classes - productsOzon.log' (30,329,865)
+2024-02-14 17:49:09: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/beru-ullozza - order - status.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/beru-ullozza - order - status.log' (24,551,198)
+2024-02-14 17:49:13: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/beru-ullozza - readytoship.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/beru-ullozza - readytoship.log' (8,694,130)
+2024-02-14 17:49:18: ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - MS - ordersMS.log: Downloaded 15,716,108 bytes, MORE than expected 15,656,882 bytes
+2024-02-14 17:49:18: ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - MS - ordersMS.log: Source file has changed between Analyze and Sync from '[file] size=15,656,882 accu-time=2024-02-14 17:48:09 attr= cktype=0' to 'size=15,716,108 time=2024-02-14 17:48:24', noted in source file state
+2024-02-14 17:49:18: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - MS - ordersMS.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/classes - MS - ordersMS.log' (15,656,882)
+2024-02-14 17:49:21: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - ordersBeru.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/classes - ordersBeru.log' (8,034,332)
+2024-02-14 17:49:27: ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - Ozon - OrderOzon.log: Downloaded 19,873,000 bytes, MORE than expected 19,858,681 bytes
+2024-02-14 17:49:27: ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - Ozon - OrderOzon.log: Source file has changed between Analyze and Sync from '[file] size=19,858,681 accu-time=2024-02-14 17:48:09 attr= cktype=0' to 'size=19,873,000 time=2024-02-14 17:48:24', noted in source file state
+2024-02-14 17:49:27: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - Ozon - OrderOzon.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/classes - Ozon - OrderOzon.log' (19,858,681)
+2024-02-14 17:49:30: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - products.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/classes - products.log' (5,631,399)
+2024-02-14 17:49:34: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - productsMS.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/classes - productsMS.log' (12,261,288)
+2024-02-14 17:49:35: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/classes - productsOzon.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/classes - productsOzon.log' (1,033,205)
+2024-02-14 17:49:38: ftp://37.140.192.190:21/www/kids-universe.ru/logs/ozonKaori - getNewOrders.log: Downloaded 8,247,589 bytes, MORE than expected 8,247,081 bytes
+2024-02-14 17:49:39: ftp://37.140.192.190:21/www/kids-universe.ru/logs/ozonKaori - getNewOrders.log: Source file has changed between Analyze and Sync from '[file] size=8,247,081 accu-time=2024-02-14 17:48:09 attr= cktype=0' to 'size=8,247,589 time=2024-02-14 17:48:24', noted in source file state
+2024-02-14 17:49:39: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/ozonKaori - getNewOrders.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/ozonKaori - getNewOrders.log' (8,247,081)
+2024-02-14 17:49:45: Copy Over 'ftp://37.140.192.190:21/www/kids-universe.ru/logs/ozonUllo - getNewOrders.log' -> 'C:/Users/acidl/YandexDisk/Личное/Eclipse/Integration helper/logs/ozonUllo - getNewOrders.log' (25,034,505)
+2024-02-14 17:49:45: /priceList - Classes - parsePrices.log: Analyze error: Two items on Right side are named the same after normalization and lower-casing: '/priceList - Classes - parsePrices.log' vs '/priceList - Classes - ParsePrices.log'; R:TimeSize<>
+2024-02-14 17:49:47: == Sync Complete. Time: 00:00:01, Speed: 0.00/s, OK: 11, Errors: 1
+2024-02-14 17:49:48: 
