@@ -28,3 +28,4 @@ jobs:
           **/report/reports/**
           **/uploads/**
           **/finances/uploads/**
+          **/.settings*/**
