@@ -13,9 +13,9 @@ jobs:
       uses: actions/checkout@v2
     
     - name: FTP Deploy
-      uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      uses: sdras/deftp-deploy@v3
       with:
-        ftp-server: ${{ secrets.FTP_HOST }}
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
-        entryPoint: ./www/kids-universe.ru/
+        server: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        remoteDir: ./www/kids-universe.ru/
