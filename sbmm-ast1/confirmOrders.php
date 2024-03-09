@@ -10,10 +10,10 @@
 
 	$log = new Log('sbmm-ast1 - confirmOrders.log');
 	
-	$sbmmOrdersClass == new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
+	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
 	$orders = $sbmmOrdersClass->searchOrders(['NEW']);
 	
-	if (count($orders['shipments']) = 0)
+	if (count($orders['shipments']) == 0)
 	{
 		echo 'Confirmed: 0 orders';
 		return;

@@ -97,6 +97,8 @@
 	define('MS_PAYMENTTYPE_CASH', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/e0430541-d622-11e8-9109-f8fc00212299/f58e7f97-d622-11e8-9109-f8fc00212380');
 	define('MS_PAYMENTTYPE_CASH_ID', 'f58e7f97-d622-11e8-9109-f8fc00212380');
 	
+	define('MS_DELIVERY_TIME0', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/e7a5f365-d62d-11e8-9107-50480021c6c8/93c67dd6-f361-11e9-0a80-00a70014e000');
+
 	define('MS_GOODS_AGENT', 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/b05fbd35-dd08-11e8-9107-5048001507ff');
 	define('MS_GOODS_AGENT_ID', 'b05fbd35-dd08-11e8-9107-5048001507ff');
 	define('MS_BERU_AGENT', 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/a9b9199b-999f-11e9-912f-f3d4000680d8');
@@ -197,7 +199,7 @@
 	define('MS_API_STORE_ID', 'dd7ce917-4f86-11e6-7a69-8f550000094d');
 	define('MS_GROUP', 'https://api.moysklad.ru/api/remap/1.2/entity/group/dd4ce7fe-4f86-11e6-7a69-971100000043');
 	define('MS_GROUP_ID', 'dd4ce7fe-4f86-11e6-7a69-971100000043');
-	
+	// projects
 	define('MS_PROJECT_OZON', 'https://api.moysklad.ru/api/remap/1.2/entity/project/87950c19-4569-11eb-0a80-02c20026f2c0');
 	define('MS_PROJECT_OZON_ID', '87950c19-4569-11eb-0a80-02c20026f2c0');
 	define('MS_PROJECT_ALI', 'https://api.moysklad.ru/api/remap/1.2/entity/project/29c4043f-e916-11ea-0a80-09e0000818ad');
@@ -230,6 +232,8 @@
 	define('MS_PROJECT_SBMM_ULLO_ID', 'b005506d-dc93-11ed-0a80-0d1a00257d67');
 	define('MS_PROJECT_14DAYS_ALIANS', 'https://api.moysklad.ru/api/remap/1.2/entity/project/f6806943-e295-11ed-0a80-0c7e003397de');
 	define('MS_PROJECT_14DAYS_ALIANS_ID', 'f6806943-e295-11ed-0a80-0c7e003397de');
+	define('MS_PROJECT_SBMM_AST1', 'https://api.moysklad.ru/api/remap/1.2/entity/project/cf6b28f2-ddd1-11ee-0a80-14060024f47c');
+	define('MS_PROJECT_SBMM_AST1_ID', 'cf6b28f2-ddd1-11ee-0a80-14060024f47c');
 	
 	//Ozon
 	define('OZON_TESTMODE', false);
