@@ -38,8 +38,10 @@
 			$filter .= 'organization=' . MS_KAORI . ';';
 		if ($org == 'IPGyumyush')
 		    $filter .= 'organization=' . MS_IPGYUMYUSH . ';';
-	    if ($org == 'aruba')
+		if ($org == 'aruba')
 	        $filter .= 'project=' . MS_PROJECT_2HRS . ';';
+		if ($org == 'AST1')
+	        $filter .= 'project=' . MS_PROJECT_SBMM_AST1 . ';';
 			        
 		$filter .= 'deliveryPlannedMoment%3E=' . $shippingDate . '%2000:00:00;';
 		$filter .= 'deliveryPlannedMoment%3C=' . $shippingDate . '%2023:59:59;';

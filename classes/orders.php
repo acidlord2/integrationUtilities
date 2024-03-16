@@ -121,6 +121,8 @@ class Orders
 				$orgFilter = 'organization=' . MS_4CLEANING . ';';
 			if ($org == 'kaori')
 				$orgFilter = 'organization=' . MS_KAORI . ';';
+			if ($org == 'ast1')
+				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST1 . ';';
 		}
 		else
 			$orgFilter = '';
