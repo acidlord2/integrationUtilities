@@ -54,7 +54,8 @@
 			$price = array_filter(array_map(function($item) {
 				return $item['priceType']['name'] == 'Цена СММ для Юлло' ? $item['value']/100 : null;
 			}, $product['salePrices']), function($item) {
-				return $item !== null;})[0];
+				return $item !== null;});
+			$log->write(__LINE__ . ' price - ' . json_encode ($price, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$sbmmData['data']['prices'][] = array ('offerId' => $product['code'], 'price' => (int)$price, 'isDeleted' => false);
 		}
 		// service request post
