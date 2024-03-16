@@ -22,7 +22,7 @@ class Order
 		$this->apiSMMClass = new \Classes\Sbermegamarket\API($shop);
 	}
 
-	public function searchOrders($statuses)
+	public function searchOrders($statuses, $dateFrom = null, $dateTo = null)
 	{
 	    $this->log->write(__LINE__ . ' searchOrders.statuses - ' . json_encode ($statuses, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    $url = SBMM_API_BASE_URL . SBMM_API_MARKET . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_SEARCH;
@@ -33,6 +33,10 @@ class Order
 				'count' => 1000
 	        )
 	    );
+		if($dateFrom !== null)
+			$data['data']['dateFrom'] == $dateFrom;
+		if($dateTo !== null)
+			$data['data']['dateTo'] == $dateTo;
 	    
 	    $orders = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' searchOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
