@@ -34,9 +34,9 @@ class Order
 	        )
 	    );
 		if($dateFrom !== null)
-			$data['data']['dateFrom'] == $dateFrom;
+			$data['data']['dateFrom'] = $dateFrom;
 		if($dateTo !== null)
-			$data['data']['dateTo'] == $dateTo;
+			$data['data']['dateTo'] = $dateTo;
 	    
 	    $orders = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' searchOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
