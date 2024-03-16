@@ -35,6 +35,7 @@
 	{
 		$log->write(__LINE__ . ' chunk - ' . json_encode ($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$productTmp = $productsMSClass->getAssortment($chunk);
+		$log->write (__LINE__ . ' productTmp - ' . json_encode ($productTmp, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		array_merge($product, $productTmp);
 	}
 
