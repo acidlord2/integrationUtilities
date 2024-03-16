@@ -13,8 +13,8 @@
 	$log = new Log('sbmm-ast1 - importCanceled.log');
 	
 	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
-	$dateFrom = date("Y-m-d", strtotime ("now")) . 'T00:00:00+03:00';
-	$dateTo = date("Y-m-d", strtotime ("-30 days")) . 'T23:59:59+03:00';
+	$dateFrom = date("Y-m-d", strtotime ("-30 days")) . 'T00:00:00+03:00';
+	$dateTo = date("Y-m-d", strtotime ("now")) . 'T23:59:59+03:00';
 	
 	$orders = $sbmmOrdersClass->searchOrders(['MERCHANT_CANCELED', 'CUSTOMER_CANCELED'], $dateFrom, $dateTo);
 
