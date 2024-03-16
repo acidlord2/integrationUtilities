@@ -44,9 +44,14 @@
 	foreach(array_chunk($products, 250, true) as $productsData)
 	{
 		// post body for search engine
-		$sbmmData = array(
+		$sbmmPricesData = array(
 			'data' => array (
 				'prices' => array()
+			)
+		);
+		$sbmmStockData = array(
+			'data' => array (
+				'stocks' => array()
 			)
 		);
 		foreach($productsData as $product)
@@ -56,10 +61,12 @@
 			}, $product['salePrices']), function($item) {
 				return $item !== null;}))[0];
 			//$log->write(__LINE__ . ' price - ' . json_encode ($price, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			$sbmmData['data']['prices'][] = array ('offerId' => $product['code'], 'price' => (int)$price, 'isDeleted' => false);
+			$sbmmPricesData['data']['prices'][] = array ('offerId' => $product['code'], 'price' => (int)$price, 'isDeleted' => false);
+			$sbmmStockData['data']['stocks'][] = array ('offerId' => $product['code'], 'quantity' => (int)$product['quantity'] < 0 ? 0 : (int)$product['quantity']);
 		}
 		// service request post
-		$sbmmOrdersClass->updatePrices($sbmmData);
+		$sbmmOrdersClass->updatePrices($sbmmPricesData);
+		$sbmmOrdersClass->updateStock($sbmmStockData);
 	}
 	echo 'Updated ' . count($products) . ' prices';
 ?>
