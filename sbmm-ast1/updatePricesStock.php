@@ -68,5 +68,5 @@
 		$sbmmOrdersClass->updatePrices($sbmmPricesData);
 		$sbmmOrdersClass->updateStock($sbmmStockData);
 	}
-	echo 'Updated ' . count($products) . ' prices';
+	echo 'Updated ' . count($products) . ' prices and stock';
 ?>
