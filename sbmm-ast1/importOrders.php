@@ -13,7 +13,7 @@
 	$log = new Log('sbmm-ast1 - importOrders.log');
 	
 	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
-	$orders = $sbmmOrdersClass->searchOrders(['CONFIRMED','PACKED']);
+	$orders = $sbmmOrdersClass->searchOrders(['CONFIRMED']);
 	
 	if (count($orders['shipments']) == 0)
 	{
