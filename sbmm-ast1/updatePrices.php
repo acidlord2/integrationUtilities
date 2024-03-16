@@ -39,7 +39,7 @@
 		array_merge($products, $productTmp);
 	}
 
-	$sbmmOrdersClass == new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
+	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
 
 	foreach(array_chunk($products, 250, true) as $productsData)
 	{
