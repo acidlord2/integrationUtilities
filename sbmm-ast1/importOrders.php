@@ -15,7 +15,7 @@
 	$sbmmOrdersClass == new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
 	$orders = $sbmmOrdersClass->searchOrders(['CONFIRMED','PACKED']);
 	
-	if (count($orders['shipments']) == 0)
+	if (count($orders['data']['shipments']) == 0)
 	{
 		echo 'Imported: 0 orders';
 		return;
@@ -26,7 +26,7 @@
 
 	$shipments = $sbmmOrdersClass->getOrders($orders['shipments']);
 
-	foreach($shipments['shipments'] as $shipment)
+	foreach($shipments['data']['shipments'] as $shipment)
 	{
 		$positions = array();
 		$total_goods = 0;
