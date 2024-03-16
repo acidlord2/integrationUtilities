@@ -60,7 +60,10 @@ class Order
 	    
 	    $orders = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' getOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    return $orders;
+	    if (isset($orders['success']) && $orders['success'] == 1)
+			return $orders['data'];
+		else
+			return array('shipments' => array());
 	}
 	
 	public function packing($data)

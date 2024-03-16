@@ -13,14 +13,14 @@
 	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
 	$orders = $sbmmOrdersClass->searchOrders(['NEW']);
 	
-	if (count($orders['data']['shipments']) == 0)
+	if (count($orders['shipments']) == 0)
 	{
 		echo 'Confirmed: 0 orders';
 		return;
 	}
 	
 	$shipments = $sbmmOrdersClass->getOrders($orders['shipments']);
-	foreach($shipments['data']['shipments'] as $shipment)
+	foreach($shipments['shipments'] as $shipment)
 	{
 		if (isset($shipment['items']))
 		{
