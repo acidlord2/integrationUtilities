@@ -36,9 +36,9 @@
 		$log->write(__LINE__ . ' chunk - ' . json_encode ($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$productTmp = $productsMSClass->getAssortment($chunk);
 		//$log->write (__LINE__ . ' productTmp - ' . json_encode ($productTmp, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		array_merge($products, $productTmp);
+		$products = array_merge($products, $productTmp);
 	}
-
+	
 	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST1);
 
 	foreach(array_chunk($products, 250, true) as $productsData)
