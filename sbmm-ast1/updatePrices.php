@@ -33,6 +33,7 @@
 	$products = array();
 	foreach(array_chunk($codes, 100) as $chunk)
 	{
+		$log->write(__LINE__ . ' chunk - ' . json_encode ($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$productTmp = $productsMSClass->getAssortment($chunk);
 		array_merge($product, $productTmp);
 	}
