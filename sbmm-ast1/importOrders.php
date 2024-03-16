@@ -20,7 +20,7 @@
 		echo 'Imported: 0 orders';
 		return;
 	}
-
+	$merchantId = SBMM_SHOP_AST1;
 	$msOrdersClass = new OrdersMS();
 	$msProductsClass = new ProductsMS();
 
@@ -232,5 +232,5 @@
 		}
 	};
 	
-	echo 'Confirmed: ' . count($shipments['shipment']) . ' orders';
+	echo 'Confirmed: ' . count($shipments['shipments']) . ' orders';
 ?>
