@@ -18,13 +18,20 @@
 	
 	$orders = $sbmmOrdersClass->searchOrders(['MERCHANT_CANCELED', 'CUSTOMER_CANCELED'], $dateFrom, $dateTo);
 
+	if (count($orders['shipments']) == 0)
+	{
+		echo 'Imported: 0 orders';
+		return;
+	}
+	$shipments = $sbmmOrdersClass->getOrders($orders['shipments']);
+
 	$conn = Db::get_connection();
 	$cancelled = 0;
 	$cancelledMarked = 0;
 	$alreadyCancelled = 0;
 	$noOrderFound = 0;
 	$ordersMSClass = new OrdersMS(); 
-	foreach($orders['shipments'] as $shipment)
+	foreach($shipments['shipments'] as $shipment)
 	{
 		$sql = 'select orderId from cancelled_orders where orderId == "' . $shipment['shipmentId'] . '"';
 		$result = Db::exec_query_array($sql);
