@@ -33,7 +33,7 @@
 	$ordersMSClass = new OrdersMS(); 
 	foreach($shipments['shipments'] as $shipment)
 	{
-		$sql = 'select orderId from cancelled_orders where orderId == "' . $shipment['shipmentId'] . '"';
+		$sql = 'select orderId from cancelled_orders where orderId = "' . $shipment['shipmentId'] . '"';
 		$result = Db::exec_query_array($sql);
 		if ($result)
 		{
