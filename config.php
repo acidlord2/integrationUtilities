@@ -301,7 +301,9 @@
 	define('SBMM_SHOP', '4824');
 	define('SBMM_SHOP_AST1', '129040');
 	define('SBMM_SHOP_DSM', SBMM_TESTMODE ? '7045' : '18811');
-	define('SBMM_API_BASE_URL', SBMM_TESTMODE ? 'https://partner.goodsteam.tech/api/market/' : 'https://partner.sbermegamarket.ru/api/market/');
+	define('SBMM_API_BASE_URL', SBMM_TESTMODE ? 'https://partner.goodsteam.tech/api/' : 'https://partner.sbermegamarket.ru/api/');
+	define('SBMM_API_MARKET',  'market/');
+	define('SBMM_API_MERCHANTINTEGRATION',  'merchantIntegration/');
 	define('SBMM_API_VERSION_V1', 'v1/');
 	define('SBMM_API_ORDERS_SEARCH', 'orderService/order/search');
 	define('SBMM_API_ORDERS_GET', 'orderService/order/get');
@@ -310,6 +312,8 @@
 	define('SBMM_API_ORDERS_REJECT', 'orderService/order/reject');
 	define('SBMM_API_ORDERS_CANCELRESULT', 'orderService/order/cancelResult');
 	define('SBMM_API_ORDERS_CLOSE', 'orderService/order/close');
+	define('SBMM_API_PRICE_SAVE', 'offerService/manualPrice/save');
+	define('SBMM_API_STOCK_UPDATE', 'offerService/stock/update');
 	
 	// DB
 	define('DB_HOSTNAME', 'localhost');
