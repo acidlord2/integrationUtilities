@@ -24,7 +24,6 @@ class Order
 
 	public function searchOrders($statuses, $dateFrom = null, $dateTo = null)
 	{
-	    $this->log->write(__LINE__ . ' searchOrders.statuses - ' . json_encode ($statuses, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    $url = SBMM_API_BASE_URL . SBMM_API_MARKET . SBMM_API_VERSION_V1 . SBMM_API_ORDERS_SEARCH;
 
 	    $data = array (
@@ -38,7 +37,8 @@ class Order
 		if($dateTo !== null)
 			$data['data']['dateTo'] = $dateTo;
 	    
-	    $orders = $this->apiSMMClass->postData($url, $data);
+		$this->log->write(__LINE__ . ' searchOrders.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$orders = $this->apiSMMClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' searchOrders.orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    if (isset($orders['success']) && $orders['success'] == 1)
 			return $orders['data'];
