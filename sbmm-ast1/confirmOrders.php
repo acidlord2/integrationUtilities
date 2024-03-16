@@ -47,6 +47,6 @@
 		);
 		$sbmmOrdersClass->confirm($confirmData);
 	}
-	echo 'Confirmed: ' . count($shipments['shipment']) . ' orders';
+	echo 'Confirmed: ' . count($shipments['shipments']) . ' orders';
 
 ?>
