@@ -234,6 +234,8 @@
 	define('MS_PROJECT_14DAYS_ALIANS_ID', 'f6806943-e295-11ed-0a80-0c7e003397de');
 	define('MS_PROJECT_SBMM_AST1', 'https://api.moysklad.ru/api/remap/1.2/entity/project/cf6b28f2-ddd1-11ee-0a80-14060024f47c');
 	define('MS_PROJECT_SBMM_AST1_ID', 'cf6b28f2-ddd1-11ee-0a80-14060024f47c');
+	define('MS_PROJECT_SBMM_AST2', 'https://api.moysklad.ru/api/remap/1.2/entity/project/c146207b-e66e-11ee-0a80-0be70003c3ab');
+	define('MS_PROJECT_SBMM_AST2_ID', 'c146207b-e66e-11ee-0a80-0be70003c3ab');
 	
 	//Ozon
 	define('OZON_TESTMODE', false);
@@ -300,6 +302,7 @@
 	define('SBMM_TESTMODE', false);
 	define('SBMM_SHOP', '4824');
 	define('SBMM_SHOP_AST1', '129040');
+	define('SBMM_SHOP_AST2', '129610');
 	define('SBMM_SHOP_DSM', SBMM_TESTMODE ? '7045' : '18811');
 	define('SBMM_API_BASE_URL', SBMM_TESTMODE ? 'https://partner.goodsteam.tech/api/' : 'https://partner.sbermegamarket.ru/api/');
 	define('SBMM_API_MARKET',  'market/');

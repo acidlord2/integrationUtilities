@@ -30,6 +30,7 @@
 						<option value="Kaori" <?php echo $org=='Kaori' ? 'selected' : ''; ?>>Каори</option>
 						<option value="Ullo" <?php echo $org=='Ullo' ? 'selected' : ''; ?>>Юлло</option>
 						<option value="AST1" <?php echo $org=='AST1' ? 'selected' : ''; ?>>Акция 1 (Аруба)</option>
+						<option value="AST1" <?php echo $org=='AST1' ? 'selected' : ''; ?>>Акция 2 (Лотус)</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Ali') { ?>

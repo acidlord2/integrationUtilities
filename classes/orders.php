@@ -123,6 +123,8 @@ class Orders
 				$orgFilter = 'organization=' . MS_KAORI . ';';
 			if ($org == 'ast1')
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST1 . ';';
+			if ($org == 'ast2')
+				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST2 . ';';
 		}
 		else
 			$orgFilter = '';

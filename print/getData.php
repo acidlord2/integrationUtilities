@@ -42,6 +42,8 @@
 	        $filter .= 'project=' . MS_PROJECT_2HRS . ';';
 		if ($org == 'AST1')
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST1 . ';';
+		if ($org == 'AST2')
+	        $filter .= 'project=' . MS_PROJECT_SBMM_AST2 . ';';
 			        
 		$filter .= 'deliveryPlannedMoment%3E=' . $shippingDate . '%2000:00:00;';
 		$filter .= 'deliveryPlannedMoment%3C=' . $shippingDate . '%2023:59:59;';
