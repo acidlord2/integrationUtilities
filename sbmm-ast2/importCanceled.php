@@ -10,7 +10,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
 
-	$log = new Log('sbmm-ast1 - importCanceled.log');
+	$log = new Log('sbmm-ast2 - importCanceled.log');
 	
 	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST2);
 	$dateFrom = date("Y-m-d", strtotime ("-30 days")) . 'T00:00:00+03:00';

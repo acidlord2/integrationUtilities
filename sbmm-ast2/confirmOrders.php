@@ -8,7 +8,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sbermegamarket/Order.php');
 
-	$log = new Log('sbmm-ast1 - confirmOrders.log');
+	$log = new Log('sbmm-ast2 - confirmOrders.log');
 	
 	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST2);
 	$orders = $sbmmOrdersClass->searchOrders(['NEW']);

@@ -9,7 +9,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sbermegamarket/Order.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 
-	$log = new Log('sbmm-ast1 - updatePricesStock.log');
+	$log = new Log('sbmm-ast2 - updatePricesStock.log');
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, 'https://4cleaning.ru/index.php?route=extension/feed/sbmmast2');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

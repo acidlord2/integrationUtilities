@@ -126,6 +126,8 @@
 	define('MS_PROFIT', 'https://api.moysklad.ru/api/remap/1.2/entity/organization/dd78611c-4f86-11e6-7a69-8f550000094b');
 	define('MS_ALIANS', 'https://api.moysklad.ru/api/remap/1.2/entity/organization/e7cc6138-2a6a-11eb-0a80-0515000dac01');
 	define('MS_ALIANS_ID', 'e7cc6138-2a6a-11eb-0a80-0515000dac01');
+	define('MS_KOSMOS', 'https://api.moysklad.ru/api/remap/1.2/entity/organization/3701ecf6-e768-11ee-0a80-16b3000afd46');
+	define('MS_KOSMOS_ID', '3701ecf6-e768-11ee-0a80-16b3000afd46');
 	
 	define('MS_REP_4CLEANING', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/customtemplate/6947deff-5737-4851-a2c1-6c0913fdf871');
 	define('MS_REP_10KIDS', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/customtemplate/920179aa-951b-4000-ba50-dfe9b1a89dd6');

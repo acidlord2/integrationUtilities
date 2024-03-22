@@ -10,7 +10,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 
-	$log = new Log('sbmm-ast1 - importOrders.log');
+	$log = new Log('sbmm-ast2 - importOrders.log');
 	
 	$sbmmOrdersClass = new \Classes\Sbermegamarket\Order(SBMM_SHOP_AST2);
 	$orders = $sbmmOrdersClass->searchOrders(['CONFIRMED']);
@@ -81,7 +81,7 @@
 				'name' => $shipment['shipmentId'],
 				'organization' => array (
 					'meta' => array (
-						'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ORGANIZATION . '/' . MS_ALIANS_ID,
+						'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ORGANIZATION . '/' . MS_KOSMOS_ID,
 						'type' => 'organization',
 						'mediaType' => 'application/json'
 					)

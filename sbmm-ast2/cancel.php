@@ -11,7 +11,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	
 	$data = json_decode(file_get_contents('php://input'), true);
-	$log = new Log('sbermegamarketDSM - cancel.log'); //just passed the file name as file_name.log
+	$log = new Log('sbmm-ast2 - cancel.log'); //just passed the file name as file_name.log
 	$log->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (!isset ($data['data']['shipments']))
