@@ -74,11 +74,18 @@
 				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/goods/updateStocks', '_blank')">
 					Обновить остатки Юлло
 				</button>
+				<br>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast1/importOrders', '_blank')">
 					Ипортировать заказы Альянс
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast1/updatePricesStock', '_blank')">
 					Обновить цены и остатки Альянс
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast2/importOrders', '_blank')">
+					Ипортировать заказы Космос
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast2/updatePricesStock', '_blank')">
+					Обновить цены и остатки Космос
 				</button>
 				<div id="sberInfo"></div>
 
