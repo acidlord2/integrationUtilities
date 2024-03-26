@@ -125,6 +125,8 @@ class Orders
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST1 . ';';
 			if ($org == 'ast2')
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST2 . ';';
+			if ($org == 'ast3')
+				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST3 . ';';
 		}
 		else
 			$orgFilter = '';

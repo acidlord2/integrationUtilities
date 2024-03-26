@@ -87,6 +87,12 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast2/updatePricesStock', '_blank')">
 					Обновить цены и остатки Космос
 				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast3/importOrders', '_blank')">
+					Ипортировать заказы Пегас
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast3/updatePricesStock', '_blank')">
+					Обновить цены и остатки Пегас
+				</button>
 				<div id="sberInfo"></div>
 
 			</div>

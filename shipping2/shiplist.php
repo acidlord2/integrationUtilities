@@ -77,6 +77,7 @@
 						<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
 						<option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
 						<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
+						<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Пегас)</option>
 					</select></span>
 					<!--<button type="button" id = "filter_button" onclick="filterOrders()">Фильтр</button>-->
 					<button type="button" id = "refresh_button" onclick="refreshOrders()">Обновить данные из МС</button>
