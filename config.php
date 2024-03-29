@@ -130,6 +130,8 @@
 	define('MS_KOSMOS_ID', '3701ecf6-e768-11ee-0a80-16b3000afd46');
 	define('MS_IP_PURTOV', 'https://api.moysklad.ru/api/remap/1.2/entity/organization/befd9ebb-eba0-11ee-0a80-1751000160a9');
 	define('MS_IP_PURTOV_ID', 'befd9ebb-eba0-11ee-0a80-1751000160a9');
+	define('MS_VES', 'https://api.moysklad.ru/api/remap/1.2/entity/organization/2d42ae0f-ed4e-11ee-0a80-01e7000235af');
+	define('MS_VES_ID', '2d42ae0f-ed4e-11ee-0a80-01e7000235af');
 	
 	define('MS_REP_4CLEANING', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/customtemplate/6947deff-5737-4851-a2c1-6c0913fdf871');
 	define('MS_REP_10KIDS', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/customtemplate/920179aa-951b-4000-ba50-dfe9b1a89dd6');
@@ -309,7 +311,7 @@
 	define('SBMM_SHOP', '4824');
 	define('SBMM_SHOP_AST1', '129040');
 	define('SBMM_SHOP_AST2', '129610');
-	define('SBMM_SHOP_AST3', '134272');
+	define('SBMM_SHOP_AST3', '136309');
 	define('SBMM_SHOP_DSM', SBMM_TESTMODE ? '7045' : '18811');
 	define('SBMM_API_BASE_URL', SBMM_TESTMODE ? 'https://partner.goodsteam.tech/api/' : 'https://partner.sbermegamarket.ru/api/');
 	define('SBMM_API_MARKET',  'market/');

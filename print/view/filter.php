@@ -31,7 +31,7 @@
 						<option value="Ullo" <?php echo $org=='Ullo' ? 'selected' : ''; ?>>Юлло</option>
 						<option value="AST1" <?php echo $org=='AST1' ? 'selected' : ''; ?>>Акция 1 (Аруба)</option>
 						<option value="AST2" <?php echo $org=='AST2' ? 'selected' : ''; ?>>Акция 2 (Лотус)</option>
-						<option value="AST3" <?php echo $org=='AST3' ? 'selected' : ''; ?>>Акция 2 (Пегас)</option>
+						<option value="AST3" <?php echo $org=='AST3' ? 'selected' : ''; ?>>Акция 2 (Комета)</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Ali') { ?>

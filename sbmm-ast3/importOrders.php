@@ -81,7 +81,7 @@
 				'name' => $shipment['shipmentId'],
 				'organization' => array (
 					'meta' => array (
-						'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ORGANIZATION . '/' . MS_IP_PURTOV_ID,
+						'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ORGANIZATION . '/' . MS_VES_ID,
 						'type' => 'organization',
 						'mediaType' => 'application/json'
 					)
