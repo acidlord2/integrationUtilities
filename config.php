@@ -230,6 +230,8 @@
 	define('MS_PROJECT_YANDEX_DBS_ID', '4cdd140b-c4a0-11eb-0a80-03a300010ea3');
 	define('MS_PROJECT_YANDEX_ULLO', 'https://api.moysklad.ru/api/remap/1.2/entity/project/7dff5ef0-6676-11ec-0a80-0da10071ac31');
 	define('MS_PROJECT_YANDEX_ULLO_ID', '7dff5ef0-6676-11ec-0a80-0da10071ac31');
+	define('MS_PROJECT_YANDEX_SUMMIT', 'https://api.moysklad.ru/api/remap/1.2/entity/project/5a4a2924-fb2f-11ee-0a80-02a30045428e');
+	define('MS_PROJECT_YANDEX_SUMMIT_ID', '5a4a2924-fb2f-11ee-0a80-02a30045428e');
 	define('MS_PROJECT_OZON_DBS', 'https://api.moysklad.ru/api/remap/1.2/entity/project/f8f41543-0d6f-11ec-0a80-06930018cdb4'); // OZON KAORI DBS
 	define('MS_PROJECT_OZON_DBS_ID', 'f8f41543-0d6f-11ec-0a80-06930018cdb4'); // OZON KAORI DBS
 	define('MS_PROJECT_OZON_ULLO_DBS_ID', 'ab7e3e23-5500-11ec-0a80-08d1001f21d2'); // OZON ЮЛЛО DBS
@@ -275,6 +277,7 @@
 	define('BERU_API_VERSION', 'v2/');
 	define('BERU_API_CAMPAIGNS', 'campaigns/');
 	define('BERU_API_ULLOZZA_CAMPAIGN', '21632670');
+	define('BERU_API_SUMMIT_CAMPAIGN', '93179396');
 	define('BERU_API_ABCASIA_CAMPAIGN', '21587057');
 	define('BERU_API_ARUBA_CAMPAIGN', '21994237');
 	define('BERU_API_10KIDS_CAMPAIGN', '22064982');
