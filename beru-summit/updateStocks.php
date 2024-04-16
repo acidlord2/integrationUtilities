@@ -22,7 +22,7 @@ foreach ($skus as $key => $sku)
         {
             $data['skus'][] = array(
                 'sku' => $assortment['code'],
-                'warehouseId' => 47798,
+                'warehouseId' => BERU_API_SUMMIT_WAREHOUSE,
                 'items' => array(
                     0 => array(
                         'type' => 'FIT',

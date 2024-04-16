@@ -283,6 +283,7 @@
 	define('BERU_API_10KIDS_CAMPAIGN', '22064982');
 	define('BERU_API_MARKET4CLEANING_CAMPAIGN', '22113023');
 	define('BERU_API_ALIANS_CAMPAIGN', '59391139');
+	define('BERU_API_SUMMIT_WAREHOUSE', 1383506);
 	define('BERU_API_ORDERS', 'orders');
 	define('BERU_API_OFFER_MAPPING_ENTRIES', 'offer-mapping-entries');
 	define('BERU_API_BOXES', 'boxes');
