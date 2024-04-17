@@ -146,8 +146,8 @@ $order_data['project'] = array(
     )
 );
 
-$order_data['vatEnabled'] = false;
-//$order_data['vatIncluded'] = true;
+$order_data['vatEnabled'] = true;
+$order_data['vatIncluded'] = true;
 $order_data['attributes'] = array();
 
 // способ доставки
@@ -201,6 +201,16 @@ $productClass = new ProductsMS();
 
 foreach ($data['order']['items'] as $item)
 {
+    if ($item['vat'] == 'VAT_10' || $item['vat'] == 'VAT_10_110') {
+        $vat = 10;
+    }
+    else if ($item['vat'] == 'VAT_20' || $item['vat'] == 'VAT_20_120') {
+        $vat = 20;
+    }
+    else {
+        $vat = 0;
+    }
+    
     $product = $productClass->findProductsByCode($item['offerId']);
     if (isset($product[0]))
     {
@@ -214,6 +224,7 @@ foreach ($data['order']['items'] as $item)
             ),
             'quantity' => $item['count'],
             'price' => (int)(($item['price'] + $item['subsidy']) * 100),
+            'vat' => $vat,
             'discount' => (int)0,
             'reserve' => $item['count']
         );
