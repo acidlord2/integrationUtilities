@@ -10,7 +10,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 			
 	// check auth-token
-	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('auth-token') : true)
+	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_SUMMIT_CAMPAIGN) : true)
 	{
 		header('HTTP/1.0 403 Forbidden');
 		echo 'You are forbidden!';
@@ -72,7 +72,7 @@
 				'count' => $beruPriceKey !== false ? ((int)$product['quantity'] < 0 ? 0 : (int)$product['quantity']) : 0,
 				//'count' => 0,
 				//'price' => $beruPriceKey !== false ? (float)$product['salePrices'][$beruPriceKey]['value'] / 100 : 0,
-				'vat' => 'NO_VAT',
+				//'vat' => 'NO_VAT',
 				'delivery' => true
 			);
 		}
@@ -82,7 +82,7 @@
 		        'offerId' => (string)$item['offerId'],
 		        'feedId' => $item['feedId'],
 		        'count' => 0,
-		        'vat' => 'NO_VAT',
+		        //'vat' => 'NO_VAT',
 		        'delivery' => true
 		    );
 		    // 			if ($ok)
