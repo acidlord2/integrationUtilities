@@ -8,6 +8,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 			
 	// check auth-token
 	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_SUMMIT_CAMPAIGN) : true)
