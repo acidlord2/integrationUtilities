@@ -58,7 +58,7 @@
 
 			$price = $priceKaori == 0 ? $price : $priceKaori;
 			
-			array_push ($prices['prices'], array ('offer_id' => $productMS['code'], 'price' => (string)$price));
+			array_push ($prices['prices'], array ('offer_id' => $productMS['code'], 'price' => (string)$price, 'old_price' => (string)$price * 1.2));
 			array_push ($stocks['stocks'], array ('offer_id' => $productMS['code'], 'stock' => ($price == 0 ? 0 : $quantity)));
 			
 			if (count ($stocks['stocks']) == 100 || count ($productsMS) == ($key + 1))
