@@ -207,7 +207,7 @@ class Products
 			if ($price == 0)
 				$quantity = 0;
 			
-			array_push ($prices['prices'], array ('offer_id' => $product_ms['code'], 'price' => (string)$price, 'old_price' => '0'));
+			array_push ($prices['prices'], array ('offer_id' => $product_ms['code'], 'price' => (string)$price, 'old_price' => (string)(int)($price * 1.2)));
 			array_push ($stocks['stocks'], array ('offer_id' => $product_ms['code'], 'stock' => $quantity));
 			//array_push ($stocks['stocks'], array ('offer_id' => $product_ms['code'], 'stock' => 0)); // обнуляем
 			if (count ($stocks['stocks']) == 100 || count ($products_ms) == $i)
