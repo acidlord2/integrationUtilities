@@ -46,6 +46,8 @@
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST2 . ';';
 		if ($org == 'AST3')
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST3 . ';';
+		if ($org == 'alians')
+	        $filter .= 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 			        
 		$filter .= 'deliveryPlannedMoment%3E=' . $shippingDate . '%2000:00:00;';
 		$filter .= 'deliveryPlannedMoment%3C=' . $shippingDate . '%2023:59:59;';

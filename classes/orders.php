@@ -127,6 +127,8 @@ class Orders
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST2 . ';';
 			if ($org == 'ast3')
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST3 . ';';
+			if ($org == 'alians')
+				$orgFilter = 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 		}
 		else
 			$orgFilter = '';

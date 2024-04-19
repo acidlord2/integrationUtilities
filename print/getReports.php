@@ -27,6 +27,9 @@
 	elseif ($agent == 'Beru' && $org == 'aruba') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Экспресс (ТАКСИ)');
 	}
+	elseif ($agent == 'Beru' && $org == 'alians') {
+	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек BERU ALLIANS');
+	}
 	elseif ($agent == 'Goods' && $org == 'Kaori') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек SBERMEGAMARKET');
 	}
@@ -40,7 +43,7 @@
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек LOTUSSBERMM');
 	}
 	elseif ($agent == 'Goods' && $org == 'AST3') {
-	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек KOMETASBERMM');
+	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек COMETASBERMM');
 	}
 	elseif ($agent == 'Ali') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек ALI-AVITO-WB');

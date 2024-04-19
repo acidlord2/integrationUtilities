@@ -71,9 +71,18 @@
 						<option value="10" <?php echo $curier=='10' ? ' selected' : ''; ?>>Курьер № 10</option>
 						<option value="2" <?php echo $curier=='2' ? ' selected' : ''; ?>>Курьер № 2</option>
 					</select></span>
-					<span id="s2" style="display:<?php echo $agent=='Beru' || $agent=='Ozon' || $agent=='Goods' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
+					<span id="s2" style="display:<?php echo $agent=='Beru' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
 						<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
 						<option value="4cleaning" <?php echo $org=='4cleaning' ? ' selected' : ''; ?>>4cleaning</option>
+						<option value="aruba" <?php echo $org=='aruba' ? ' selected' : ''; ?>>Доставка 2 часа</option>
+						<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
+					</select></span>
+					<span id="s2" style="display:<?php echo $agent=='Ozon' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
+						<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
+						<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
+					</select></span>
+					<span id="s2" style="display:<?php echo $agent=='Goods' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
+						<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
 						<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
 						<option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
 						<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
