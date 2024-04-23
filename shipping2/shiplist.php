@@ -63,31 +63,45 @@
 						<option value="Ozon" <?php echo $agent=='Ozon' ? ' selected' : ''; ?>>Ozon</option>
 						<option value="Internal" <?php echo $agent=='Internal' ? ' selected' : ''; ?>>Заказы сайта</option>
 					</select>
-					<span id="s" style="display:<?php echo $agent=='Internal' ? 'inline' : 'none'; ?>">Курьер: <select id="curier" value="<?php echo $curier; ?>">
-						<option value="1" <?php echo $curier=='1' ? ' selected' : ''; ?>>(П) Курьер № 1</option>
-						<option value="5" <?php echo $curier=='5' ? ' selected' : ''; ?>>Курьер № 5</option>
-						<option value="4" <?php echo $curier=='4' ? ' selected' : ''; ?>>Курьер № 4</option>
-						<option value="3" <?php echo $curier=='3' ? ' selected' : ''; ?>>Курьер № 3</option>
-						<option value="10" <?php echo $curier=='10' ? ' selected' : ''; ?>>Курьер № 10</option>
-						<option value="2" <?php echo $curier=='2' ? ' selected' : ''; ?>>Курьер № 2</option>
-					</select></span>
-					<span id="s2" style="display:<?php echo $agent=='Beru' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
-						<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
-						<option value="4cleaning" <?php echo $org=='4cleaning' ? ' selected' : ''; ?>>4cleaning</option>
-						<option value="aruba" <?php echo $org=='aruba' ? ' selected' : ''; ?>>Доставка 2 часа</option>
-						<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
-					</select></span>
-					<span id="s2" style="display:<?php echo $agent=='Ozon' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
-						<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
-						<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
-					</select></span>
-					<span id="s2" style="display:<?php echo $agent=='Goods' ? 'inline' : 'none'; ?>">Организация: <select id="org" value="<?php echo $org; ?>">
-						<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
-						<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
-						<option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
-						<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
-						<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Комета)</option>
-					</select></span>
+					<span id="s" style="display:<?php echo $agent=='Internal' ? 'inline' : 'none'; ?>">Курьер: 
+						<select id="curier" value="<?php echo $curier; ?>">
+							<option value="1" <?php echo $curier=='1' ? ' selected' : ''; ?>>(П) Курьер № 1</option>
+							<option value="5" <?php echo $curier=='5' ? ' selected' : ''; ?>>Курьер № 5</option>
+							<option value="4" <?php echo $curier=='4' ? ' selected' : ''; ?>>Курьер № 4</option>
+							<option value="3" <?php echo $curier=='3' ? ' selected' : ''; ?>>Курьер № 3</option>
+							<option value="10" <?php echo $curier=='10' ? ' selected' : ''; ?>>Курьер № 10</option>
+							<option value="2" <?php echo $curier=='2' ? ' selected' : ''; ?>>Курьер № 2</option>
+						</select>
+					</span>
+					<?php>if $agent == 'Beru' {<?>
+						<span id="s2">Организация: 
+							<select id="org" value="<?php echo $org; ?>">
+								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
+								<option value="4cleaning" <?php echo $org=='4cleaning' ? ' selected' : ''; ?>>4cleaning</option>
+								<option value="aruba" <?php echo $org=='aruba' ? ' selected' : ''; ?>>Доставка 2 часа</option>
+								<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
+							</select>
+						</span>
+					<?php>}<?>
+					<?php>if $agent == 'Ozon' {<?>
+						<span id="s2">Организация: 
+							<select id="org" value="<?php echo $org; ?>">
+								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
+								<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
+							</select>
+						</span>
+					<?php>}<?>
+					<?php>if $agent == 'Goods' {<?>
+						<span id="s2">Организация: 
+							<select id="org" value="<?php echo $org; ?>">
+								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
+								<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
+								<option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
+								<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
+								<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Комета)</option>
+							</select>
+						</span>
+					<?php>}<?>
 					<!--<button type="button" id = "filter_button" onclick="filterOrders()">Фильтр</button>-->
 					<button type="button" id = "refresh_button" onclick="refreshOrders()">Обновить данные из МС</button>
 					<?php if($agent == 'Goods') { ?>
