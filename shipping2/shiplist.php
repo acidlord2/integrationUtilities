@@ -73,7 +73,7 @@
 							<option value="2" <?php echo $curier=='2' ? ' selected' : ''; ?>>Курьер № 2</option>
 						</select>
 					</span>
-					<?php>if $agent == 'Beru' {<?>
+					<?php if ($agent == 'Beru') { ?>
 						<span id="s2">Организация: 
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
@@ -82,16 +82,16 @@
 								<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
 							</select>
 						</span>
-					<?php>}<?>
-					<?php>if $agent == 'Ozon' {<?>
+					<?php } ?>
+					<?php if ($agent == 'Ozon') { ?>
 						<span id="s2">Организация: 
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
 								<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
 							</select>
 						</span>
-					<?php>}<?>
-					<?php>if $agent == 'Goods' {<?>
+					<?php } ?>
+					<?php if ($agent == 'Goods') { ?>
 						<span id="s2">Организация: 
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
@@ -101,7 +101,7 @@
 								<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Комета)</option>
 							</select>
 						</span>
-					<?php>}<?>
+					<?php } ?>
 					<!--<button type="button" id = "filter_button" onclick="filterOrders()">Фильтр</button>-->
 					<button type="button" id = "refresh_button" onclick="refreshOrders()">Обновить данные из МС</button>
 					<?php if($agent == 'Goods') { ?>
