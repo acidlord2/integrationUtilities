@@ -99,7 +99,7 @@
 								<option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
 								<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
 								<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Комета)</option>
-								<option value="ast4" <?php echo $org=='ast4' ? ' selected' : ''; ?>>Акция 3 (Аполлон)</option>
+								<option value="ast4" <?php echo $org=='ast4' ? ' selected' : ''; ?>>Акция 4 (Аполлон)</option>
 							</select>
 						</span>
 					<?php } ?>
