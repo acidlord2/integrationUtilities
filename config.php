@@ -132,6 +132,8 @@
 	define('MS_IP_PURTOV_ID', 'befd9ebb-eba0-11ee-0a80-1751000160a9');
 	define('MS_VES', 'https://api.moysklad.ru/api/remap/1.2/entity/organization/2d42ae0f-ed4e-11ee-0a80-01e7000235af');
 	define('MS_VES_ID', '2d42ae0f-ed4e-11ee-0a80-01e7000235af');
+	define('MS_APOLLON', 'https://api.moysklad.ru/api/remap/1.2/entity/organization/8c393e3f-0b14-11ef-0a80-0d90002fd6ad');
+	define('MS_APOLLON_ID', '8c393e3f-0b14-11ef-0a80-0d90002fd6ad');
 	
 	define('MS_REP_4CLEANING', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/customtemplate/6947deff-5737-4851-a2c1-6c0913fdf871');
 	define('MS_REP_10KIDS', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/customtemplate/920179aa-951b-4000-ba50-dfe9b1a89dd6');
@@ -246,6 +248,8 @@
 	define('MS_PROJECT_SBMM_AST2_ID', 'c146207b-e66e-11ee-0a80-0be70003c3ab');
 	define('MS_PROJECT_SBMM_AST3', 'https://api.moysklad.ru/api/remap/1.2/entity/project/bef5b488-e92b-11ee-0a80-01f80021e14f');
 	define('MS_PROJECT_SBMM_AST3_ID', 'bef5b488-e92b-11ee-0a80-01f80021e14f');
+	define('MS_PROJECT_SBMM_AST4', 'https://api.moysklad.ru/api/remap/1.2/entity/project/dd2364c5-0b13-11ef-0a80-1731002e4fa4');
+	define('MS_PROJECT_SBMM_AST4_ID', 'dd2364c5-0b13-11ef-0a80-1731002e4fa4');
 	
 	//Ozon
 	define('OZON_TESTMODE', false);
@@ -316,6 +320,7 @@
 	define('SBMM_SHOP_AST1', '129040');
 	define('SBMM_SHOP_AST2', '129610');
 	define('SBMM_SHOP_AST3', '136309');
+	define('SBMM_SHOP_AST4', '136830');
 	define('SBMM_SHOP_DSM', SBMM_TESTMODE ? '7045' : '18811');
 	define('SBMM_API_BASE_URL', SBMM_TESTMODE ? 'https://partner.goodsteam.tech/api/' : 'https://partner.sbermegamarket.ru/api/');
 	define('SBMM_API_MARKET',  'market/');

@@ -46,6 +46,8 @@
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST2 . ';';
 		if ($org == 'AST3')
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST3 . ';';
+		if ($org == 'AST4')
+	        $filter .= 'project=' . MS_PROJECT_SBMM_AST4 . ';';
 		if ($org == 'alians')
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 			        
