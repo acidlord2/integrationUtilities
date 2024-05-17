@@ -38,7 +38,7 @@ class SkuYandex
     		$this->log->write(__LINE__ . ' offerMappingEntries.url - ' . $url);
     		
     		$return = $this->apiYandexClass->getData($url);
-    		//$this->log->write(__LINE__ . ' offerMappingEntries.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    		$this->log->write(__LINE__ . ' offerMappingEntries.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     		if (count($return['result']['offerMappingEntries']))
     		{
     		    $offers = array_merge ($offers, $return['result']['offerMappingEntries']);
