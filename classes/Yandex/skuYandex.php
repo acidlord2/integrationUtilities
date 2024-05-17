@@ -34,7 +34,7 @@ class SkuYandex
 	    $offers = [];
 	    while (true)
 	    {
-	        $url = BERU_API_BASE_URL . BERU_API_VERSION . $campaign . $this->campaign . '/' . BERU_API_OFFER_MAPPING_ENTRIES . '.JSON' . ($pageToken == '' ? '' : '?page_token=' . $pageToken);
+	        $url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_CAMPAIGNS . $this->campaign . '/' . BERU_API_OFFER_MAPPING_ENTRIES . '.JSON' . ($pageToken == '' ? '' : '?page_token=' . $pageToken);
     		$this->log->write(__LINE__ . ' offerMappingEntries.url - ' . $url);
     		
     		$return = $this->apiYandexClass->getData($url);
