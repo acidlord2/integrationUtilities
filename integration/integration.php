@@ -93,6 +93,24 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast3/updatePricesStock', '_blank')">
 					Обновить цены и остатки Комета
 				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast4/importOrders', '_blank')">
+					Ипортировать заказы Аполлон
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast4/updatePricesStock', '_blank')">
+					Обновить цены и остатки Аполлон
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast5/importOrders', '_blank')">
+					Ипортировать заказы Плутон
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast5/updatePricesStock', '_blank')">
+					Обновить цены и остатки Плутон
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast6/importOrders', '_blank')">
+					Ипортировать заказы Высота
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast6/updatePricesStock', '_blank')">
+					Обновить цены и остатки Высота
+				</button>
 				<div id="sberInfo"></div>
 
 			</div>

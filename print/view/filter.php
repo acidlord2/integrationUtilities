@@ -33,6 +33,8 @@
 						<option value="AST2" <?php echo $org=='AST2' ? 'selected' : ''; ?>>Акция 2 (Лотус)</option>
 						<option value="AST3" <?php echo $org=='AST3' ? 'selected' : ''; ?>>Акция 3 (Комета)</option>
 						<option value="AST4" <?php echo $org=='AST4' ? 'selected' : ''; ?>>Акция 4 (Аполлон)</option>
+						<option value="AST5" <?php echo $org=='AST5' ? 'selected' : ''; ?>>Акция 5 (Плутон)</option>
+						<option value="AST6" <?php echo $org=='AST6' ? 'selected' : ''; ?>>Акция 6 (Высота)</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Ali') { ?>

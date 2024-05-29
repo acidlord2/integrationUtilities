@@ -100,6 +100,8 @@
 								<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
 								<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Комета)</option>
 								<option value="ast4" <?php echo $org=='ast4' ? ' selected' : ''; ?>>Акция 4 (Аполлон)</option>
+								<option value="ast5" <?php echo $org=='ast5' ? ' selected' : ''; ?>>Акция 5 (Плутон)</option>
+								<option value="ast6" <?php echo $org=='ast6' ? ' selected' : ''; ?>>Акция 6 (Высота)</option>
 							</select>
 						</span>
 					<?php } ?>
