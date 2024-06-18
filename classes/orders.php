@@ -135,6 +135,8 @@ class Orders
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST6 . ';';
 			if ($org == 'alians')
 				$orgFilter = 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
+			if ($org == 'vysota')
+				$orgFilter = 'project=' . MS_PROJECT_YANDEX_VYSOTA . ';';
 		}
 		else
 			$orgFilter = '';

@@ -54,6 +54,8 @@
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST6 . ';';
 		if ($org == 'alians')
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
+		if ($org == 'vysota')
+	        $filter .= 'project=' . MS_PROJECT_YANDEX_VYSOTA . ';';
 			        
 		$filter .= 'deliveryPlannedMoment%3E=' . $shippingDate . '%2000:00:00;';
 		$filter .= 'deliveryPlannedMoment%3C=' . $shippingDate . '%2023:59:59;';

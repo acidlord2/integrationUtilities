@@ -125,6 +125,12 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ms-duplicates/remove-duplicates', '_blank')">
 					Удаление дублей заказов
 				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-summit/updateStock', '_blank')">
+					Обновление остатков Саммит
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-vysota/updateStock', '_blank')">
+					Обновление остатков Высота
+				</button>
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Интеграция с Ozon Юлло</p>

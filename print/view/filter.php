@@ -23,6 +23,7 @@
 						<option value="Ullo" <?php echo $org=='Ullo' ? 'selected' : ''; ?>>Юлло</option>
 						<option value="4cleaning" <?php echo $org=='4cleaning' ? 'selected' : ''; ?>>ИП Гюмюш</option>
 						<option value="alians" <?php echo $org=='alians' ? 'selected' : ''; ?>>Альянс</option>
+						<option value="vysota" <?php echo $org=='vysota' ? 'selected' : ''; ?>>Высота</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Goods') { ?>
