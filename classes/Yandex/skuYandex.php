@@ -71,7 +71,7 @@ class SkuYandex
 	    while (true)
 	    {
 	        $url = BERU_API_BASE_URL . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_OFFER_MAPPINGS . ($pageToken == '' ? '' : '?page_token=' . $pageToken);
-			$data = array();
+			$data = '';
 			$this->log->write(__LINE__ . ' offerMappings.url - ' . $url);
 			
 			$return = $this->apiYandexClass->postData($url, $data);
