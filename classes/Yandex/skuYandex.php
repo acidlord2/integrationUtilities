@@ -10,10 +10,11 @@ class SkuYandex
 	private $log;
 	private $apiYandexClass;
 	private $campaign;
+	private $businessId;
 
 	private $cache = array ();
 
-	public function __construct($campaign)
+	public function __construct($campaign, $businessId = '')
 	{
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/apiYandex.php');
@@ -22,6 +23,7 @@ class SkuYandex
 		$this->campaign = $campaign;
 		$this->log = new Log('classes - Yandex - skuYandex.log');
 		$this->apiYandexClass = new APIYandex($campaign);
+		$this->businessId = $businessId;
 	}	
 	/**
 	* function offerMappingEntries - function gets yandex offers
@@ -78,7 +80,7 @@ class SkuYandex
 	public function putPrices($data)
 	{
 	    $this->log->write(__LINE__ . ' putPrices.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	    $url = BERU_API_BASE_URL . BERU_API_CAMPAIGNS . $this->campaign . '/' . BERU_API_PRICES;
+	    $url = BERU_API_BASE_URL . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_PRICES;
 	    $this->log->write(__LINE__ . ' putPrices.url - ' . $url);
 	    $return = $this->apiYandexClass->putData($url, $data);
 	    $this->log->write(__LINE__ . ' putPrices.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

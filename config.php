@@ -290,9 +290,11 @@
 	define('BERU_API_BASE_URL', 'https://api.partner.market.yandex.ru/');
 	define('BERU_API_VERSION', 'v2/');
 	define('BERU_API_CAMPAIGNS', 'campaigns/');
+	define('BERU_API_CAMPAIGNS', 'businesses/');
 	define('BERU_API_ULLOZZA_CAMPAIGN', '21632670');
 	define('BERU_API_SUMMIT_CAMPAIGN', '93179396');
 	define('BERU_API_VYSOTA_CAMPAIGN', '105464368');
+	define('BERU_API_VYSOTA_BUSINESS_ID', '139441748');
 	define('BERU_API_ABCASIA_CAMPAIGN', '21587057');
 	define('BERU_API_ARUBA_CAMPAIGN', '21994237');
 	define('BERU_API_10KIDS_CAMPAIGN', '22064982');
