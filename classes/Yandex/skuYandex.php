@@ -77,7 +77,7 @@ class SkuYandex
 			);
 			$this->log->write(__LINE__ . ' offerMappings.url - ' . $url);
 			
-			$return = $this->apiYandexClass->postData($url);
+			$return = $this->apiYandexClass->postData($url, $data);
 			//$this->log->write(__LINE__ . ' offerMappings.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if (count($return['result']['offerMappings']))
 			{
