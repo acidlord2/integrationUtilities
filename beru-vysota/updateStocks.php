@@ -4,15 +4,15 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
-$skuYandexClass = new SkuYandex(BERU_API_VYSOTA_CAMPAIGN);
+$skuYandexClass = new SkuYandex(BERU_API_VYSOTA_CAMPAIGN, BERU_API_VYSOTA_BUSINESS_ID);
 $productsClass = new ProductsMS();
 
-$skus = $skuYandexClass->offerMappingEntries();
+$skus = $skuYandexClass->offerMappings();
 
 $shopSku = array();
 foreach ($skus as $key => $sku)
 {
-    array_push($shopSku, $sku['offer']['shopSku']);
+    array_push($shopSku, $sku['offer']['offerId']);
     if (count($shopSku) == 50 || $key + 1 == count($skus))
     {
         $assortments = $productsClass->getAssortment($shopSku);

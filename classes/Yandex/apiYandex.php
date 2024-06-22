@@ -73,7 +73,7 @@ class APIYandex
     		
     		if (curl_errno($curl))
     		{
-    		    $this->log->write(__LINE__ . ' Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
+    		    $this->log->write(__LINE__ . ' getData. Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
     		    if ($count < 3)
     		        continue;
     		}
@@ -106,7 +106,7 @@ class APIYandex
 	        
 	        if (curl_errno($curl))
 	        {
-	            $this->log->write(__LINE__ . ' Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
+	            $this->log->write(__LINE__ . ' getDataBlob. Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
 	            if ($count < 3)
 	                continue;
 	        }
@@ -144,7 +144,7 @@ class APIYandex
     		
     		if (curl_errno($curl))
     		{
-    		    $this->log->write(__LINE__ . ' Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
+    		    $this->log->write(__LINE__ . ' putData. Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
     		    if ($count < 3)
     		        continue;
     		}
@@ -153,6 +153,44 @@ class APIYandex
     		return $arrayOut;
 		}
 		
+	}
+
+	public function postData($url, $postdata)
+	{
+	    $this->log->write(__LINE__ . ' url - ' . $url);
+	    // REST Header
+		$curl_post_headerberu = array (
+			'Content-type: application/json',
+			'Authorization: OAuth oauth_token="' . $this->oauth_token . '",oauth_client_id="' . $this->oauth_client_id . '"'
+		);
+		
+		$this->log->write(__LINE__ . ' postData.curl_post_headerberu - ' . json_encode($curl_post_headerberu, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$this->log->write(__LINE__ . ' postData.postdata - ' . json_encode($postdata, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+		$count = 0;
+		while (true)
+		{
+		    $count++;
+		    
+		    $curl = curl_init($url);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerberu);
+			curl_setopt($curl, CURLOPT_POST, true);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			curl_setopt($curl, CURLOPT_FAILONERROR, true);
+			$jsonOut = curl_exec($curl);
+			$arrayOut = json_decode ($jsonOut, true);
+			
+			if (curl_errno($curl))
+			{
+			    $this->log->write(__LINE__ . ' postData. Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
+			    if ($count < 3)
+			        continue;
+			}
+			curl_close($curl);
+			
+			return $arrayOut;
+		}
 	}
 }
 

@@ -40,7 +40,7 @@ class SkuYandex
     		$this->log->write(__LINE__ . ' offerMappingEntries.url - ' . $url);
     		
     		$return = $this->apiYandexClass->getData($url);
-    		$this->log->write(__LINE__ . ' offerMappingEntries.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    		//$this->log->write(__LINE__ . ' offerMappingEntries.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     		if (count($return['result']['offerMappingEntries']))
     		{
     		    $offers = array_merge ($offers, $return['result']['offerMappingEntries']);
@@ -55,9 +55,47 @@ class SkuYandex
     		}
 	    }
 	    return $offers;
-	    $logger->write("curl_response - " . $curl_response);
+	    //$logger->write("curl_response - " . $curl_response);
 		
 	}
+
+	/**
+	* function offerMappings - function gets yandex offers new
+	*
+	* @return array - result as array of offers
+	*/
+	public function offerMappings()
+	{
+	    $pageToken = '';
+	    $offers = [];
+	    while (true)
+	    {
+	        $url = BERU_API_BASE_URL . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_OFFER_MAPPINGS;
+			$data = array(
+				'limit' => 100,
+				'page_token' => $pageToken
+			);
+			$this->log->write(__LINE__ . ' offerMappings.url - ' . $url);
+			
+			$return = $this->apiYandexClass->postData($url);
+			//$this->log->write(__LINE__ . ' offerMappings.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			if (count($return['result']['offerMappings']))
+			{
+			    $offers = array_merge ($offers, $return['result']['offerMappings']);
+			}
+			if (isset($return['result']['paging']['nextPageToken']))
+			{
+			    $pageToken = $return['result']['paging']['nextPageToken'];
+			}
+			else
+			{
+			    break;
+			}
+	    }
+	    return $offers;
+	    //$logger->write("curl_response - " . $curl_response);
+	}
+
 	/**
 	 * function putStocks - function saves yandex stocks
 	 *

@@ -304,6 +304,7 @@
 	define('BERU_API_VYSOTA_WAREHOUSE', 1445466);
 	define('BERU_API_ORDERS', 'orders');
 	define('BERU_API_OFFER_MAPPING_ENTRIES', 'offer-mapping-entries');
+	define('BERU_API_OFFER_MAPPINGS', 'offer-mappings');
 	define('BERU_API_BOXES', 'boxes');
 	define('BERU_API_SHIPMENTS', 'delivery/shipments/');
 	define('BERU_API_STATUS', 'status');
