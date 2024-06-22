@@ -21,13 +21,12 @@ foreach ($skus as $key => $sku)
         foreach ($assortments as $assortment)
         {
             $price = $productsClass->getPrice($assortment, 'Цена СММ Альянс');
-            $vat = $assortment['effectiveVat'] == 20 ? 7 : ($assortment['effectiveVat'] == 10 ? 2 : ($assortment['effectiveVat'] == 0 ? 5 : 6));
+            //$vat = $assortment['effectiveVat'] == 20 ? 7 : ($assortment['effectiveVat'] == 10 ? 2 : ($assortment['effectiveVat'] == 0 ? 5 : 6));
             $data['offers'][] = array(
                 'offerId' => $assortment['code'],
                 'price' => array(
                     'value' => $price,
-                    'currencyId' => 'RUR',
-                    'vat' => $vat,
+                    'currencyId' => 'RUR'
                 )
             );
         }
