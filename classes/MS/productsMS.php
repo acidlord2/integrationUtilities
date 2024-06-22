@@ -92,7 +92,7 @@ class ProductsMS
 	                $url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_SERVICE . $filter;
 	                $this->logger->write (__LINE__ . ' findServicesByCode.service_url - ' . $url);
 	                $product_ms = $this->apiMSClass->getData($url);
-	                $this->logger -> write (__LINE__ . ' findServicesByCode.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	                //$this->logger -> write (__LINE__ . ' findServicesByCode.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	                return $product_ms['rows'];
 	}
 	
@@ -111,13 +111,13 @@ class ProductsMS
 	    $url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PRODUCT . '/' . $productId;
 	    $this->logger->write (__LINE__ . ' getProduct.url - ' . $url);
 	    $return = $this->apiMSClass->getData($url);
-	    $this->logger->write (__LINE__ . ' getProduct.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    //$this->logger->write (__LINE__ . ' getProduct.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    return $return;
 	}
 	
 	public function getPrice ($assortment, $priceType = 'Цена продажи')
 	{
-	    $this->logger->write (__LINE__ . ' getPrice.assortment - ' . json_encode ($assortment, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    $this->logger->write (__LINE__ . ' getPrice.assortment - ' . json_encode ($assortment['code'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    $this->logger->write (__LINE__ . ' getPrice.priceType - ' . $priceType);
 		// extract fileprice from assortment
 		$price = 0;
