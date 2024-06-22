@@ -308,6 +308,7 @@
 	define('BERU_API_LABELS', 'delivery/labels/data');
 	define('BERU_API_LABELS2', 'delivery/labels');
 	define('BERU_API_STOCKS', 'offers/stocks');
+	define('BERU_API_PRICES', 'offer-prices/updates');
 	
 	define('BERU_10KIDS_OUTLET', '315186571');
 	

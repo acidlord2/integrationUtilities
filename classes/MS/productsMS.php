@@ -115,6 +115,22 @@ class ProductsMS
 	    return $return;
 	}
 	
+	public function getPrice ($assortment, $priceType = 'Цена продажи')
+	{
+	    $this->logger->write (__LINE__ . ' getPrice.assortment - ' . json_encode ($assortment, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    $this->logger->write (__LINE__ . ' getPrice.priceType - ' . $priceType);
+		// extract fileprice from assortment
+		$price = 0;
+		foreach ($assortment['salePrices'] as $salePrice)
+		{
+			if ($salePrice['priceType']['name'] == $priceType)
+			{
+				$price = $salePrice['value'] / 100;
+				break;
+			}
+		}
+		return $price;
+	}
 }
 
 ?>

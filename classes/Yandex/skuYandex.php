@@ -57,7 +57,7 @@ class SkuYandex
 		
 	}
 	/**
-	 * function offerMappingEntries - function gets yandex offers
+	 * function putStocks - function saves yandex stocks
 	 *
 	 * @return array - result as array of offers
 	 */
@@ -69,7 +69,20 @@ class SkuYandex
 	    $return = $this->apiYandexClass->putData($url, $data);
 	    $this->log->write(__LINE__ . ' putStocks.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	}
-	    
+
+	/**
+	 * function putPrices - function puts yandex prices
+	 *
+	 * @return status - status of operation
+	 */
+	public function putPrices($data)
+	{
+	    $this->log->write(__LINE__ . ' putPrices.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    $url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_CAMPAIGNS . $this->campaign . '/' . BERU_API_PRICES;
+	    $this->log->write(__LINE__ . ' putPrices.url - ' . $url);
+	    $return = $this->apiYandexClass->putData($url, $data);
+	    $this->log->write(__LINE__ . ' putPrices.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	}
 }
 
 ?>
