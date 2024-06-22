@@ -70,11 +70,8 @@ class SkuYandex
 	    $offers = [];
 	    while (true)
 	    {
-	        $url = BERU_API_BASE_URL . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_OFFER_MAPPINGS;
-			$data = array(
-				'limit' => 100,
-				'page_token' => $pageToken
-			);
+	        $url = BERU_API_BASE_URL . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_OFFER_MAPPINGS . ($pageToken == '' ? '' : '?page_token=' . $pageToken);
+			$data = array();
 			$this->log->write(__LINE__ . ' offerMappings.url - ' . $url);
 			
 			$return = $this->apiYandexClass->postData($url, $data);
