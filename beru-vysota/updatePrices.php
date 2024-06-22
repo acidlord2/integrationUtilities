@@ -22,6 +22,10 @@ foreach ($skus as $key => $sku)
         {
             $price = $productsClass->getPrice($assortment, 'Цена СММ Альянс');
             //$vat = $assortment['effectiveVat'] == 20 ? 7 : ($assortment['effectiveVat'] == 10 ? 2 : ($assortment['effectiveVat'] == 0 ? 5 : 6));
+            if ($price == 0)
+            {
+                continue;
+            }
             $data['offers'][] = array(
                 'offerId' => $assortment['code'],
                 'price' => array(
