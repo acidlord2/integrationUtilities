@@ -36,7 +36,7 @@ foreach ($skus as $key => $sku)
         $shopSku = array();
     }
 }
-
+echo count($skus) . ' Stocks updated';
 
 ?>
 
