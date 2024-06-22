@@ -290,7 +290,7 @@
 	define('BERU_API_BASE_URL', 'https://api.partner.market.yandex.ru/');
 	define('BERU_API_VERSION', 'v2/');
 	define('BERU_API_CAMPAIGNS', 'campaigns/');
-	define('BERU_API_CAMPAIGNS', 'businesses/');
+	define('BERU_API_BUSINESSES', 'businesses/');
 	define('BERU_API_ULLOZZA_CAMPAIGN', '21632670');
 	define('BERU_API_SUMMIT_CAMPAIGN', '93179396');
 	define('BERU_API_VYSOTA_CAMPAIGN', '105464368');
