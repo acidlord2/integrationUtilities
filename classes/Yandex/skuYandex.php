@@ -119,7 +119,7 @@ class SkuYandex
 	    $this->log->write(__LINE__ . ' putPrices.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    $url = BERU_API_BASE_URL . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_PRICES;
 	    $this->log->write(__LINE__ . ' putPrices.url - ' . $url);
-	    $return = $this->apiYandexClass->putData($url, $data);
+	    $return = $this->apiYandexClass->postData($url, $data);
 	    $this->log->write(__LINE__ . ' putPrices.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	}
 }
