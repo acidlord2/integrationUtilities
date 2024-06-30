@@ -20,7 +20,7 @@ foreach ($skus as $key => $sku)
         $data['offers'] = array();
         foreach ($assortments as $assortment)
         {
-            $price = $productsClass->getPrice($assortment, 'Цена СММ Альянс');
+            $price = $productsClass->getPrice($assortment, 'Цена DBS - I0kids');
             //$vat = $assortment['effectiveVat'] == 20 ? 7 : ($assortment['effectiveVat'] == 10 ? 2 : ($assortment['effectiveVat'] == 0 ? 5 : 6));
             if ($price == 0)
             {
