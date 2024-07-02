@@ -57,7 +57,7 @@
 		foreach($productsData as $product)
 		{
 			$price = array_values(array_filter(array_map(function($item) {
-				return $item['priceType']['name'] == 'Цена СММ Альянс' ? $item['value']/100 : null;
+				return $item['priceType']['name'] == 'Цена 10kids/GOODS' ? $item['value']/100 : null;
 			}, $product['salePrices']), function($item) {
 				return $item !== null;}))[0];
 			//$log->write(__LINE__ . ' price - ' . json_encode ($price, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
