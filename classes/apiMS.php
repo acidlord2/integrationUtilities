@@ -75,7 +75,8 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			$gzipped = curl_exec($curl);
 			$logger->write (__LINE__ . ' getMSData.gzipped - ' . $gzipped);
-			$jsonOut = gzdecode($gzipped);
+			//$jsonOut = gzdecode($gzipped);
+			$jsonOut = $gzipped;
 			$arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl);			
 			curl_close($curl);
