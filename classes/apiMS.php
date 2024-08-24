@@ -73,16 +73,9 @@ class APIMS
 			$curl = curl_init($service_url);
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
-			try
-			{
-				$gzipped = curl_exec($curl);
-				$jsonOut = gzdecode($gzipped);
-			}
-			catch (Exception $e)
-			{
-				$logger->write (__LINE__ . ' getMSData.Exception - ' . $e->getMessage());
-				$logger->write (__LINE__ . ' getMSData.curl - ' . curl_exec($curl));
-			}
+			$gzipped = curl_exec($curl);
+			$logger->write (__LINE__ . ' getMSData.gzipped - ' . $gzipped);
+			$jsonOut = gzdecode($gzipped);
 			$arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl);			
 			curl_close($curl);
