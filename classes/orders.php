@@ -95,6 +95,7 @@ class Orders
 		if ($agent == 'Internal')
 			$agentFilter = 'agent%21=' . MS_GOODS_AGENT . ';agent%21=' . MS_BERU_AGENT . ';agent%21=' . MS_OZON_AGENT . ';';
 
+		$curierFilter = '';
 		if ($agent == 'Internal')
 		{
 			if ($curier == '1')
@@ -110,10 +111,10 @@ class Orders
 			if ($curier == '10')
 				$curierFilter = MS_SHIPTYPE_ATTR . '=' . MS_SHIPTYPE_CURIER10 . ';';
 		}
-		else
-			$curierFilter = '';
+			
 		
-			if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods')
+		$orgFilter = '';
+		if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods')
 		{
 			if ($org == 'ullo')
 				$orgFilter = 'organization=' . MS_ULLO . ';';
@@ -138,8 +139,7 @@ class Orders
 			if ($org == 'vysota')
 				$orgFilter = 'project=' . MS_PROJECT_YANDEX_VYSOTA . ';';
 		}
-		else
-			$orgFilter = '';
+			
 		
 		$shipDateStart = 'deliveryPlannedMoment%3E=' . $shipDate . '%2000:00:00;';
 		$shipDateEnd = 'deliveryPlannedMoment%3C=' . $shipDate . '%2023:59:59;';
