@@ -44,7 +44,7 @@ class Products
 			if (!isset($response['cards']) || !count($response['cards']))
 				break;
 			$return = array_merge($return, $response['cards']);
-			if ($response['total'] < 100)
+			if ($response['cursor']['total'] < 100)
 				break;
 			$postData['settings']['cursor']['nmID'] = $response['cursor']['nmID'];
 			$postData['settings']['cursor']['updatedAt'] = $response['cursor']['updatedAt'];
