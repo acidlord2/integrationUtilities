@@ -46,5 +46,5 @@ if (count ($data))
     $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     $productsWBclass->setStock($postData);
 }
-echo 'Total: ' . count($productCodes) . ', updated: ' . count($productsMS) . ', not updated: ' . count($productCodes) - count($productsMS);
+echo 'Total: ' . count($productCodes) . ', updated: ' . count($productsMS) . ', not updated: ' . (count($productCodes) - count($productsMS));
 ?>
