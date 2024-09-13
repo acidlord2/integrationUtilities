@@ -40,7 +40,13 @@ $productMS0 = $productMSClass->findProductsByCode('000-0000');
 $newOrdersMS = array();
 $changeStatus = array();
 
-$supply = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
+// check if supply exists
+$supplies = $suppliesWBClass->getSupplies();
+foreach ($supplies as $supply)
+	if ($supply['closedAt'] == null)
+		$supplyOpen = $supply;
+if (!isset($supplyOpen))
+	$supplyOpen = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
 
 foreach ($newOrders as $newOrder)
 {
@@ -128,7 +134,7 @@ foreach ($newOrders as $newOrder)
 				),
 				'value' => array(
 					'meta' => array(
-						'href' => MS_PAYMENTTYPE_SBERBANK,
+						'href' => MS_PAYMENTTYPE_SBERBANK_ONLINE,
 						'type' => 'customentity',
 						'mediaType' => 'application/json'
 					)
@@ -158,7 +164,7 @@ foreach ($newOrders as $newOrder)
 				),
 				'value' => array(
 					'meta' => array(
-					    'href' => MS_DELIVERY_VALUE0,
+					    'href' => MS_DELIVERY_VALUE_WB,
 						'type' => 'customentity',
 						'mediaType' => 'application/json'
 					)
@@ -176,7 +182,7 @@ foreach ($newOrders as $newOrder)
 		)
 	);
 	
-	$suppliesWBClass->addOrderToSupply($supply['id'], (string)$newOrder['id']);
+	$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
 	
 }
 if (count($newOrdersMS) > 0)
