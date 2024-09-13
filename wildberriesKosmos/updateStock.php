@@ -11,7 +11,7 @@ $productCodes = array();
 foreach ($productsWB as $product)
 {
     if(isset($product['sizes'][0]['skus'][0]))
-        $productCodes[] = array($product['vendorCode'] => $product['sizes'][0]['skus'][0]);
+        $productCodes[$product['vendorCode']] = $product['sizes'][0]['skus'][0];
 }
 
 $log->write (__LINE__ . ' productCodes - ' . json_encode ($productCodes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -29,7 +29,7 @@ $productsMS = $productsMSClass->getAssortment(array_keys($productCodes));
 $data = array();
 foreach ($productsMS as $product)
 {
-    $log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     $data[] = array (
         'sku' => $productCodes[$product['code']],
         'amount' => $product['quantity'] - 3 < 0 ? 0 : $product['quantity'] - 3
