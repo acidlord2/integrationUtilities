@@ -13,6 +13,7 @@ class Api
     private $token = NULL;
     private $shop = NULL;
     private $header = NULL;
+	private $log;
     
 	public function __construct($shop)
 	{
@@ -23,7 +24,7 @@ class Api
 	    
 	    $this->log = new \Classes\Common\Log('classes - Wildberries - Api.log');
 	   
-	    $settingClass = new \Classes\Common\Settings('WBauthToken' . $shop);
+	    $settingClass = new \Classes\Common\Settings('WBApiToken' . $shop);
    	    $this->token = $settingClass->getValue();
    	    $this->shop = $shop;
    	    
@@ -86,6 +87,22 @@ class Api
 		
 		return $arrayOut;
     }
+	public function patchData($url, $postdata)
+	{
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+		$jsonOut = curl_exec($curl);
+		$arrayOut = json_decode ($jsonOut, true);
+
+		if(curl_errno($curl))
+		{
+			$this->log->write(__LINE__ . ' patchData.Error No: ' . curl_errno($curl) . ' | Error msg: ' . curl_error($curl));
+		}
+		return $arrayOut;
+	}
 }
 
 ?>

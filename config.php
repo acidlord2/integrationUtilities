@@ -321,7 +321,10 @@
 	//Wildberries
 	define('WB_STOCKS', 'https://wbxgate.wildberries.ru/stocks');
 	define('WB_ORDERS', 'https://suppliers-orders.wildberries.ru/api/v1/orders');
+	define('WB_API_ORDERS_NEW', 'api/v3/orders/new');
+	define('WB_API_SUPPLIES', 'api/v3/supplies');
 	define('WB_API_BASE_URL', 'https://suppliers-api.wildberries.ru/');
+	define('WB_API_MARKETPLACE_API', 'https://marketplace-api.wildberries.ru/');
 	define('WB_API_CARD_LIST', 'card/list');
 	define('WB_API_PRICES', 'public/api/v1/prices');
 	define('WB_API_STOCK', 'api/v2/stocks');
@@ -329,6 +332,7 @@
 	define('WB_API_ORDERS', 'api/v2/orders');
 	
 	define('WB_WAREHOUSE', 3299);
+	define('WB_WAREHOUSE_KOSMOS', 1073256);
 	
 	//sbermegamarket
 	define('SBMM_TESTMODE', false);
