@@ -65,7 +65,7 @@ foreach ($newOrders as $newOrder)
 
 	$positions[] = $position;
 		
-	$date = DateTime::createFromFormat('Y-m-d\TH:i:s', explode ('.', $newOrder['createdAt'])[0]);
+	$date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $newOrder['createdAt']);
 	
 	$newOrdersMS[] = array(
 		'name' => 'WB' . (string)$newOrder['id'],
