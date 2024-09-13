@@ -23,19 +23,17 @@ if (!count($productCodes)){
 
 $productsMSClass = new \ProductsMS();
 $productsMS = $productsMSClass->getAssortment(array_keys($productCodes));
-//$log->write (__LINE__ . ' productsMS - ' . json_encode ($productsMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 $data = array();
 foreach ($productsMS as $product)
 {
-    //$logger->write ('priceTypes - ' . json_encode ($priceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    //$logger->write ('priceKey - ' . json_encode ($priceKey, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    
+    $log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     $data[] = array (
         'sku' => $productCodes[$product['code']],
-        'stock' => $product['quantity'] - 3 < 0 ? 0 : $product['quantity'] - 3
+        'amount' => $product['quantity'] - 3 < 0 ? 0 : $product['quantity'] - 3
         //'stock' => 0,
     );
+    $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 if (count ($data))
 {
