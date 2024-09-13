@@ -72,12 +72,15 @@ class Products
 	public function setStock($data)
 	{
 	    $this->log->write(__LINE__ . ' setStock.data - ' . json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . WB_WAREHOUSE_KOSMOS;
+	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . (string)WB_WAREHOUSE_KOSMOS;
 	    $return = array();
 	    foreach (array_chunk($data['stocks'], 1000) as $chunk)
 	    {
-	        $response = $this->apiWBClass->putData($url, array('stocks' => $chunk));
-	        // if $response is not empty, then merge it with $return
+			$postData = array(
+				'stocks' => $chunk
+			);
+	        $response = $this->apiWBClass->putData($url, $postData);
+	        
 			if(!empty($response))
 				$return = array_merge($return, $response);
 	    }
