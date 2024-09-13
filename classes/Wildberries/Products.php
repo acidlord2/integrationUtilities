@@ -76,7 +76,7 @@ class Products
 	    $return = array();
 	    foreach (array_chunk($data['stocks'], 1000) as $chunk)
 	    {
-	        $response = $this->apiWBClass->postData($url, array('stocks' => $chunk));
+	        $response = $this->apiWBClass->putData($url, array('stocks' => $chunk));
 	        // if $response is not empty, then merge it with $return
 			if(!empty($response))
 				$return = array_merge($return, $response);

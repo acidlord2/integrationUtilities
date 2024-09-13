@@ -40,10 +40,10 @@ foreach ($productsMS as $product)
 if (count ($data))
 {
     //$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $data = array(
+    $postData = array(
         'stocks' => $data
     );
-    $productsWBclass->setStock($data);
+    $productsWBclass->setStock($postData);
 }
 echo 'Total: ' . count($productCodes) . ', updated: ' . count($productsMS) . ', not updated: ' . count($productCodes) - count($productsMS);
 ?>
