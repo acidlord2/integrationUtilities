@@ -21,6 +21,8 @@ if (!count($productCodes)){
     return;
 }
 
+$log->write (__LINE__ . ' array_keys - ' . json_encode (array_keys($productCodes), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+
 $productsMSClass = new \ProductsMS();
 $productsMS = $productsMSClass->getAssortment(array_keys($productCodes));
 
