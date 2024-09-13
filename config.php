@@ -331,7 +331,7 @@
 	define('WB_API_CONTENT_API', 'https://content-api.wildberries.ru/');
 	define('WB_API_CARDS_LIST', 'content/v2/get/cards/list');
 	define('WB_API_PRICES', 'public/api/v1/prices');
-	define('WB_API_STOCK', 'api/v2/stocks');
+	define('WB_API_STOCKS', 'api/v3/stocks');
 	define('WB_API_DISCOUNTS', 'public/api/v1/updateDiscounts');
 	define('WB_API_ORDERS', 'api/v2/orders');
 	

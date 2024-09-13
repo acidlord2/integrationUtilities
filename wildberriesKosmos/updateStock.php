@@ -2,14 +2,19 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Products.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-$log = new \Classes\Common\Log ('wildberriesKaori - updateStock.log');
+$log = new \Classes\Common\Log ('wildberriesKosmos - updateStock.log');
 
-$productsWBclass = new \Classes\Wildberries\v1\Products('Kaori');
-$productsWB = $productsWBclass->cardList();
+$productsWBclass = new \Classes\Wildberries\v1\Products('Kosmos');
+$productsWB = $productsWBclass->getCardsList();
 
-$productCodes = array_column($productsWB, 'supplierVendorCode');
+$productCodes = array();
+foreach ($productsWB as $product)
+{
+    if(isset($product['sizes'][0]['skus'][0]))
+        $productCodes[] = array($product['vendorCode'] => $product['sizes'][0]['skus'][0]);
+}
+
 $log->write (__LINE__ . ' productCodes - ' . json_encode ($productCodes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-$productCodesMS = array_diff($productCodes, ['']);
 
 if (!count($productCodes)){
     echo 'No products';
@@ -17,37 +22,28 @@ if (!count($productCodes)){
 }
 
 $productsMSClass = new \ProductsMS();
-$productsMS = $productsMSClass->getAssortment($productCodes);
+$productsMS = $productsMSClass->getAssortment(array_keys($productCodes));
 //$log->write (__LINE__ . ' productsMS - ' . json_encode ($productsMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 $data = array();
-$processed = 0;
-$notProcessed = 0;
 foreach ($productsMS as $product)
 {
-    $productWBKey = array_search($product['code'], $productCodes);
     //$logger->write ('priceTypes - ' . json_encode ($priceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     //$logger->write ('priceKey - ' . json_encode ($priceKey, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     
-    if (isset($productsWB[$productWBKey]['nomenclatures'][0]['variations'][0]['barcodes'][0])){
-        $data[] = array (
-            'barcode' => $productsWB[$productWBKey]['nomenclatures'][0]['variations'][0]['barcodes'][0],
-            //'stock' => $product['quantity'] < 0 ? 0 : $product['quantity'],
-            'stock' => 0,
-            'warehouseId' => WB_WAREHOUSE
-        );
-        $processed++;
-    }
-    else
-    {
-        $log->write(__LINE__ . ' barcode not set - ' . $productsWB[$productWBKey]['id']);
-        $notProcessed++;
-    }
+    $data[] = array (
+        'sku' => $productCodes[$product['code']],
+        'stock' => $product['quantity'] - 3 < 0 ? 0 : $product['quantity'] - 3
+        //'stock' => 0,
+    );
 }
 if (count ($data))
 {
     //$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    $data = array(
+        'stocks' => $data
+    );
     $productsWBclass->setStock($data);
 }
-echo 'Total: ' . count($productsMS) . ', updated: ' . $processed . ', not updated: ' . $notProcessed;
+echo 'Total: ' . count($productCodes) . ', updated: ' . count($productsMS) . ', not updated: ' . count($productCodes) - count($productsMS);
 ?>

@@ -41,14 +41,17 @@ class Products
 		{
 			$response = $this->apiWBClass->postData($url, $postData);
 			$this->log->write(__LINE__ . ' getCardsList.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-			if (!isset($response['result']['cards']) || !count($response['result']['cards']) || !isset($response['result']['cursor']['next']))
-			{
+			if (!isset($response['cards']) || !count($response['cards']))
 				break;
-			}
+			$return = array_merge($return, $response['cards']);
+			if ($response['total'] < 100)
+				break;
+			$postData['settings']['cursor']['nmID'] = $response['cursor']['nmID'];
+			$postData['settings']['cursor']['updatedAt'] = $response['cursor']['updatedAt'];
 		}
 
-		$return = $this->apiWBClass->postData($url, $postData);
-		return isset($return['result']['cards'][0]) ? $return['result']['cards'] : array();
+		$this->log->write(__LINE__ . ' getCardsList.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		return $return;
 	}
 	
 	public function setPrices($data)
@@ -69,12 +72,14 @@ class Products
 	public function setStock($data)
 	{
 	    $this->log->write(__LINE__ . ' setStock.data - ' . json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-	    $url = WB_API_BASE_URL . WB_API_STOCK;
+	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . WB_WAREHOUSE_KOSMOS;
 	    $return = array();
-	    foreach (array_chunk($data, 1000) as $chunk)
+	    foreach (array_chunk($data['stocks'], 1000) as $chunk)
 	    {
-	        $arrayOut = $this->apiWBClass->postData($url, $chunk);
-	        $return = array_merge($return, $arrayOut);
+	        $response = $this->apiWBClass->postData($url, array('stocks' => $chunk));
+	        // if $response is not empty, then merge it with $return
+			if(!empty($response))
+				$return = array_merge($return, $response);
 	    }
 	    
 	    $this->log->write(__LINE__ . ' setStock.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
