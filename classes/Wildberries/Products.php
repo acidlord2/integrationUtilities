@@ -23,22 +23,31 @@ class Products
 		$this->shop = $shop;
 	}	
 
-	public function cardList()
+	public function getCardsList()
 	{
 	    $postData = array(
-	        'jsonrpc' => '2.0',
-	        'params' => array(
-	            'query' => array(
-	                'limit' => 10000,
-	                'offset' => 0,
-	                'total' => 0
+			'settings' => array(
+				'cursor' => array(
+					'limit' => 100
+				),
+				'filter' => array(
+					'withPhoto' => -1
 	            )
 	        )
 	    );
-	    
-	    $url = WB_API_BASE_URL . WB_API_CARD_LIST;
-	    $return = $this->apiWBClass->postData($url, $postData);
-		$this->log->write(__LINE__ . ' cardList.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		$return = array();
+	    $url = WB_API_CONTENT_API . WB_API_CARDS_LIST;
+	    while(true)
+		{
+			$response = $this->apiWBClass->postData($url, $postData);
+			$this->log->write(__LINE__ . ' getCardsList.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+			if (!isset($response['result']['cards']) || !count($response['result']['cards']) || !isset($response['result']['cursor']['next']))
+			{
+				break;
+			}
+		}
+
+		$return = $this->apiWBClass->postData($url, $postData);
 		return isset($return['result']['cards'][0]) ? $return['result']['cards'] : array();
 	}
 	

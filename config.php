@@ -325,7 +325,8 @@
 	define('WB_API_SUPPLIES', 'api/v3/supplies');
 	define('WB_API_BASE_URL', 'https://suppliers-api.wildberries.ru/');
 	define('WB_API_MARKETPLACE_API', 'https://marketplace-api.wildberries.ru/');
-	define('WB_API_CARD_LIST', 'card/list');
+	define('WB_API_CONTENT_API', 'https://content-api.wildberries.ru/');
+	define('WB_API_CARDS_LIST', 'content/v2/get/cards/list');
 	define('WB_API_PRICES', 'public/api/v1/prices');
 	define('WB_API_STOCK', 'api/v2/stocks');
 	define('WB_API_DISCOUNTS', 'public/api/v1/updateDiscounts');

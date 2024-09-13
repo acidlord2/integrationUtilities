@@ -34,27 +34,14 @@ class Orders
 			$this->log->write(__LINE__ . ' getNewOrders.url - ' . $url);
 			$response = $this->apiWBClass->getData($url);
 			$this->log->write(__LINE__ . ' getNewOrders.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-			if (!isset($response['orders']) || !count($response['orders']) || !isset($response['next']))
-			{
+			if (!isset($response['orders']) || !count($response['orders']))
 				break;
-			}
 			$return = array_merge($return, $response['orders']);
+			if (!isset($response['next']))
+				break;
 			$skip = $response['next'];
 		}
-		return isset($return) ? $return : array();
-	}
-
-	public function orderList($startDate, $endDate, $status)
-	{
-	    $startDateUrl = '?date_start=' . urlencode($startDate);
-	    $endDateUrl = $endDate != NULL ? '&date_end=' . urlencode($endDate) : '';
-	    $statusUrl = $status != NULL ? '&status=' . $status : '';
-	    
-	    $url = WB_API_BASE_URL . WB_API_ORDERS . $startDateUrl . $endDateUrl . $statusUrl . '&take=1000&skip=0';
-	    $this->log->write(__LINE__ . ' orderList.url - ' . $url);
-	    $return = $this->apiWBClass->getData($url);
-		$this->log->write(__LINE__ . ' orderList.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-		return isset($return['orders']) ? $return['orders'] : array();
+		return $return;
 	}
 	
 	public function changeOrdersStatus($data)
