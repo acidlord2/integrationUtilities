@@ -179,11 +179,11 @@
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Интеграция с Wildberries</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKaori/updateStock', '_blank')">
-					Обновить остатки
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updateStock', '_blank')">
+					Обновить остатки WB Kosmos
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKaori/updatePrices', '_blank')">
-					Обновить цены
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/getNewOrders', '_blank')">
+					Загрузить заказы WB Kosmos
 				</button>
 			</div>
 		</div>
