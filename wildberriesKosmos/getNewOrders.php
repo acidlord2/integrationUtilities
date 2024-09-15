@@ -21,7 +21,7 @@ $newOrders = $ordersWBClass->getNewOrders();
 if (!count($newOrders))
 {
 	echo 'Processed 0 orders';
-//	return;
+	return;
 }
 
 $ordersIDs = array_column ($newOrders, 'id');
@@ -45,10 +45,10 @@ $supplyOpen = null;
 $supplies = $suppliesWBClass->getSupplies();
 foreach ($supplies as $supply)
 	if ($supply['closedAt'] == null)
+	{
 		$supplyOpen = $supply;
-
-$logger->write(__LINE__. ' Supply open: ' . json_encode($supplyOpen, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-return;
+		break;
+	}
 
 if ($supplyOpen === null)
 	$supplyOpen = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
