@@ -47,6 +47,9 @@ foreach ($supplies as $supply)
 	if ($supply['closedAt'] == null)
 		$supplyOpen = $supply;
 
+$logger->write(__LINE__. ' Supply open: ' . json_encode($supplyOpen, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+return;
+
 if ($supplyOpen === null)
 	$supplyOpen = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
 
