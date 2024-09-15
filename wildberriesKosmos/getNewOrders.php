@@ -21,7 +21,7 @@ $newOrders = $ordersWBClass->getNewOrders();
 if (!count($newOrders))
 {
 	echo 'Processed 0 orders';
-	return;
+//	return;
 }
 
 $ordersIDs = array_column ($newOrders, 'id');
