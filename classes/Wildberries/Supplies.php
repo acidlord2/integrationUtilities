@@ -27,10 +27,10 @@ class Supplies
 	{
 	    $url = WB_API_MARKETPLACE_API . WB_API_SUPPLIES;
 		$return = $this->apiWBClass->getData($url);
-	    $skip = 0;
+	    $next = 0;
 		$return = array();
 		while (true){
-			$url = WB_API_MARKETPLACE_API . WB_API_SUPPLIES . '?limit=1000&skip=' . $skip;
+			$url = WB_API_MARKETPLACE_API . WB_API_SUPPLIES . '?limit=1000&next=' . $next;
 			$this->log->write(__LINE__ . ' getSupplies.url - ' . $url);
 			$response = $this->apiWBClass->getData($url);
 			if (!isset($response['supplies']) || !count($response['supplies']))
@@ -38,7 +38,7 @@ class Supplies
 			$return = array_merge($return, $response['supplies']);
 			if (!isset($response['next']))
 				break;
-			$skip = $response['next'];
+			$next = $response['next'];
 		}	    
 	    $this->log->write(__LINE__ . ' getSupplies.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	    return $return;
