@@ -27,12 +27,11 @@ foreach ($supplies as $supply)
 		break;
 	}
 
+echo 'supplyOpen - ' . json_encode ($supplyOpen, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+return;
 
 if ($supplyOpen === null)
 	$supplyOpen = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
-
-echo 'supplyOpen - ' . json_encode ($supplyOpen, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-return;
 	
 foreach ($newOrders as $newOrder)
 {
