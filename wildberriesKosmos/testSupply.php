@@ -27,7 +27,7 @@ foreach ($supplies as $supply)
 		break;
 	}
 
-echo 'supplyOpen - ' . json_encode ($supplyOpen, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+echo 'supplies - ' . json_encode ($supplies, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 return;
 
 if ($supplyOpen === null)
