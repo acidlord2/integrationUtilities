@@ -27,6 +27,7 @@ foreach ($supplies as $supply)
 		break;
 	}
 
+echo 'supplyOpen - ' . json_encode ($supplyOpen, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 $logger->write (__LINE__ . ' supplyOpen - ' . json_encode ($supplyOpen, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 return;
 
