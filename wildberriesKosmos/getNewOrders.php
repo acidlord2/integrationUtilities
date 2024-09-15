@@ -7,7 +7,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Supplies.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 
-$c = new \Classes\Common\Log('wildberriesKosmos - getNewOrders.log');
+$logger = new \Classes\Common\Log('wildberriesKosmos - getNewOrders.log');
 
 $startDate = date('Y-m-d', strtotime('-2 days')) . 'T00:00:00.000+03:00';
 $endDate = NULL;
