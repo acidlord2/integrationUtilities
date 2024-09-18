@@ -14,7 +14,7 @@ class ParsePrices
 	private $data;
 	private $log;
 	
-	private $priceTypes = ['4kl.', 'Ромашка', '10kids', 'Ulloza', 'Сбер/10kids', 'Сбер/MsKOREA', 'Юлло', 'Каори', 'Альянс'];
+	private $priceTypes = ['4kl.', 'Ромашка', '10kids', 'Ulloza', 'Сбер/10kids', 'Сбер/MsKOREA', 'Юлло', 'Каори', 'Альянс', 'WB'];
 	public function getFileInfo ()
 	{
 		return $this->fileInfo;
