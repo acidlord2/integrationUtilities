@@ -32,7 +32,7 @@ foreach ($productsMS as $product)
     //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     $data[] = array (
         'sku' => $productCodes[$product['code']],
-        'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 3
+        'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 2
         //'stock' => 0,
     );
     $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
