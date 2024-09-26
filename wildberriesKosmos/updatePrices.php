@@ -2,7 +2,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Products.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-$log = new \Classes\Common\Log ('wildberriesKaori - updatePrices.log');
+$log = new \Classes\Common\Log ('wildberriesKosmos - updatePrices.log');
 
 $productsWBclass = new \Classes\Wildberries\v1\Products('Kosmos');
 $productsWB = $productsWBclass->getCardsList();
