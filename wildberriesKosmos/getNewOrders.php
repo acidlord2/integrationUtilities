@@ -149,7 +149,7 @@ foreach ($newOrders as $newOrder)
 		$file = array(
 			array(
 				'filename' => $stickers['stickers'][0]['orderId'] . '.png',
-				'content' => $stickers['stickers'][0]['content']
+				'content' => $stickers['stickers'][0]['file']
 			)
 		);
 	}
