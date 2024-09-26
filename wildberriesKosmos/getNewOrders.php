@@ -208,7 +208,6 @@ foreach ($newOrders as $newOrder)
 		'positions' => $positions,
 		'attributes' => $attributes
 	);
-	break;
 }
 if (count($newOrdersMS) > 0)
 	$ordersMSClass->createCustomerorder($newOrdersMS);
