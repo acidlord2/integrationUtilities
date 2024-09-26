@@ -176,7 +176,7 @@ foreach ($newOrders as $newOrder)
 				'mediaType' => 'application/json'
 			)
 		),
-		'files' => $file,
+		'files' => isset($file) ? $file : null,
 		'state' => array(
 			'meta' => array(
 			    'href' => MS_MPNEW_STATE,
