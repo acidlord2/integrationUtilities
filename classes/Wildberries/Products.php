@@ -57,12 +57,16 @@ class Products
 	public function setPrices($data)
 	{
 	    $this->log->write(__LINE__ . ' setPrices.data - ' . json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-	    $url = WB_API_BASE_URL . WB_API_PRICES;
+	    $url = WB_API_PRICES_API . WB_API_PRICES;
 	    $return = array();
-	    foreach (array_chunk($data, 1000) as $chunk)
+	    foreach (array_chunk($$data['data'], 1000) as $chunk)
 	    {
-	        $arrayOut = $this->apiWBClass->postData($url, $chunk);
-	        $return = array_merge($return, $arrayOut);
+	        $postData = array(
+				'data' => $chunk
+			);
+			$response = $this->apiWBClass->postData($url, $postData);
+	        if(!empty($response))
+				$return = array_merge($return, $response);
 	    }
 	    
 	    $this->log->write(__LINE__ . ' setPrices.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
