@@ -343,6 +343,7 @@
 	//sbermegamarket
 	define('SBMM_TESTMODE', false);
 	define('SBMM_SHOP', '4824');
+	define('SBMM_SHOP_ULLOZZA', '15052');
 	define('SBMM_SHOP_AST1', '129040');
 	define('SBMM_SHOP_AST2', '129610');
 	define('SBMM_SHOP_AST3', '136309');
