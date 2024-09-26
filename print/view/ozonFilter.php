@@ -36,8 +36,8 @@
 			Всего заказов: <b id = "ordersCount">0</b>
 			Распечатано стикеров: <b id = "printedStickerCount">0</b>
 			Распечатано владышей: <b id = "printedInvoiceCount">0</b>
-			<button type="button" id = "printStickerButton" onclick="printSticker()">Распечатать следующие 40 стикеров</button>
-			<button type="button" id = "printInvoiceButton" onclick="printInvoice()">Распечатать следующие 40 вкладышей</button>
+			<button type="button" id = "printStickerButton" onclick="printSticker()">Распечатать следующие 20 стикеров</button>
+			<button type="button" id = "printInvoiceButton" onclick="printInvoice()">Распечатать следующие 20 вкладышей</button>
 		</div>
 		<table id="orderTableHead">
 			<colgroup>

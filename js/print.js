@@ -5,7 +5,7 @@ async function printSticker(productClass) {
 	var org = document.getElementById("org").value
 	var t = 0;
 	var orderclass = 0;
-	for (var i=0; i < checkboxes.length && t < 30; i++) {
+	for (var i=0; i < checkboxes.length && t < 20; i++) {
 		if (!checkboxes[i].checked) {
 			if (orderclass == 0)
 				orderclass = checkboxes[i].getAttribute ('orderclass');
@@ -61,7 +61,7 @@ async function printInvoice(productClass) {
 	var agent = url.searchParams.get("agent");
 	var t = 0;
 	var orderclass = 0;
-	for (var i=0; i < checkboxes.length && t < 30; i++) {
+	for (var i=0; i < checkboxes.length && t < 20; i++) {
 		if (!checkboxes[i].checked) {
 			if (orderclass == 0)
 				orderclass = checkboxes[i].getAttribute ('orderclass');

@@ -34,9 +34,9 @@
 				?>
 				<span style="float:right;">
 					<?php if ($agent == 'Ozon' || $org == 'aruba') { ?>
-						<button type="button" id = "printStickerButton" onclick="printSticker(<?php echo $order['class']; ?>)">Печать стикеров (по 40 шт)</button>
+						<button type="button" id = "printStickerButton" onclick="printSticker(<?php echo $order['class']; ?>)">Печать стикеров (по 20 шт)</button>
 					<?php } ?>
-					<button type="button" id = "printInvoiceButton" onclick="printInvoice(<?php echo $order['class']; ?>)">Печать вкладышей (по 40 шт)</button>
+					<button type="button" id = "printInvoiceButton" onclick="printInvoice(<?php echo $order['class']; ?>)">Печать вкладышей (по 20 шт)</button>
 					<button type="button" id = "changeStatus" onclick="changeStatus(<?php echo $order['class']; ?>)">Изменить статус</button>
 				</span>
 			</td>
