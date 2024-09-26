@@ -127,8 +127,8 @@ foreach ($newOrders as $newOrder)
 		)
 	);
 	// get sticker
-	$sticker = $ordersWBClass->getStickers(array($newOrder['id']));
-	if (isset($stickers[0]))
+	$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
+	if (isset($stickers['stickers'][0]))
 	{
 		$attributes[3] = array(
 			'meta' => array (
@@ -136,7 +136,7 @@ foreach ($newOrders as $newOrder)
 				'type' => 'attributemetadata',
 				'mediaType' => 'application/json'
 			),
-			'value' => (string)$stickers[0]['barcode']
+			'value' => (string)$stickers['stickers'][0]['barcode']
 		);
 		$attributes[4] = array(
 			'meta' => array (
@@ -144,12 +144,12 @@ foreach ($newOrders as $newOrder)
 				'type' => 'attributemetadata',
 				'mediaType' => 'application/json'
 			),
-			'value' => $stickers[0]['partA'] . '-' . $stickers[0]['partB']
+			'value' => $stickers['stickers'][0]['partA'] . '-' . $stickers['stickers'][0]['partB']
 		);
 		$file = array(
 			array(
-				'filename' => $stickers[0]['orderId'] . '.png',
-				'content' => $stickers[0]['content']
+				'filename' => $stickers['stickers'][0]['orderId'] . '.png',
+				'content' => $stickers['stickers'][0]['content']
 			)
 		);
 	}
