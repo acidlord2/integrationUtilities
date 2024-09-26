@@ -66,20 +66,20 @@
 
 	define('MS_MPCANCEL_ATTR', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/attributes/05d3f45a-518d-11e9-9109-f8fc000a2635');
 	define('MS_MPCANCEL_ATTR_ID', '05d3f45a-518d-11e9-9109-f8fc000a2635');
-	define('MS_BARCODE_ATTR', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/attributes/51ec2167-e895-11e8-9ff4-31500000db84');
-	define('MS_BARCODE_ATTR_ID', '51ec2167-e895-11e8-9ff4-31500000db84');
+	define('MS_BARCODE_ATTR', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/attributes/51ec2167-e895-11e8-9ff4-31500000db84');//штрихкод
+	define('MS_BARCODE_ATTR_ID', '51ec2167-e895-11e8-9ff4-31500000db84');//штрихкод
 	
 	define('MS_ATTR', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/attributes/');
 	define('MS_DELIVERY_ATTR', '5c01b362-d61f-11e8-9107-504800214d3f');
 	define('MS_DELIVERYTIME_ATTR', '1f394750-d62e-11e8-9ff4-3150002139c8');
 	define('MS_DELIVERYSERVICE_ATTR', 'e8df1e60-b268-11ea-0a80-052600006e80');
-	define('MS_DELIVERYNUMBER_ATTR', '63012e3e-e791-11e8-9109-f8fc000cf9e1');
+	define('MS_DELIVERYNUMBER_ATTR', '63012e3e-e791-11e8-9109-f8fc000cf9e1'); //номер доставки
 	define('MS_PAYMENTTYPE_ATTR', '2ada6f00-d623-11e8-9109-f8fc0021e4d1');
 	define('MS_FIO_ATTR', 'd948e4fe-d621-11e8-9ff4-34e80021aea5');
 	define('MS_PHONE_ATTR', '5f9f5c95-d622-11e8-9ff4-34e80021bc5f');
 	define('MS_ADDRESS_ATTR', 'b73f3a67-d62e-11e8-9109-f8fc002175da');
 	define('MS_CANCEL_ATTR', '05d3f45a-518d-11e9-9109-f8fc000a2635');
-	define('MS_BARCODE2_ATTR', '51ec2167-e895-11e8-9ff4-31500000db84');
+	define('MS_BARCODE2_ATTR', '51ec2167-e895-11e8-9ff4-31500000db84'); //штрихкод
 	define('MS_PLACECOUNT_ATTR', '5f9f614a-d622-11e8-9ff4-34e80021bc61');
 	define('MS_MPAMOUNT_ATTR', '4f44dd34-decb-11e8-9ff4-34e8000b2f2d');
 	define('MS_PAIDBYMP_ATTR', 'ce57828b-81f9-11ec-0a80-09a4003763ff');
@@ -334,7 +334,8 @@
 	define('WB_API_PRICES', 'api/v2/upload/task');
 	define('WB_API_STOCKS', 'api/v3/stocks');
 	define('WB_API_DISCOUNTS', 'public/api/v1/updateDiscounts');
-	define('WB_API_ORDERS', 'api/v2/orders');
+	define('WB_API_ORDERS', 'api/v3/orders');
+	define('WB_API_STICKERS', 'stickers?type=png&width=58&height=40');
 	
 	define('WB_WAREHOUSE', 3299);
 	define('WB_WAREHOUSE_KOSMOS', 1073256);

@@ -58,6 +58,19 @@ class Orders
 	    $this->log->write(__LINE__ . ' changeOrdersStatus.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	    return $return;
 	}
+
+	public function getStickers($ordersID)
+	{
+	    $url = WB_API_MARKETPLACE_API . WB_API_ORDERS . '/' . WB_API_STICKERS;
+	    $this->log->write(__LINE__ . ' getStickers.url - ' . $url);
+	    $this->log->write(__LINE__ . ' getStickers.ordersID - ' . json_encode($ordersID, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+	    $postData = array(
+	        'orders' => $ordersID
+	    );
+		$response = $this->apiWBClass->postData($url, $postData);
+	    $this->log->write(__LINE__ . ' getStickers.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+	    return $response;
+	}
 	
 }
 

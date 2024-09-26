@@ -61,6 +61,8 @@ foreach ($newOrders as $newOrder)
 		continue;
 	}
 	
+	$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
+	
 	$positions = array();
 
 	$productMS = $productMSClass->findProductsByCode($newOrder['article']);
@@ -77,7 +79,81 @@ foreach ($newOrders as $newOrder)
 	$positions[] = $position;
 		
 	$date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $newOrder['createdAt']);
-	
+	$attributes = array(
+		// тип оплаты
+		0 => array(
+			'meta' => array (
+				'href' => MS_ATTR . MS_PAYMENTTYPE_ATTR,
+				'type' => 'attributemetadata',
+				'mediaType' => 'application/json'
+			),
+			'value' => array(
+				'meta' => array(
+					'href' => MS_PAYMENTTYPE_SBERBANK_ONLINE,
+					'type' => 'customentity',
+					'mediaType' => 'application/json'
+				)
+			)
+		),
+		// время доставки
+		1 => array(
+			'meta' => array (
+				'href' => MS_ATTR . MS_DELIVERYTIME_ATTR,
+				'type' => 'attributemetadata',
+				'mediaType' => 'application/json'
+			),
+			'value' => array(
+				'meta' => array(
+					'href' => MS_DELIVERYTIME_9_21,
+					'type' => 'customentity',
+					'mediaType' => 'application/json'
+				)
+			)
+		),
+		// способ доставки
+		2 => array(
+			'meta' => array (
+				'href' => MS_ATTR . MS_DELIVERY_ATTR,
+				'type' => 'attributemetadata',
+				'mediaType' => 'application/json'
+			),
+			'value' => array(
+				'meta' => array(
+					'href' => MS_DELIVERY_VALUE_WB,
+					'type' => 'customentity',
+					'mediaType' => 'application/json'
+				)
+			)
+		)
+	);
+	// get sticker
+	$sticker = $ordersWBClass->getStickers(array($newOrder['id']));
+	if (isset($stickers[0]))
+	{
+		$attributes[3] = array(
+			'meta' => array (
+				'href' => MS_ATTR . MS_BARCODE_ATTR_ID,
+				'type' => 'attributemetadata',
+				'mediaType' => 'application/json'
+			),
+			'value' => (string)$stickers[0]['barcode']
+		);
+		$attributes[4] = array(
+			'meta' => array (
+				'href' => MS_ATTR . MS_DELIVERYNUMBER_ATTR,
+				'type' => 'attributemetadata',
+				'mediaType' => 'application/json'
+			),
+			'value' => $stickers[0]['partA'] . '-' . $stickers[0]['partB']
+		);
+		$file = array(
+			array(
+				'filename' => $stickers[0]['orderId'] . '.png',
+				'content' => $stickers[0]['content']
+			)
+		);
+	}
+
 	$newOrdersMS[] = array(
 		'name' => 'WB' . (string)$newOrder['id'],
 		'organization' => array (
@@ -100,6 +176,7 @@ foreach ($newOrders as $newOrder)
 				'mediaType' => 'application/json'
 			)
 		),
+		'files' => $file,
 		'state' => array(
 			'meta' => array(
 			    'href' => MS_MPNEW_STATE,
@@ -129,66 +206,9 @@ foreach ($newOrders as $newOrder)
 			)
 		),
 		'positions' => $positions,
-		'attributes' => array(
-			// тип оплаты
-			0 => array(
-				'meta' => array (
-					'href' => MS_ATTR . MS_PAYMENTTYPE_ATTR,
-					'type' => 'attributemetadata',
-					'mediaType' => 'application/json'
-				),
-				'value' => array(
-					'meta' => array(
-						'href' => MS_PAYMENTTYPE_SBERBANK_ONLINE,
-						'type' => 'customentity',
-						'mediaType' => 'application/json'
-					)
-				)
-			),
-			// время доставки
-			1 => array(
-				'meta' => array (
-					'href' => MS_ATTR . MS_DELIVERYTIME_ATTR,
-					'type' => 'attributemetadata',
-					'mediaType' => 'application/json'
-				),
-				'value' => array(
-					'meta' => array(
-						'href' => MS_DELIVERYTIME_9_21,
-						'type' => 'customentity',
-						'mediaType' => 'application/json'
-					)
-				)
-			),
-			// способ доставки
-			2 => array(
-				'meta' => array (
-					'href' => MS_ATTR . MS_DELIVERY_ATTR,
-					'type' => 'attributemetadata',
-					'mediaType' => 'application/json'
-				),
-				'value' => array(
-					'meta' => array(
-					    'href' => MS_DELIVERY_VALUE_WB,
-						'type' => 'customentity',
-						'mediaType' => 'application/json'
-					)
-				)
-			),
-			// штрихкод
-			3 => array(
-				'meta' => array (
-					'href' => MS_ATTR . MS_BARCODE2_ATTR,
-					'type' => 'attributemetadata',
-					'mediaType' => 'application/json'
-				),
-				'value' => (string)$newOrder['id']
-			)
-		)
+		'attributes' => $attributes
 	);
-	
-	$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
-	
+	break;
 }
 if (count($newOrdersMS) > 0)
 	$ordersMSClass->createCustomerorder($newOrdersMS);
