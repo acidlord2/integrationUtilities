@@ -11,7 +11,7 @@
 
 	$log = new Log('sbmm-ullozza - updatePricesStock.log');
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, 'https://4cleaning.ru/index.php?route=extension/feed/sbmmast1');
+	curl_setopt($ch, CURLOPT_URL, 'https://4cleaning.ru/index.php?route=extension/feed/sbmmUllo');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
