@@ -59,7 +59,7 @@ class Products
 	    $this->log->write(__LINE__ . ' setPrices.data - ' . json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	    $url = WB_API_PRICES_API . WB_API_PRICES;
 	    $return = array();
-	    foreach (array_chunk($$data['data'], 1000) as $chunk)
+	    foreach (array_chunk($data['data'], 1000) as $chunk)
 	    {
 	        $postData = array(
 				'data' => $chunk
