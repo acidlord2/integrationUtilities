@@ -33,7 +33,8 @@ foreach ($productsMS as $product)
     if ((int)($product['salePrices'][$priceKey]['value'])){
         $data[] = array (
             'nmId' => $productCodes[$product['code']],
-            'price' => $product['salePrices'][$priceKey]['value'] / 100
+            'price' => $product['salePrices'][$priceKey]['value'] / 100,
+            'discount' => 0
         );
     }
 	else
