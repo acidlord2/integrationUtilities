@@ -62,10 +62,10 @@
 		$filter .= 'deliveryPlannedMoment%3E=' . $shippingDate . '%2000:00:00;';
 		$filter .= 'deliveryPlannedMoment%3C=' . $shippingDate . '%2023:59:59;';
 		
-		if ($agent == 'Curiers')
-		{
+		if ($agent == 'Curiers') {
 		    $filter .= 'state=' . MS_CONFIRM_STATE . ';';
-		    
+		} else if ($agent == 'WB') {
+			$filter .= 'state=' . MS_MPNEW_STATE . ';';
 		} else {
 		    $filter .= 'state=' . MS_CONFIRMGOODS_STATE . ';';
 		}
