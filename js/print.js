@@ -2,6 +2,7 @@ async function printSticker(productClass) {
 	showLoad('Загрузка данных... подождите пару секунд...');
 	var postData = [];
 	var org = document.getElementById("org").value
+	var url = new URL(location);
 	var agent = url.searchParams.get("agent");
 	var checkboxes = document.getElementsByName ('msCheckbox' + productClass);
 	if (agent == "WB") {
