@@ -25,7 +25,7 @@
 			$filter .= 'agent=' . MS_OZON_AGENT . ';';
 		if ($agent == 'Ali')
 			$filter .= 'agent=' . MS_ALI_AGENT . ';';
-		if ($agent == 'Wildberries')
+		if ($agent == 'WB')
 			$filter .= 'agent=' . MS_WB_AGENT . ';';
 		if ($agent == 'Curiers')
 		    $filter .= 'project=' . MS_PROJECT_4CLEANING . ';project=' . MS_PROJECT_10KIDS . ';project=' . MS_PROJECT_YANDEX_DBS . ';project=' . MS_PROJECT_YANDEX_DBS . ';project=' . MS_PROJECT_MSKOREA . ';';
@@ -56,6 +56,8 @@
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 		if ($org == 'vysota')
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_VYSOTA . ';';
+		if ($org == 'Kosmos')
+	        $filter .= 'project=' . MS_PROJECT_WB . ';';
 			        
 		$filter .= 'deliveryPlannedMoment%3E=' . $shippingDate . '%2000:00:00;';
 		$filter .= 'deliveryPlannedMoment%3C=' . $shippingDate . '%2023:59:59;';

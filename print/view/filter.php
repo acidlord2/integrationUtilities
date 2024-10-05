@@ -6,7 +6,7 @@
 			<?php if ($agent == 'Beru') { ?>Яндекс<?php } ?>
 			<?php if ($agent == 'Goods') { ?>Сбермегамаркет<?php } ?>
 			<?php if ($agent == 'Ali') { ?>Алиэкспресс<?php } ?>
-			<?php if ($agent == 'Wildberries') { ?>Wildberries<?php } ?>
+			<?php if ($agent == 'WB') { ?>Wildberries<?php } ?>
 			<?php if ($agent == 'Curiers') { ?>для заказов с сайтов<?php } ?>
 		</div>
 		<div style="margin-bottom: 13px; margin-top: 14px;"> 
@@ -43,9 +43,10 @@
 						<option value="Ullo" <?php echo $org=='Ullo' ? 'selected' : ''; ?>>Юлло</option>
 					</select>
 				<?php } ?>
-				<?php if ($agent == 'Wildberries') { ?>
-					<select id="org" value="Kaori" disabled>
-						<option value="Kaori" selected>Каори</option>
+				<?php if ($agent == 'WB') { ?>
+					<select id="org" value="Kosmos">
+						<option value="Kosmos" <?php echo $org=='Kosmos' ? 'selected' : ''; ?>>Юлло</option>
+						<option value="Kaori" <?php echo $org=='Kaori' ? 'selected' : ''; ?>>Юлло</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Curiers') { ?>
@@ -59,14 +60,14 @@
 		</div>
 		<div style="margin-bottom: 5px; margin-top: 5px;"> 
 			Всего заказов: <b id = "ordersCount">0</b>
-			<?php if ($agent == 'Ozon' || $org == 'aruba') { ?>
+			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
 				Распечатано стикеров: <b id = "printedStickerCount">0</b>
 			<?php } ?>
 			Распечатано вкладышей: <b id = "printedInvoiceCount">0</b>
 		</div>
 		<table id="orderTableHead" class="tableBig">
 			<colgroup>
-				<?php if ($agent == 'Ozon' || $org == 'aruba') { ?>
+				<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][0]; ?>;">
 				<?php } ?>
 				<col span="1" style="width: <?php echo $_SESSION['colWidth'][1]; ?>;">
@@ -82,7 +83,7 @@
 			</colgroup>
 			<thead>
 				<tr id = "table_header">
-					<?php if ($agent == 'Ozon' || $org == 'aruba') { ?>
+					<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
 						<th>OZ</th>
 					<?php } ?>
 					<th>MS</th>
@@ -101,7 +102,7 @@
 	</div>
 	<table id="orderTableBody">
 		<colgroup>
-			<?php if ($agent == 'Ozon' || $org == 'aruba') { ?>
+			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
 				<col span="1" style="width: <?php echo $_SESSION['colWidth'][0]; ?>;">
 			<?php } ?>
 			<col span="1" style="width: <?php echo $_SESSION['colWidth'][1]; ?>;">
