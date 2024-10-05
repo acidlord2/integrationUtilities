@@ -152,7 +152,7 @@ foreach ($newOrders as $newOrder)
 				'type' => 'attributemetadata',
 				'mediaType' => 'application/json'
 			),
-			'value' => array(
+			'file' => array(
 				'filename' => $stickers['stickers'][0]['orderId'] . '.png',
 				'content' => $stickers['stickers'][0]['file']
 			)
