@@ -1,8 +1,14 @@
 async function printSticker(productClass) {
 	showLoad('Загрузка данных... подождите пару секунд...');
-	var checkboxes = document.getElementsByName ('ozonCheckbox' + productClass);
 	var postData = [];
 	var org = document.getElementById("org").value
+	var agent = url.searchParams.get("agent");
+	var checkboxes = document.getElementsByName ('msCheckbox' + productClass);
+	if (agent == "WB") {
+		var checkboxes2 = document.getElementsByName ('msCheckbox' + productClass);
+	} else {
+		var checkboxes2 = document.getElementsByName ('ozonCheckbox' + productClass);
+	}
 	var t = 0;
 	var orderclass = 0;
 	for (var i=0; i < checkboxes.length && t < 20; i++) {
@@ -11,7 +17,7 @@ async function printSticker(productClass) {
 				orderclass = checkboxes[i].getAttribute ('orderclass');
 			if (orderclass != checkboxes[i].getAttribute ('orderclass'))
 				break;
-			postData.push (checkboxes[i].id.substring(2));
+			postData.push (checkboxes2[i].id.substring(2));
 			checkboxes[i].checked = true;
 			t++;
 		};
