@@ -7,6 +7,7 @@
 	$postingNumbers = file_get_contents('php://input');
 	$logger -> write (__LINE__ . ' postingNumbers - ' . $postingNumbers);
 	$org = $_REQUEST["org"];
+	$agent = $_REQUEST["agent"];
 	$count = $_REQUEST["count"];
 	
 	//$postData = array ('posting_number' => json_decode ($postingNumbers, true));
