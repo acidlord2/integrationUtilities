@@ -60,14 +60,14 @@
 		</div>
 		<div style="margin-bottom: 5px; margin-top: 5px;"> 
 			Всего заказов: <b id = "ordersCount">0</b>
-			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
+			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB') { ?>
 				Распечатано стикеров: <b id = "printedStickerCount">0</b>
 			<?php } ?>
 			Распечатано вкладышей: <b id = "printedInvoiceCount">0</b>
 		</div>
 		<table id="orderTableHead" class="tableBig">
 			<colgroup>
-				<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
+				<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB') { ?>
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][0]; ?>;">
 				<?php } ?>
 				<col span="1" style="width: <?php echo $_SESSION['colWidth'][1]; ?>;">
@@ -83,8 +83,11 @@
 			</colgroup>
 			<thead>
 				<tr id = "table_header">
-					<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
+					<?php if ($agent == 'Ozon' || $org == 'aruba') { ?>
 						<th>OZ</th>
+					<?php } ?>
+					<?php if ($agent == 'WB') { ?>
+						<th>WB</th>
 					<?php } ?>
 					<th>MS</th>
 					<th>Номер заказа</th>
@@ -102,7 +105,7 @@
 	</div>
 	<table id="orderTableBody">
 		<colgroup>
-			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'Wildberries') { ?>
+			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB') { ?>
 				<col span="1" style="width: <?php echo $_SESSION['colWidth'][0]; ?>;">
 			<?php } ?>
 			<col span="1" style="width: <?php echo $_SESSION['colWidth'][1]; ?>;">
