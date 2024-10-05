@@ -28,8 +28,8 @@
 				"verify_peer_name"=>false,
 			),
 		);
-		
-		foreach (json_decode ($postingNumbers, true) as $id)
+		$idsArray = json_decode ($postingNumbers, true);
+		foreach ($idsArray as $id)
 		{
 			$url = ReportsMS::printReport ($id, 'customerorder', $report['meta']);
 			$pdf = file_get_contents ($url, false, stream_context_create($arrContextOptions));
@@ -38,12 +38,12 @@
 		
 		$cmd = "gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=files/printData.pdf ";
 		//Add each pdf file to the end of the command
-		foreach(json_decode ($postingNumbers, true) as $id) {
+		foreach($idsArray as $id) {
 			$cmd .= 'files/' . $id . '.pdf' . ' ';
 		}
 		$result = shell_exec($cmd);
 	
-		foreach(json_decode ($postingNumbers, true) as $id)
+		foreach($idsArray as $id)
 			unlink('files/' . $id . '.pdf');
 		
 		echo "files/printData.pdf";
