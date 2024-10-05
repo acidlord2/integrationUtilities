@@ -20,7 +20,7 @@
 		echo OrdersOzon::getOrderLabel (json_decode ($postingNumbers, true), $count, false);
 	}
 	else if ($agent == 'WB') {
-		$report = ReportsMS::findReportByName ('customerorder', 'Товарный чек WB');
+		$report = ReportsMS::findReportByName ('customerorder', 'Стикер WB');
 		$files = array();
 		$arrContextOptions = array(
 			"ssl"=>array(
