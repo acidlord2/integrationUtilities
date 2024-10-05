@@ -46,7 +46,7 @@
 		}
 ?>
 		<tr id = "<?php echo $order['id']; ?>">
-			<?php if ($agent == 'Ozon' || $org == 'aruba') { ?>
+			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB') { ?>
 				<td style = "text-align: center"><input type="checkbox" orderclass=<?php echo $order['class']; ?> id="oz<?php echo $order['name']; ?>" name = "ozonCheckbox<?php echo $order['class']; ?>" onChange="changeOzon()" disabled></td>
 			<?php } ?>
 			<td style = "text-align: center"><input type="checkbox" orderclass=<?php echo $order['class']; ?> id="ms<?php echo $order['id']; ?>" name = "msCheckbox<?php echo $order['class']; ?>" onChange="changeMS()" disabled></td>
