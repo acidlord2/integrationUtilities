@@ -30,7 +30,7 @@ async function printSticker(productClass) {
 	}
 
 	var json = JSON.stringify(postData);
-	var resp = await fetch("getLabels.php?org=" + org + "&count=" + (printStickerCount + 1),
+	var resp = await fetch("getLabels.php?org=" + org + "&count=" + (printStickerCount + 1) + "&agent=" + agent,
 	{
 		method: 'POST',
 		headers: {
