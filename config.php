@@ -83,6 +83,7 @@
 	define('MS_PLACECOUNT_ATTR', '5f9f614a-d622-11e8-9ff4-34e80021bc61');
 	define('MS_MPAMOUNT_ATTR', '4f44dd34-decb-11e8-9ff4-34e8000b2f2d');
 	define('MS_PAIDBYMP_ATTR', 'ce57828b-81f9-11ec-0a80-09a4003763ff');
+	define('MS_WB_FILE_ATTR', 'edac7e59-7c48-11ef-0a80-06b70001e22a');
 	
 	define('MS_DELIVERYTIME_9_21', 'https://api.moysklad.ru/api/remap/1.1/entity/customentity/e7a5f365-d62d-11e8-9107-50480021c6c8/e0460dd7-d62e-11e8-9ff4-34e8002207d8');
 	define('MS_DELIVERYTIME_9_21_ID', 'e0460dd7-d62e-11e8-9ff4-34e8002207d8');

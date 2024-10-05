@@ -146,8 +146,13 @@ foreach ($newOrders as $newOrder)
 			),
 			'value' => $stickers['stickers'][0]['partA'] . '-' . $stickers['stickers'][0]['partB']
 		);
-		$file = array(
-			array(
+		$attributes[5] = array(
+			'meta' => array (
+				'href' => MS_ATTR . MS_WB_FILE_ATTR,
+				'type' => 'attributemetadata',
+				'mediaType' => 'application/json'
+			),
+			'value' => array(
 				'filename' => $stickers['stickers'][0]['orderId'] . '.png',
 				'content' => $stickers['stickers'][0]['file']
 			)
@@ -176,7 +181,6 @@ foreach ($newOrders as $newOrder)
 				'mediaType' => 'application/json'
 			)
 		),
-		'files' => isset($file) ? $file : null,
 		'state' => array(
 			'meta' => array(
 			    'href' => MS_MPNEW_STATE,
