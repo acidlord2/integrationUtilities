@@ -29,7 +29,7 @@
 			),
 		);
 		
-		foreach ($idsArray as $id)
+		foreach (json_decode ($postingNumbers, true) as $id)
 		{
 			$url = ReportsMS::printReport ($id, 'customerorder', $report['meta']);
 			$pdf = file_get_contents ($url, false, stream_context_create($arrContextOptions));
