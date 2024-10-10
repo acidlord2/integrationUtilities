@@ -60,9 +60,7 @@ foreach ($newOrders as $newOrder)
 		$logger->write ('Already loaded - ' . $newOrder['id']);
 		continue;
 	}
-	
-	$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
-	
+		
 	$positions = array();
 
 	$productMS = $productMSClass->findProductsByCode($newOrder['article']);
@@ -214,8 +212,16 @@ foreach ($newOrders as $newOrder)
 		'attributes' => $attributes
 	);
 }
-if (count($newOrdersMS) > 0)
-	$ordersMSClass->createCustomerorder($newOrdersMS);
+if (count($newOrdersMS) > 0){
+	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
+	if($result != null && !isset($result['errors'])){
+		foreach ($newOrders as $newOrder){
+			$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
+		}
+	}
+
+}
+
 //if (count($changeStatus) > 0)
 //    $ordersWBClass->changeOrdersStatus($changeStatus);
 

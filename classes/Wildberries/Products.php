@@ -40,7 +40,7 @@ class Products
 	    while(true)
 		{
 			$response = $this->apiWBClass->postData($url, $postData);
-			$this->log->write(__LINE__ . ' getCardsList.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+			//$this->log->write(__LINE__ . ' getCardsList.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 			if (!isset($response['cards']) || !count($response['cards']))
 				break;
 			$return = array_merge($return, $response['cards']);
@@ -50,7 +50,7 @@ class Products
 			$postData['settings']['cursor']['updatedAt'] = $response['cursor']['updatedAt'];
 		}
 
-		$this->log->write(__LINE__ . ' getCardsList.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		//$this->log->write(__LINE__ . ' getCardsList.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		return $return;
 	}
 	

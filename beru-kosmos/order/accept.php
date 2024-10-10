@@ -13,7 +13,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiOrderCache.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-$logger = new Log('beru-vysota - order - accept.log'); //just passed the file name as file_name.log
+$logger = new Log('beru-kosmos - order - accept.log'); //just passed the file name as file_name.log
 $logger->write(__LINE__ . ' _GET - ' . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 // check auth-token
@@ -86,7 +86,7 @@ $fakeOrder = isset ($data['order']['fake']) ? (bool)$data['order']['fake'] : fal
 $order_data['name'] = (string)$data['order']['id'];
 $order_data['organization'] = array(
     'meta' => array(
-        'href' => MS_VYSOTA,
+        'href' => MS_KOSMOS,
         'type' => 'organization',
         'mediaType' => 'application/json'
     )
@@ -140,14 +140,14 @@ $order_data['store'] = array(
 
 $order_data['project'] = array(
     'meta' => array(
-        'href' => MS_PROJECT_YANDEX_VYSOTA,
+        'href' => MS_PROJECT_YANDEX_KOSMOS,
         'type' => 'project',
         'mediaType' => 'application/json'
     )
 );
 
-$order_data['vatEnabled'] = true;
-$order_data['vatIncluded'] = true;
+$order_data['vatEnabled'] = false;
+$order_data['vatIncluded'] = false;
 $order_data['attributes'] = array();
 
 // способ доставки
@@ -201,15 +201,15 @@ $productClass = new ProductsMS();
 
 foreach ($data['order']['items'] as $item)
 {
-    if ($item['vat'] == 'VAT_10' || $item['vat'] == 'VAT_10_110') {
-        $vat = 10;
-    }
-    else if ($item['vat'] == 'VAT_20' || $item['vat'] == 'VAT_20_120') {
-        $vat = 20;
-    }
-    else {
-        $vat = 0;
-    }
+    // if ($item['vat'] == 'VAT_10' || $item['vat'] == 'VAT_10_110') {
+    //     $vat = 10;
+    // }
+    // else if ($item['vat'] == 'VAT_20' || $item['vat'] == 'VAT_20_120') {
+    //     $vat = 20;
+    // }
+    // else {
+    $vat = 0;
+    // }
     
     $product = $productClass->findProductsByCode($item['offerId']);
     if (isset($product[0]))
