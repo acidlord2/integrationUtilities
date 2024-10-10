@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex2.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
-$skuYandexClass = new SkuYandex2(BERU_API_VYSOTA_CAMPAIGN, BERU_API_VYSOTA_BUSINESS_ID);
+$skuYandexClass = new SkuYandex2(BERU_API_KOSMOS_CAMPAIGN, BERU_API_KOSMOS_BUSINESS);
 $productsClass = new ProductsMS();
 
 $skus = $skuYandexClass->offerMappings();
@@ -22,7 +22,7 @@ foreach ($skus as $key => $sku)
         {
             $data['skus'][] = array(
                 'sku' => $assortment['code'],
-                'warehouseId' => BERU_API_VYSOTA_WAREHOUSE,
+                'warehouseId' => BERU_API_KOSMOS_WAREHOUSE,
                 'items' => array(
                     0 => array(
                         'type' => 'FIT',
