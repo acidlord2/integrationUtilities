@@ -264,6 +264,8 @@
 	define('MS_PROJECT_SBMM_AST5_ID', '4216ef3e-1c13-11ef-0a80-08aa003df3c1');
 	define('MS_PROJECT_SBMM_AST6', 'https://api.moysklad.ru/api/remap/1.2/entity/project/45e41546-1d40-11ef-0a80-0b0a0002542f');
 	define('MS_PROJECT_SBMM_AST6_ID', '45e41546-1d40-11ef-0a80-0b0a0002542f');
+	define('MS_PROJECT_YANDEX_KOSMOS', 'https://api.moysklad.ru/api/remap/1.2/entity/project/d2085d76-874e-11ef-0a80-070300359321');
+	define('MS_PROJECT_YANDEX_KOSMOS_ID', 'd2085d76-874e-11ef-0a80-070300359321');
 	
 	//Ozon
 	define('OZON_TESTMODE', false);
