@@ -9,7 +9,8 @@ class APIYandex2
 {
 	private $log;
 	
-	private $auth_token;
+	private $oauth_token;
+	private $campaign;
 
 	public function __construct($campaign)
 	{
@@ -20,17 +21,17 @@ class APIYandex2
         $this->campaign = $campaign;
 		$this->log = new Log('classes - Yandex - apiYandex2.log');
 		
-		if (!$this->auth_token)
+		if (!$this->oauth_token)
 		{
 		    // Fetch parameter beru_oauth_token
-		    $result = Db::exec_query_array ("select value from settings where code = 'beru_auth_token_" . $campaign . "'");
+		    $result = Db::exec_query_array ("select value from settings where code = 'beru_oauth_token_" . $campaign . "'");
 		    //$this->log->write(__LINE__ . ' result - ' . json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		    
 		    if (count ($result)) {
-		        $this->auth_token = $result[0]['value'];
+		        $this->oauth_token = $result[0]['value'];
 		    }
 		    else {
-		        $this->log->write(__LINE__ . 'No settings parameter beru_auth_token_' . $campaign);
+		        $this->log->write(__LINE__ . 'No settings parameter beru_oauth_token_' . $campaign);
 		    }	
 		}
 	}	
@@ -42,7 +43,7 @@ class APIYandex2
 	    // REST Header
 	    $curl_post_headerberu = array (
 	        'Content-type: application/json',
-	        'Api-Key: ' . $this->auth_token
+	        'Api-Key: ' . $this->oauth_token
 	    );
 	    
 	    $this->log->write(__LINE__ . ' getData.curl_post_headerberu - ' . json_encode($curl_post_headerberu, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
@@ -76,7 +77,7 @@ class APIYandex2
 	    // REST Header
 	    $curl_post_headerberu = array (
 	        'Content-type: application/json',
-	        'Api-Key: ' . $this->auth_token
+	        'Api-Key: ' . $this->oauth_token
 	    );
 	    
 	    $this->log->write(__LINE__ . ' getData.curl_post_headerberu - ' . json_encode($curl_post_headerberu, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
@@ -109,7 +110,7 @@ class APIYandex2
 	    // REST Header
 		$curl_post_headerberu = array (
 				'Content-type: application/json', 
-				'Api-Key: ' . $this->auth_token
+				'Api-Key: ' . $this->oauth_token
 			);
 
 		$this->log->write(__LINE__ . ' putData.curl_post_headerberu - ' . json_encode($curl_post_headerberu, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
@@ -148,7 +149,7 @@ class APIYandex2
 	    // REST Header
 		$curl_post_headerberu = array (
 			'Content-type: application/json',
-	        'Api-Key: ' . $this->auth_token
+	        'Api-Key: ' . $this->oauth_token
 		);
 		
 		$this->log->write(__LINE__ . ' postData.curl_post_headerberu - ' . json_encode($curl_post_headerberu, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
