@@ -61,6 +61,7 @@ foreach ($newOrders as $newOrder)
 		continue;
 	}
 		
+	$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
 	$positions = array();
 
 	$productMS = $productMSClass->findProductsByCode($newOrder['article']);
@@ -214,12 +215,6 @@ foreach ($newOrders as $newOrder)
 }
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
-	if($result != null && !isset($result['errors'])){
-		foreach ($newOrders as $newOrder){
-			$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
-		}
-	}
-
 }
 
 //if (count($changeStatus) > 0)
