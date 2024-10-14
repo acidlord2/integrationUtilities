@@ -10,7 +10,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 	// check auth-token
-	if (isset($_GET['Authorization']) ? (string)$_GET['Authorization'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_KOSMOS_CAMPAIGN) : true)
+	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_KOSMOS_CAMPAIGN) : true)
 	{
 		header('HTTP/1.0 403 Forbidden');
 		echo 'You are forbidden!';
