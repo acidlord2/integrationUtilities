@@ -24,6 +24,7 @@
 						<option value="4cleaning" <?php echo $org=='4cleaning' ? 'selected' : ''; ?>>ИП Гюмюш</option>
 						<option value="alians" <?php echo $org=='alians' ? 'selected' : ''; ?>>Альянс</option>
 						<option value="vysota" <?php echo $org=='vysota' ? 'selected' : ''; ?>>Высота</option>
+						<option value="Kosmos" <?php echo $org=='Kosmos' ? 'selected' : ''; ?>>Космос</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Goods') { ?>
@@ -36,7 +37,6 @@
 						<option value="AST4" <?php echo $org=='AST4' ? 'selected' : ''; ?>>Акция 4 (Аполлон)</option>
 						<option value="AST5" <?php echo $org=='AST5' ? 'selected' : ''; ?>>Акция 5 (Плутон)</option>
 						<option value="AST6" <?php echo $org=='AST6' ? 'selected' : ''; ?>>Акция 6 (Высота)</option> -->
-						<option value="Kosmos" <?php echo $org=='Kosmos' ? 'selected' : ''; ?>>Космос</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Ali') { ?>

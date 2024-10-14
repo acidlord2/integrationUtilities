@@ -82,6 +82,7 @@
 								<option value="aruba" <?php echo $org=='aruba' ? ' selected' : ''; ?>>Доставка 2 часа</option>
 								<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
 								<option value="vysota" <?php echo $org=='vysota' ? ' selected' : ''; ?>>Высота</option>
+								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
 							</select>
 						</span>
 					<?php } ?>
@@ -111,7 +112,6 @@
 								<option value="ast4" <?php echo $org=='ast4' ? ' selected' : ''; ?>>Акция 4 (Аполлон)</option>
 								<option value="ast5" <?php echo $org=='ast5' ? ' selected' : ''; ?>>Акция 5 (Плутон)</option>
 								<option value="ast6" <?php echo $org=='ast6' ? ' selected' : ''; ?>>Акция 6 (Высота)</option> -->
-								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
 							</select>
 						</span>
 					<?php } ?>
