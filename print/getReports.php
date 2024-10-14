@@ -33,6 +33,9 @@
 	elseif ($agent == 'Beru' && $org == 'vysota') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек BERU VISOTA');
 	}
+	elseif ($agent == 'Beru' && $org == 'kosmos') {
+	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек BERU KOSMOS');
+	}
 	elseif ($agent == 'Goods' && $org == 'Kaori') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек SBERMEGAMARKET');
 	}

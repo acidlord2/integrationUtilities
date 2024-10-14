@@ -57,7 +57,7 @@
 		if ($org == 'vysota')
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_VYSOTA . ';';
 		if ($org == 'Kosmos')
-	        $filter .= 'project=' . MS_PROJECT_WB . ';';
+	        $filter .= 'organization=' . MS_KOSMOS . ';';
 			        
 		$filter .= 'deliveryPlannedMoment%3E=' . $shippingDate . '%2000:00:00;';
 		$filter .= 'deliveryPlannedMoment%3C=' . $shippingDate . '%2023:59:59;';

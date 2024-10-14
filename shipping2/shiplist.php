@@ -97,12 +97,13 @@
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
 								<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
-								<option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
+								<!-- <option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
 								<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
 								<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Комета)</option>
 								<option value="ast4" <?php echo $org=='ast4' ? ' selected' : ''; ?>>Акция 4 (Аполлон)</option>
 								<option value="ast5" <?php echo $org=='ast5' ? ' selected' : ''; ?>>Акция 5 (Плутон)</option>
-								<option value="ast6" <?php echo $org=='ast6' ? ' selected' : ''; ?>>Акция 6 (Высота)</option>
+								<option value="ast6" <?php echo $org=='ast6' ? ' selected' : ''; ?>>Акция 6 (Высота)</option> -->
+								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
 							</select>
 						</span>
 					<?php } ?>

@@ -92,6 +92,8 @@ class Orders
 			$agentFilter = 'agent=' . MS_BERU_AGENT . ';';
 		if ($agent == 'Ozon')
 			$agentFilter = 'agent=' . MS_OZON_AGENT . ';';
+		if ($agent == 'WB')
+			$agentFilter = 'agent=' . MS_WB_AGENT . ';';
 		if ($agent == 'Internal')
 			$agentFilter = 'agent%21=' . MS_GOODS_AGENT . ';agent%21=' . MS_BERU_AGENT . ';agent%21=' . MS_OZON_AGENT . ';';
 
@@ -114,7 +116,7 @@ class Orders
 			
 		
 		$orgFilter = '';
-		if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods')
+		if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods' || $agent == 'WB')
 		{
 			if ($org == 'ullo')
 				$orgFilter = 'organization=' . MS_ULLO . ';';
@@ -136,8 +138,8 @@ class Orders
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST6 . ';';
 			if ($org == 'alians')
 				$orgFilter = 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
-			if ($org == 'vysota')
-				$orgFilter = 'project=' . MS_PROJECT_YANDEX_VYSOTA . ';';
+			if ($org == 'kosmos')
+				$orgFilter = 'organization=' . MS_KOSMOS . ';';
 		}
 			
 		
