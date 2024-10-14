@@ -11,7 +11,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 			
 	// check auth-token
-	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_VYSOTA_CAMPAIGN) : true)
+	if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_KOSMOS_CAMPAIGN) : true)
 	{
 		header('HTTP/1.0 403 Forbidden');
 		echo 'You are forbidden!';
@@ -48,7 +48,6 @@
 	// prepare data order
 	$return = array();
 	$return['cart'] = array();
-	$return['cart']['taxSystem'] = 'PSN';
 	$return['cart']['items'] = array();
 
     $prodCodes = array_column ($data['cart']['items'], 'offerId');

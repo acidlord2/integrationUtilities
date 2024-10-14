@@ -17,7 +17,7 @@ $logger = new Log('beru-kosmos - order - accept.log'); //just passed the file na
 $logger->write(__LINE__ . ' _GET - ' . json_encode ($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 // check auth-token
-if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_VYSOTA_CAMPAIGN) : true)
+if (isset($_GET['auth-token']) ? (string)$_GET['auth-token'] != Settings::getSettingsValues('beru_auth_token_' . BERU_API_KOSMOS_CAMPAIGN) : true)
 {
 	header('HTTP/1.0 403 Forbidden');
 	echo 'You are forbidden!';
