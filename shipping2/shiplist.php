@@ -61,6 +61,7 @@
 						<option value="Goods" <?php echo $agent=='Goods' ? ' selected' : ''; ?>>Сбермегамаркет</option>
 						<option value="Beru" <?php echo $agent=='Beru' ? ' selected' : ''; ?>>Яндекс маркет</option>
 						<option value="Ozon" <?php echo $agent=='Ozon' ? ' selected' : ''; ?>>Ozon</option>
+						<option value="WB" <?php echo $agent=='WB' ? ' selected' : ''; ?>>Wildberries</option>
 						<option value="Internal" <?php echo $agent=='Internal' ? ' selected' : ''; ?>>Заказы сайта</option>
 					</select>
 					<span id="s" style="display:<?php echo $agent=='Internal' ? 'inline' : 'none'; ?>">Курьер: 
@@ -89,6 +90,13 @@
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
 								<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
+							</select>
+						</span>
+					<?php } ?>
+					<?php if ($agent == 'WB') { ?>
+						<span id="s2">Организация: 
+							<select id="org" value="<?php echo $org; ?>">
+								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
 							</select>
 						</span>
 					<?php } ?>
