@@ -78,10 +78,10 @@
 						<span id="s2">Организация: 
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
-								<option value="4cleaning" <?php echo $org=='4cleaning' ? ' selected' : ''; ?>>4cleaning</option>
+								<!-- <option value="4cleaning" <?php echo $org=='4cleaning' ? ' selected' : ''; ?>>4cleaning</option>
 								<option value="aruba" <?php echo $org=='aruba' ? ' selected' : ''; ?>>Доставка 2 часа</option>
 								<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
-								<option value="vysota" <?php echo $org=='vysota' ? ' selected' : ''; ?>>Высота</option>
+								<option value="vysota" <?php echo $org=='vysota' ? ' selected' : ''; ?>>Высота</option> -->
 								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
 							</select>
 						</span>

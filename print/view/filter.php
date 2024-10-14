@@ -21,9 +21,9 @@
 				<?php if ($agent == 'Beru') { ?>
 					<select id="org" value="<?php echo $org; ?>">
 						<option value="Ullo" <?php echo $org=='Ullo' ? 'selected' : ''; ?>>Юлло</option>
-						<option value="4cleaning" <?php echo $org=='4cleaning' ? 'selected' : ''; ?>>ИП Гюмюш</option>
+						<!-- <option value="4cleaning" <?php echo $org=='4cleaning' ? 'selected' : ''; ?>>ИП Гюмюш</option>
 						<option value="alians" <?php echo $org=='alians' ? 'selected' : ''; ?>>Альянс</option>
-						<option value="vysota" <?php echo $org=='vysota' ? 'selected' : ''; ?>>Высота</option>
+						<option value="vysota" <?php echo $org=='vysota' ? 'selected' : ''; ?>>Высота</option> -->
 						<option value="Kosmos" <?php echo $org=='Kosmos' ? 'selected' : ''; ?>>Космос</option>
 					</select>
 				<?php } ?>
