@@ -59,7 +59,7 @@ class APIBeru2
 		return true;
 	}
 	
-    public static function putBeruData($capaign, $service_url, $postdata, &$jsonOut, &$arrayOut)
+    public static function putBeruData($campaign, $service_url, $postdata, &$jsonOut, &$arrayOut)
 	{
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
