@@ -33,7 +33,7 @@
 	elseif ($agent == 'Beru' && $org == 'vysota') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек BERU VISOTA');
 	}
-	elseif ($agent == 'Beru' && $org == 'kosmos') {
+	elseif ($agent == 'Beru' && $org == 'Kosmos') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек BERU KOSMOS');
 	}
 	elseif ($agent == 'Goods' && $org == 'Kaori') {
