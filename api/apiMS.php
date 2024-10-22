@@ -112,7 +112,7 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
+						sleep(1);
 						$tmp = true;
 						continue;
 					}

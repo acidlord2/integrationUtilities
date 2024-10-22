@@ -162,7 +162,7 @@ class Orders
 		}
 		// ship types
 		$pickup = array (MS_SHIPTYPE_PICKUP);
-		$mpship = array (MS_SHIPTYPE_BERU, MS_SHIPTYPE_GOODS, MS_SHIPTYPE_OZON);
+		$mpship = array (MS_SHIPTYPE_BERU, MS_SHIPTYPE_GOODS, MS_SHIPTYPE_OZON, MS_DELIVERY_VALUE_WB);
 		$selfship = array (MS_SHIPTYPE_CURIER1, MS_SHIPTYPE_CURIER2, MS_SHIPTYPE_CURIER3, MS_SHIPTYPE_CURIER4, MS_SHIPTYPE_CURIER5, MS_SHIPTYPE_CURIER10, MS_SHIPTYPE_IML);
 		foreach ($orders as $key => $order) {
 			MSAPI::getMSData($order['organization']['meta']['href'], $organizationJson, $organizationArray);
