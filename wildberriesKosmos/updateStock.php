@@ -24,7 +24,7 @@ if (!count($productCodes)){
 $log->write (__LINE__ . ' array_keys - ' . json_encode (array_keys($productCodes), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 $productsMSClass = new \ProductsMS();
-// array_keys($productCodes) split into chancks of 100 elements and iterate
+$updated = 0;
 foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
 {
     $productsMS = $productsMSClass->getAssortment($chunk);
@@ -42,6 +42,7 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
     }
     if (count ($data))
     {
+        $updated += count($data);
         //$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         $postData = array(
             'stocks' => $data
@@ -50,5 +51,5 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
         $productsWBclass->setStock($postData);
     }
 }
-echo 'Total: ' . count($productCodes) . ', updated: ' . count($productsMS) . ', not updated: ' . (count($productCodes) - count($productsMS));
+echo 'Total: ' . count($productCodes) . ', updated: ' . $updated . ', not updated: ' . (count($productCodes) - $updated);
 ?>

@@ -22,6 +22,7 @@ if (!count($productCodes)){
 }
 
 $productsMSClass = new \ProductsMS();
+$updated = 0;
 foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
 {
     $productsMS = $productsMSClass->getAssortment($chunk);
@@ -44,6 +45,7 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
     }
     if (count ($data))
     {
+        $updated += count($data);
         $postData = array(
             'data' => $data
         );
@@ -51,5 +53,5 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
         $productsWBclass->setPrices($postData);
     }
 }
-echo 'Total: ' . count($productCodes) . ', updated: ' . count($data) . ', not updated: ' . (count($productCodes) - count($data));
+echo 'Total: ' . count($productCodes) . ', updated: ' . $updated . ', not updated: ' . (count($productCodes) - $updated);
 ?>
