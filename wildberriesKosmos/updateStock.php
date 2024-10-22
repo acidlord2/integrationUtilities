@@ -24,27 +24,31 @@ if (!count($productCodes)){
 $log->write (__LINE__ . ' array_keys - ' . json_encode (array_keys($productCodes), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 $productsMSClass = new \ProductsMS();
-$productsMS = $productsMSClass->getAssortment(array_keys($productCodes));
+// array_keys($productCodes) split into chancks of 100 elements and iterate
+foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
+{
+    $productsMS = $productsMSClass->getAssortment($chunk);
 
-$data = array();
-foreach ($productsMS as $product)
-{
-    //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $data[] = array (
-        'sku' => $productCodes[$product['code']],
-        'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 2
-        //'stock' => 0,
-    );
-    $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-}
-if (count ($data))
-{
-    //$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $postData = array(
-        'stocks' => $data
-    );
-    $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $productsWBclass->setStock($postData);
+    $data = array();
+    foreach ($productsMS as $product)
+    {
+        //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $data[] = array (
+            'sku' => $productCodes[$product['code']],
+            'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 2
+            //'stock' => 0,
+        );
+        $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    if (count ($data))
+    {
+        //$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $postData = array(
+            'stocks' => $data
+        );
+        $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $productsWBclass->setStock($postData);
+    }
 }
 echo 'Total: ' . count($productCodes) . ', updated: ' . count($productsMS) . ', not updated: ' . (count($productCodes) - count($productsMS));
 ?>

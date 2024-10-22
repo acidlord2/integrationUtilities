@@ -22,31 +22,34 @@ if (!count($productCodes)){
 }
 
 $productsMSClass = new \ProductsMS();
-$productsMS = $productsMSClass->getAssortment(array_keys($productCodes));
+foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
+{
+    $productsMS = $productsMSClass->getAssortment($chunk);
 
-$data = array();
-foreach ($productsMS as $product)
-{
-    $priceTypes = array_column($product['salePrices'], 'priceType');
-    $priceKey = array_search('Цена WB', array_column($priceTypes, 'name'));
-	
-    if ((int)($product['salePrices'][$priceKey]['value'])){
-        $data[] = array (
-            'nmId' => $productCodes[$product['code']],
-            'price' => $product['salePrices'][$priceKey]['value'] / 100,
-            'discount' => 0
-        );
+    $data = array();
+    foreach ($productsMS as $product)
+    {
+        $priceTypes = array_column($product['salePrices'], 'priceType');
+        $priceKey = array_search('Цена WB', array_column($priceTypes, 'name'));
+        
+        if ((int)($product['salePrices'][$priceKey]['value'])){
+            $data[] = array (
+                'nmId' => $productCodes[$product['code']],
+                'price' => $product['salePrices'][$priceKey]['value'] / 100,
+                'discount' => 0
+            );
+        }
+        else
+            $log->write(__LINE__ . ' price not set - ' . $product['code']);
     }
-	else
-	    $log->write(__LINE__ . ' price not set - ' . $product['code']);
-}
-if (count ($data))
-{
-    $postData = array(
-        'data' => $data
-    );
-    $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $productsWBclass->setPrices($postData);
+    if (count ($data))
+    {
+        $postData = array(
+            'data' => $data
+        );
+        $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $productsWBclass->setPrices($postData);
+    }
 }
 echo 'Total: ' . count($productCodes) . ', updated: ' . count($data) . ', not updated: ' . (count($productCodes) - count($data));
 ?>
