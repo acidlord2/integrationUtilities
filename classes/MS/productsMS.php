@@ -37,7 +37,7 @@ class ProductsMS
 		$products = array();
 		while (true)
 		{
-		    $url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT . ($codes !== false ? $filter : '') .'stockMode=all;quantityMode=all;&offset=' . $offset;
+		    $url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT . ($codes !== false ? $filter : '') .'stockMode=all;quantityMode=all;&offset=' . $offset . '&limit=50';
 			$product_ms = $this->apiMSClass->getData($url);
 			$this->logger->write (__LINE__ . ' getAssortment.url - ' . json_encode ($url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$products = array_merge($products, $product_ms['rows']);
