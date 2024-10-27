@@ -2,13 +2,13 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/login/auth.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	//$logger = new Log ('getOrder.log');
+	$logger = new Log ('shipping2 - getOrder.log');
 	//$shippingDate = $_REQUEST["shippingDate"];
 	$shippingDate = $_REQUEST["shippingDate"];
 	$agent = $_REQUEST["agent"];
 	$curier = $_REQUEST["curier"];
 	$org = $_REQUEST["org"];
-	//$logger -> write ('_REQUEST - ' . json_encode ($_REQUEST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger -> write (__LINE__ . '_REQUEST - ' . json_encode ($_REQUEST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	//$logger -> write ('_SESSION - ' . json_encode ($_SESSION['orders'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	$nameKey = array_search ($_REQUEST["order"], array_column($_SESSION['orders'][$shippingDate . $agent . $curier . $org], 'name'));
 	$barcodeKey = array_search ($_REQUEST["order"], array_column($_SESSION['orders'][$shippingDate . $agent . $curier . $org], 'barcode'));
