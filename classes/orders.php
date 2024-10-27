@@ -143,8 +143,13 @@ class Orders
 		}
 			
 		
-		$shipDateStart = 'deliveryPlannedMoment%3E=' . $shipDate . '%2000:00:00;';
-		$shipDateEnd = 'deliveryPlannedMoment%3C=' . $shipDate . '%2023:59:59;';
+		if($agent == 'WB'){
+			$shipDateStart = '';
+			$shipDateEnd = '';
+		} else {
+			$shipDateStart = 'deliveryPlannedMoment%3E=' . $shipDate . '%2000:00:00;';
+			$shipDateEnd = 'deliveryPlannedMoment%3C=' . $shipDate . '%2023:59:59;';
+		}
 		$state = 'state=' . MS_SHIP_STATE . ';state=' . MS_SHIPGOODS_STATE . ';';
 		
 		$offset = 0;
