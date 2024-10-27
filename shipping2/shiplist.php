@@ -406,9 +406,9 @@
 						var id = await resp.text();
 						if (id.trim() != "")
 						{
-							var resp = await fetch("getOrder.php?order=" + encodeURI(text.trim()) + "&select=mpcancelFlag" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+							var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&select=mpcancelFlag" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
 							var mpcancelFlag = await resp.text();
-							var resp = await fetch("getOrder.php?order=" + encodeURI(text.trim()) + "&select=scanCount" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+							var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&select=scanCount" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
 							var scanCount = await resp.text();
 							var str = document.getElementById(id.trim());
 							str.scrollIntoView(false);
