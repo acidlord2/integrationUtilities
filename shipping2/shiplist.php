@@ -392,7 +392,7 @@
 				if (text === "" || text == null)
 					var resp = await fetch("reneworders.php?shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
 				else
-					var resp = await fetch("reneworders.php?order=" + encodeURI(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+					var resp = await fetch("reneworders.php?order=" + encodeURIComponent(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
 				if (resp.ok)
 				{
 					var html =  await resp.text();
@@ -400,7 +400,7 @@
 				}
 				if (text != null && text !== "")
 				{
-					var resp = await fetch("getOrder.php?order=" + encodeURI(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+					var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
 					if (resp.ok)
 					{
 						var id = await resp.text();
