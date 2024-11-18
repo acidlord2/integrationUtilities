@@ -92,7 +92,7 @@ class OrdersOzon
 						"exemplar_id" => $e,
 						"is_gtd_absent" => true
 					);						;
-		$postdata['packages'][0]['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku'], 'exemplars' => $exemplars);
+		$postdata['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku'], 'exemplars' => $exemplars);
 		
 		$this->log->write(__LINE__ . ' setExemplar.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$url = OZON_MAINURL . OZON_API_V5 . OZON_API_EXEMPLAR_SET;
