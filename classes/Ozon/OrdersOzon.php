@@ -78,9 +78,7 @@ class OrdersOzon
 	    $this->log->write(__LINE__ . ' setExemplar.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    
 	    $postdata = array(
-			array (
-				'products' => array ()
-			),
+			'products' => array (),
 	        'posting_number' => $data['posting_number']
 	    );
 	    
