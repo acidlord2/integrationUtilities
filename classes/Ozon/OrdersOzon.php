@@ -84,10 +84,11 @@ class OrdersOzon
 	    
 	    if (isset($data['products']))
 	        foreach ($data['products'] as $product)
-				$exemplars = []; 
+				$exemplars = [];
+				$milliseconds = (int) (microtime(true) * 1000);
 				for ($e = 1; $e <= $product['quantity']; $e++)
 					$exemplars[] = array(
-						"exemplar_id" => $e,
+						"exemplar_id" => $milliseconds+$e,
 						"is_gtd_absent" => true
 					);						;
 		$postdata['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku'], 'exemplars' => $exemplars);
