@@ -69,6 +69,80 @@ class OrdersOzon
 	    $this->log->write(__LINE__ . " getOrder.order - " . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    return $order['result'];
 	}
+
+	/*
+	 * 
+	 */
+	public function setExemplar($data)
+	{
+	    $this->log->write(__LINE__ . ' setExemplar.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    
+	    $postdata = array(
+			array (
+				'products' => array ()
+			),
+	        'posting_number' => $data['posting_number']
+	    );
+	    
+	    if (isset($data['products']))
+	        foreach ($data['products'] as $product)
+				$exemplars = []; 
+				for ($e = 1; $e <= $product['quantity']; $e++)
+					$exemplars[] = array(
+						"exemplar_id" => $e,
+						"is_gtd_absent" => true
+					);						;
+		$postdata['packages'][0]['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku'], 'exemplars' => $exemplars);
+		
+		$this->log->write(__LINE__ . ' setExemplar.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$url = OZON_MAINURL . OZON_API_V5 . OZON_API_EXEMPLAR_SET;
+		$i = 0;
+		while (true)
+		{
+			$i += 1;
+			$return = $this->apiOzonClass->postData ($url, $postdata);
+			$this->log->write(__LINE__ . ' setExemplar.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			if (isset ($return['error']) && $i < 3)
+			{
+				usleep (500000);
+				continue;
+			}
+			break;
+		}
+		return $return;
+		//$logger->write("curl_response - " . $curl_response);
+	}
+
+	/*
+	 * 
+	 */
+	public function checkSetExemplarStatus($postingNumber)
+	{
+	    $this->log->write(__LINE__ . ' checkSetExemplarStatus.postingNumber - ' . json_encode ($postingNumber, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	    
+	    $postdata = array(
+	        'posting_number' => $postingNumber
+	    );
+	    
+		$this->log->write(__LINE__ . ' checkSetExemplarStatus.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$url = OZON_MAINURL . OZON_API_V4 . OZON_API_EXEMPLAR_STATUS;
+		$i = 0;
+		while (true)
+		{
+			$i += 1;
+			$return = $this->apiOzonClass->postData ($url, $postdata);
+			$this->log->write(__LINE__ . ' checkSetExemplarStatus.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			if (isset ($return['error']) && $i < 3)
+			{
+				usleep (500000);
+				continue;
+			}
+			break;
+		}
+		return $return;
+		//$logger->write("curl_response - " . $curl_response);
+	}
+
 	/*
 	 * 
 	 */
@@ -89,25 +163,25 @@ class OrdersOzon
 	        foreach ($data['products'] as $product)
 	            $postdata['packages'][0]['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku']);
 	            
-	            $this->log->write(__LINE__ . ' packOrder.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	            $url = OZON_MAINURL . OZON_API_V4 . 'posting/fbs/ship';
-	            $i = 0;
-	            while (true)
-	            {
-	                $i += 1;
-	                $return = $this->apiOzonClass->postData ($url, $postdata);
-	                $this->log->write(__LINE__ . ' packOrder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	                if (isset ($return['error']) && $i < 3)
-	                {
-	                    usleep (500000);
-	                    continue;
-	                }
-	                break;
-	            }
-	            return $return;
-	            //$logger->write("curl_response - " . $curl_response);
-	            
+		$this->log->write(__LINE__ . ' packOrder.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$url = OZON_MAINURL . OZON_API_V4 . 'posting/fbs/ship';
+		$i = 0;
+		while (true)
+		{
+			$i += 1;
+			$return = $this->apiOzonClass->postData ($url, $postdata);
+			$this->log->write(__LINE__ . ' packOrder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			if (isset ($return['error']) && $i < 3)
+			{
+				usleep (500000);
+				continue;
+			}
+			break;
+		}
+		return $return;
+		//$logger->write("curl_response - " . $curl_response);
 	}
+
 	/*
 	 *
 	 */
@@ -219,7 +293,7 @@ class OrdersOzon
 	    while (true)
 	    {
 	        $i += 1;
-	        $return = $this->apiOzonClass->postData ($url, $postdata);
+	        $return = $this->apiOzonClass->postData ($url, $data);
 	        $this->log->write(__LINE__ . ' cancelOrder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	        if (isset ($return['error']) && $i < 3)
 	        {

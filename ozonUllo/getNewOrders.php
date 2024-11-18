@@ -173,6 +173,16 @@
 		
 		if (isset ($orderMS['id']))
 		{
+			$ordersOzonClass->setExemplar($order);
+			$i = 0;
+			while (true)
+			{
+				$i++;
+				$status = $ordersOzonClass->checkSetExemplarStatus($order['posting_number']);
+				if($status['status'] == 'ship_available') exit;
+				if ($i >= 5) exit;
+				sleep(1);
+			}
 		    $ordersOzonClass->packOrder($order);
 			//Orders::getPackageLabel($order, $ms_order['id']);
 		}

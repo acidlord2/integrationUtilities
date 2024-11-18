@@ -279,6 +279,7 @@
 	define('OZON_API_V2', 'v2/');
 	define('OZON_API_V3', 'v3/');
 	define('OZON_API_V4', 'v4/');
+	define('OZON_API_V5', 'v5/');
 	define('OZON_API_PACKAGE_LABEL', 'posting/fbs/package-label');
 	define('OZON_API_ORDERS_LIST', 'posting/fbs/list');
 	define('OZON_API_ORDER_GET', 'posting/fbs/get');
@@ -286,6 +287,8 @@
 	define('OZON_API_LASTMILE_STATUS', 'fbs/posting/last-mile');
 	define('OZON_API_DELIVERED_STATUS', 'fbs/posting/delivered');
 	define('OZON_API_CANCELLED_STATUS', 'posting/fbs/cancel');
+	define('OZON_API_EXEMPLAR_SET', 'fbs/posting/product/exemplar/set');
+	define('OZON_API_EXEMPLAR_STATUS', 'fbs/posting/product/exemplar/status');
 	define('OZON_WEARHOUSE1_ID', 19122245607000);
 	define('OZON_WEARHOUSE2_ID', 22081289820000); // 2
 	define('OZON_WEARHOUSE3_ID', 22426421413000); // Каори 1
