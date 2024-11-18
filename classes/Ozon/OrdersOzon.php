@@ -85,16 +85,16 @@ class OrdersOzon
 	    if (isset($data['products']))
 	        foreach ($data['products'] as $product)
 				$exemplars = [];
-				$milliseconds = (int) (microtime(true) * 1000);
+				//$milliseconds = (int) (microtime(true) * 1000);
 				for ($e = 1; $e <= $product['quantity']; $e++)
 					$exemplars[] = array(
-						"exemplar_id" => $milliseconds+$e,
+						"exemplar_id" => $e,
 						"is_gtd_absent" => true
 					);						;
 		$postdata['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku'], 'exemplars' => $exemplars);
 		
 		$this->log->write(__LINE__ . ' setExemplar.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		$url = OZON_MAINURL . OZON_API_V5 . OZON_API_EXEMPLAR_SET;
+		$url = OZON_MAINURL . OZON_API_V4 . OZON_API_EXEMPLAR_SET;
 		$i = 0;
 		while (true)
 		{

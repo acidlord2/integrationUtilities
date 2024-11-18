@@ -180,7 +180,7 @@
 				$i++;
 				$status = $ordersOzonClass->checkSetExemplarStatus($order['posting_number']);
 				if($status['status'] == 'ship_available') break;
-				if ($i >= 5) break;
+				if ($i >= 3) break;
 				sleep(1);
 			}
 		    $ordersOzonClass->packOrder($order);
