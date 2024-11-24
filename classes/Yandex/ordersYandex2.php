@@ -15,7 +15,7 @@ class OrdersYandex
 	public function __construct($campaign)
 	{
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/apiYandex.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/apiYandex2.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
         
 		$this->campaign = $campaign;
