@@ -4,6 +4,17 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/ordersYandex.php');
+	class OrdersYandex1 extends OrdersYandex {
+		public function __construct($compaign) {
+			parent::__construct($compaign);
+		}
+	}
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/ordersYandex2.php');
+	class OrdersYandex2 extends OrdersYandex {
+		public function __construct($compaign) {
+			parent::__construct($compaign);
+		}
+	}
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sbermegamarket/Order.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/OrdersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Orders.php');
@@ -39,7 +50,7 @@
 			    
 			    $log->write(__LINE__ . ' campaign - ' . $campaign);
 			    
-			    $ordersYandexClass = new OrdersYandex($campaign);
+			    $ordersYandexClass = new OrdersYandex1($campaign);
 			    $orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
 			    $log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			    
@@ -56,7 +67,7 @@
 			    
 			    $log->write(__LINE__ . ' campaign - ' . $campaign);
 			    
-			    $ordersYandexClass = new OrdersYandex($campaign);
+			    $ordersYandexClass = new OrdersYandex1($campaign);
 			    $orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
 			    $log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			    
@@ -73,7 +84,7 @@
 			    
 			    $log->write(__LINE__ . ' campaign - ' . $campaign);
 			    
-			    $ordersYandexClass = new OrdersYandex($campaign);
+			    $ordersYandexClass = new OrdersYandex1($campaign);
 			    $orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
 			    $log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			    
@@ -90,7 +101,7 @@
 			    
 			    $log->write(__LINE__ . ' campaign - ' . $campaign);
 			    
-			    $ordersYandexClass = new OrdersYandex($campaign);
+			    $ordersYandexClass = new OrdersYandex2($campaign);
 			    $orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
 			    $log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			    
@@ -107,7 +118,7 @@
 			    
 			    $log->write(__LINE__ . ' campaign - ' . $campaign);
 			    
-			    $ordersYandexClass = new OrdersYandex($campaign);
+			    $ordersYandexClass = new OrdersYandex1($campaign);
 			    $orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
 			    $log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			    
@@ -126,7 +137,7 @@
 				
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 				
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex1($campaign);
 				$orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
 				$log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
@@ -280,7 +291,7 @@
 				$campaign = $organizationId == MS_10KIDS_ID ? BERU_API_10KIDS_CAMPAIGN : BERU_API_MARKET4CLEANING_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 				
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex1($campaign);
 				$return = $ordersYandexClass->updateStatus ($orderData['name'], 'PICKUP');
 				$log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
@@ -368,7 +379,7 @@
 				$campaign = BERU_API_ARUBA_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex1($campaign);
 				$orderInfo = $ordersYandexClass->getOrder($orderData['name']);
 				$log->write(__LINE__ . ' orderInfo - ' . json_encode ($orderInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
@@ -413,7 +424,7 @@
 				$campaign = BERU_API_SUMMIT_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex1($campaign);
 				$orderInfo = $ordersYandexClass->getOrder($orderData['name']);
 				$log->write(__LINE__ . ' orderInfo - ' . json_encode ($orderInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
@@ -458,7 +469,7 @@
 				$campaign = BERU_API_VYSOTA_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex1($campaign);
 				$orderInfo = $ordersYandexClass->getOrder($orderData['name']);
 				$log->write(__LINE__ . ' orderInfo - ' . json_encode ($orderInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
@@ -503,7 +514,7 @@
 				$campaign = BERU_API_KOSMOS_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex2($campaign);
 				$orderInfo = $ordersYandexClass->getOrder($orderData['name']);
 				$log->write(__LINE__ . ' orderInfo - ' . json_encode ($orderInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
@@ -568,7 +579,7 @@
 				$campaign = $organizationId == MS_10KIDS_ID ? BERU_API_10KIDS_CAMPAIGN : BERU_API_MARKET4CLEANING_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 				
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex1($campaign);
 				$return = $ordersYandexClass->updateStatus ($orderData['name'], 'DELIVERY');
 				$log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
@@ -606,7 +617,7 @@
 				$campaign = $organizationId == MS_10KIDS_ID ? BERU_API_10KIDS_CAMPAIGN : BERU_API_MARKET4CLEANING_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 				
-				$ordersYandexClass = new OrdersYandex($campaign);
+				$ordersYandexClass = new OrdersYandex1($campaign);
 				$return = $ordersYandexClass->updateStatus ($orderData['name'], 'DELIVERED');
 				$log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
