@@ -5,13 +5,12 @@
  * @author Georgy Polyan <acidlord@yandex.ru>
  *
  */
+namespace Yandex\v2;
 class OrdersYandex
 {
 	private $log;
 	private $apiYandexClass;
 	private $campaign;
-
-	private $cache = array ();
 
 	public function __construct($campaign)
 	{
@@ -20,8 +19,8 @@ class OrdersYandex
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
         
 		$this->campaign = $campaign;
-		$this->log = new Log('classes - Yandex - ordersYandex.log');
-		$this->apiYandexClass = new APIYandex($campaign);
+		$this->log = new \Log('classes - Yandex - ordersYandex.log');
+		$this->apiYandexClass = new \APIYandex($campaign);
 	}	
 	/**
 	* function updateStatus - function find ms orders by ms filter passed
