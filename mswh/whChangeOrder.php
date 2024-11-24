@@ -91,7 +91,7 @@
 			    
 			    $log->write(__LINE__ . ' campaign - ' . $campaign);
 			    
-			    $ordersYandexClass = new \Yandex\v2\OrdersYandex($campaign);
+			    $ordersYandexClass = new Yandex\v2\OrdersYandex($campaign);
 			    $orderDataYandex = $ordersYandexClass->getOrder ($orderData['name']);
 			    $log->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			    
@@ -504,7 +504,7 @@
 				$campaign = BERU_API_KOSMOS_CAMPAIGN;
 				$log->write(__LINE__ . ' campaign - ' . $campaign);
 
-				$ordersYandexClass = new \Yandex\v2\OrdersYandex($campaign);
+				$ordersYandexClass = new Yandex\v2\OrdersYandex($campaign);
 				$orderInfo = $ordersYandexClass->getOrder($orderData['name']);
 				$log->write(__LINE__ . ' orderInfo - ' . json_encode ($orderInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				
