@@ -22,7 +22,7 @@ class SkuYandex2
         
 		$this->campaign = $campaign;
 		$this->log = new Log('classes - Yandex - skuYandex2.log');
-		$this->apiYandexClass = new APIYandex2($campaign);
+		$this->apiYandexClass = new Yandex\v2\APIYandex2($campaign);
 		$this->businessId = $businessId;
 	}	
 	/**

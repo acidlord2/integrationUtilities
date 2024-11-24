@@ -5,6 +5,7 @@
  * @author Georgy Polyan <acidlord@yandex.ru>
  *
  */
+namespace Yandex\v2;
 class APIYandex2
 {
 	private $log;
@@ -19,12 +20,12 @@ class APIYandex2
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		
         $this->campaign = $campaign;
-		$this->log = new Log('classes - Yandex - apiYandex2.log');
+		$this->log = new \Log('classes - Yandex - apiYandex2.log');
 		
 		if (!$this->oauth_token)
 		{
 		    // Fetch parameter beru_oauth_token
-		    $result = Db::exec_query_array ("select value from settings where code = 'beru_oauth_token_" . $campaign . "'");
+		    $result = \Db::exec_query_array ("select value from settings where code = 'beru_oauth_token_" . $campaign . "'");
 		    //$this->log->write(__LINE__ . ' result - ' . json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		    
 		    if (count ($result)) {

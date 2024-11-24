@@ -20,7 +20,7 @@ class OrdersYandex
         
 		$this->campaign = $campaign;
 		$this->log = new \Log('classes - Yandex - ordersYandex2.log');
-		$this->apiYandexClass = new \APIYandex($campaign);
+		$this->apiYandexClass = new APIYandex2($campaign);
 	}	
 	/**
 	* function updateStatus - function find ms orders by ms filter passed
