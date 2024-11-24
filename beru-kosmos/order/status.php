@@ -5,6 +5,7 @@
 	 * @class ControllerExtensionBeruOrder
 	 * @author GPOLYAN <acidlord@yandex.ru>
 	 */
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
