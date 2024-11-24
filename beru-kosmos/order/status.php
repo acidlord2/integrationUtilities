@@ -29,7 +29,7 @@
 	
 	$data = json_decode (file_get_contents('php://input'), true);
 	$logger = new Log('beru-kosmos - order - status.log'); //just passed the file name as file_name.log
-	$logger->write(__LINE__ . ' data - ' . json_encode ($data));
+	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (!isset ($data['order']))
 	{
