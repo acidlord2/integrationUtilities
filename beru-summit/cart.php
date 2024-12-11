@@ -65,7 +65,7 @@
 			$product = $products[$pkey];
 			//$priceKey = array_search ('Цена продажи', array_column ($product['salePrices'], 'priceType'));
 			$salePrices = array_column ($product['salePrices'], 'priceType');
-			$beruPriceKey = array_search ('Цена Беру ullo', array_column ($salePrices, 'name'));
+			$beruPriceKey = array_search ('Цена Беру.ру', array_column ($salePrices, 'name'));
 			
 			$return['cart']['items'][] = array(
 				'offerId' => (string)$item['offerId'],
