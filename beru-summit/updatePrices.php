@@ -1,10 +1,10 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex2.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
-$skuYandexClass = new SkuYandex(BERU_API_SUMMIT_CAMPAIGN, BERU_API_SUMMIT_BUSINESS_ID);
+$skuYandexClass = new SkuYandex2(BERU_API_SUMMIT_CAMPAIGN, BERU_API_SUMMIT_BUSINESS_ID);
 $productsClass = new ProductsMS();
 
 $skus = $skuYandexClass->offerMappings();
