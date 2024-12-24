@@ -136,7 +136,7 @@ class Orders
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST5 . ';';
 			if ($org == 'ast6')
 				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST6 . ';';
-			if ($org == 'alians')
+			if ($org == 'summit')
 				$orgFilter = 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 			if ($org == 'kosmos')
 				$orgFilter = 'organization=' . MS_KOSMOS . ';';

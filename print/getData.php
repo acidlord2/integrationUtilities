@@ -52,7 +52,7 @@
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST5 . ';';
 		if ($org == 'AST6')
 	        $filter .= 'project=' . MS_PROJECT_SBMM_AST6 . ';';
-		if ($org == 'alians')
+		if ($org == 'Summit')
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 		if ($org == 'vysota')
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_VYSOTA . ';';

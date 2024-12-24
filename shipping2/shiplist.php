@@ -83,6 +83,7 @@
 								<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
 								<option value="vysota" <?php echo $org=='vysota' ? ' selected' : ''; ?>>Высота</option> -->
 								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
+								<option value="summit" <?php echo $org=='summit' ? ' selected' : ''; ?>>Саммит</option>
 							</select>
 						</span>
 					<?php } ?>

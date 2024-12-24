@@ -25,6 +25,7 @@
 						<option value="alians" <?php echo $org=='alians' ? 'selected' : ''; ?>>Альянс</option>
 						<option value="vysota" <?php echo $org=='vysota' ? 'selected' : ''; ?>>Высота</option> -->
 						<option value="Kosmos" <?php echo $org=='Kosmos' ? 'selected' : ''; ?>>Космос</option>
+						<option value="Summit" <?php echo $org=='Summit' ? 'selected' : ''; ?>>Саммит</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Goods') { ?>
