@@ -27,18 +27,44 @@ $productsMSClass = new \ProductsMS();
 $updated = 0;
 foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
 {
-    $productsMS = $productsMSClass->getAssortment($chunk);
+    # if local current time between 2024-12-29 08:00:00 and 2025-01-01 13:00:00 then set quantity = 0
+    $currentDate = date('Y-m-d H:i:s');
+    $currentDate = strtotime($currentDate);
+    $startDate = strtotime('2024-12-29 08:00:00');
+    $endDate = strtotime('2025-01-01 13:00:00');
 
-    $data = array();
-    foreach ($productsMS as $product)
+    if ($currentDate >= $startDate && $currentDate <= $endDate)
     {
-        //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        $data[] = array (
-            'sku' => $productCodes[$product['code']],
-            'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 2
-            //'stock' => 0,
-        );
-        $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $log->write (__LINE__ . ' current date - ' . $currentDate);
+        $log->write (__LINE__ . ' start date - ' . $startDate);
+        $log->write (__LINE__ . ' end date - ' . $endDate);
+        $log->write (__LINE__ . ' current date between start and end date');
+        $log->write (__LINE__ . ' chunk - ' . json_encode ($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        
+        $data = array();
+        foreach ($chunk as $productCode)
+        {
+            $data[] = array (
+                'sku' => $productCodes[$productCode],
+                'amount' => 0
+            );
+        }
+    }
+    else
+    {
+        $productsMS = $productsMSClass->getAssortment($chunk);
+
+        $data = array();
+        foreach ($productsMS as $product)
+        {
+            //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            $data[] = array (
+                'sku' => $productCodes[$product['code']],
+                'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 2
+                //'stock' => 0,
+            );
+            $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        }
     }
     if (count ($data))
     {
