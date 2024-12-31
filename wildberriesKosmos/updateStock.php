@@ -33,25 +33,25 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
     $startDate = strtotime('2024-12-29 08:00:00');
     $endDate = strtotime('2025-01-01 13:00:00');
 
-    if ($currentDate >= $startDate && $currentDate <= $endDate)
-    {
-        $log->write (__LINE__ . ' current date - ' . $currentDate);
-        $log->write (__LINE__ . ' start date - ' . $startDate);
-        $log->write (__LINE__ . ' end date - ' . $endDate);
-        $log->write (__LINE__ . ' current date between start and end date');
-        $log->write (__LINE__ . ' chunk - ' . json_encode ($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    // if ($currentDate >= $startDate && $currentDate <= $endDate)
+    // {
+    //     $log->write (__LINE__ . ' current date - ' . $currentDate);
+    //     $log->write (__LINE__ . ' start date - ' . $startDate);
+    //     $log->write (__LINE__ . ' end date - ' . $endDate);
+    //     $log->write (__LINE__ . ' current date between start and end date');
+    //     $log->write (__LINE__ . ' chunk - ' . json_encode ($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         
-        $data = array();
-        foreach ($chunk as $productCode)
-        {
-            $data[] = array (
-                'sku' => $productCodes[$productCode],
-                'amount' => 0
-            );
-        }
-    }
-    else
-    {
+    //     $data = array();
+    //     foreach ($chunk as $productCode)
+    //     {
+    //         $data[] = array (
+    //             'sku' => $productCodes[$productCode],
+    //             'amount' => 0
+    //         );
+    //     }
+    // }
+    // else
+    // {
         $productsMS = $productsMSClass->getAssortment($chunk);
 
         $data = array();
@@ -65,7 +65,7 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
             );
             $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         }
-    }
+    // }
     if (count ($data))
     {
         $updated += count($data);
