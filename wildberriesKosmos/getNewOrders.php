@@ -192,8 +192,11 @@ if (count($newOrdersMS) > 0){
 			$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
 			#find order in result array and return item
 			$order = array_filter($result, function($item) use ($newOrder){
+				if (!isset($item['externalCode']))
+					return false;
 				return $item['externalCode'] == $newOrder['id'];
 			});
+			
 			$order = reset($order);
 			// get sticker
 			$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
@@ -227,7 +230,8 @@ if (count($newOrdersMS) > 0){
 					)
 				);
 			}
-			$ordersMSClass->updateCustomerorder($order["id"], $order);
+			if (isset($order['id']))
+				$ordersMSClass->updateCustomerorder($order["id"], $order);
 		}
 	}
 }
