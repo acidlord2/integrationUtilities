@@ -61,7 +61,6 @@ foreach ($newOrders as $newOrder)
 		continue;
 	}
 		
-	$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
 	$positions = array();
 
 	$productMS = $productMSClass->findProductsByCode($newOrder['article']);
@@ -126,38 +125,6 @@ foreach ($newOrders as $newOrder)
 			)
 		)
 	);
-	// get sticker
-	$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
-	if (isset($stickers['stickers'][0]))
-	{
-		$attributes[3] = array(
-			'meta' => array (
-				'href' => MS_ATTR . MS_BARCODE_ATTR_ID,
-				'type' => 'attributemetadata',
-				'mediaType' => 'application/json'
-			),
-			'value' => (string)$stickers['stickers'][0]['barcode']
-		);
-		$attributes[4] = array(
-			'meta' => array (
-				'href' => MS_ATTR . MS_DELIVERYNUMBER_ATTR,
-				'type' => 'attributemetadata',
-				'mediaType' => 'application/json'
-			),
-			'value' => $stickers['stickers'][0]['partA'] . '-' . $stickers['stickers'][0]['partB']
-		);
-		$attributes[5] = array(
-			'meta' => array (
-				'href' => MS_ATTR . MS_WB_FILE_ATTR,
-				'type' => 'attributemetadata',
-				'mediaType' => 'application/json'
-			),
-			'file' => array(
-				'filename' => $stickers['stickers'][0]['orderId'] . '.png',
-				'content' => $stickers['stickers'][0]['file']
-			)
-		);
-	}
 
 	$newOrdersMS[] = array(
 		'name' => 'WB' . (string)$newOrder['id'],
@@ -215,6 +182,54 @@ foreach ($newOrders as $newOrder)
 }
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
+	if(!is_null($result)){
+		foreach ($newOrders as $newOrder){
+			if (array_search('WB' . $newOrder['id'], $ordersMSIDs) !== false)
+			{
+				continue;
+			}
+
+			$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
+			#find order in result array and return item
+			$order = array_filter($result, function($item) use ($newOrder){
+				return $item['externalCode'] == $newOrder['id'];
+			});
+			$order = reset($order);
+			// get sticker
+			$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
+			if (isset($stickers['stickers'][0]))
+			{
+				$order["attributes"][] = array(
+					'meta' => array (
+						'href' => MS_ATTR . MS_BARCODE_ATTR_ID,
+						'type' => 'attributemetadata',
+						'mediaType' => 'application/json'
+					),
+					'value' => (string)$stickers['stickers'][0]['barcode']
+				);
+				$order["attributes"][] = array(
+					'meta' => array (
+						'href' => MS_ATTR . MS_DELIVERYNUMBER_ATTR,
+						'type' => 'attributemetadata',
+						'mediaType' => 'application/json'
+					),
+					'value' => $stickers['stickers'][0]['partA'] . '-' . $stickers['stickers'][0]['partB']
+				);
+				$order["attributes"][] = array(
+					'meta' => array (
+						'href' => MS_ATTR . MS_WB_FILE_ATTR,
+						'type' => 'attributemetadata',
+						'mediaType' => 'application/json'
+					),
+					'file' => array(
+						'filename' => $stickers['stickers'][0]['orderId'] . '.png',
+						'content' => $stickers['stickers'][0]['file']
+					)
+				);
+			}
+			$ordersMSClass->updateCustomerorder($order["id"], $order);
+		}
+	}
 }
 
 //if (count($changeStatus) > 0)
