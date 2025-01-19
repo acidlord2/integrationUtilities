@@ -74,7 +74,7 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
             'stocks' => $data
         );
         $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        $productsWBclass->setStock($postData);
+        $productsWBclass->setStock($postData, (string)WB_WAREHOUSE_KOSMOS);
     }
 }
 echo 'Total: ' . count($productCodes) . ', updated: ' . $updated . ', not updated: ' . (count($productCodes) - $updated);

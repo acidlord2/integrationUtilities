@@ -73,7 +73,7 @@ class Products
 	    return $return;
 	}
 
-	public function setStock($data, $warehouse=(string)WB_WAREHOUSE_KOSMOS)
+	public function setStock($data, $warehouse)
 	{
 	    $this->log->write(__LINE__ . ' setStock.data - ' . json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . $warehouse;
