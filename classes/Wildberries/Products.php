@@ -73,10 +73,10 @@ class Products
 	    return $return;
 	}
 
-	public function setStock($data, warehouse=(string)WB_WAREHOUSE_KOSMOS)
+	public function setStock($data, $warehouse=(string)WB_WAREHOUSE_KOSMOS)
 	{
 	    $this->log->write(__LINE__ . ' setStock.data - ' . json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . warehouse;
+	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . $warehouse;
 	    $return = array();
 	    foreach (array_chunk($data['stocks'], 1000) as $chunk)
 	    {
