@@ -2,9 +2,9 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Products.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-$log = new \Classes\Common\Log ('wildberriesKaori - updateStock.log');
+$log = new \Classes\Common\Log ('wildberriesUllo - updateStock.log');
 
-$productsWBclass = new \Classes\Wildberries\v1\Products('Kaori');
+$productsWBclass = new \Classes\Wildberries\v1\Products('Ullo');
 $productsWB = $productsWBclass->cardList();
 
 $productCodes = array_column($productsWB, 'supplierVendorCode');
@@ -34,7 +34,7 @@ foreach ($productsMS as $product)
             'barcode' => $productsWB[$productWBKey]['nomenclatures'][0]['variations'][0]['barcodes'][0],
             //'stock' => $product['quantity'] < 0 ? 0 : $product['quantity'],
             'stock' => 0,
-            'warehouseId' => WB_WAREHOUSE
+            'warehouseId' => WB_WAREHOUSE_ULLO
         );
         $processed++;
     }

@@ -266,6 +266,8 @@
 	define('MS_PROJECT_SBMM_AST6_ID', '45e41546-1d40-11ef-0a80-0b0a0002542f');
 	define('MS_PROJECT_YANDEX_KOSMOS', 'https://api.moysklad.ru/api/remap/1.2/entity/project/d2085d76-874e-11ef-0a80-070300359321');
 	define('MS_PROJECT_YANDEX_KOSMOS_ID', 'd2085d76-874e-11ef-0a80-070300359321');
+	define('MS_PROJECT_WB_ULLO', 'https://api.moysklad.ru/api/remap/1.2/entity/project/f50eda7d-d691-11ef-0a80-068e00252db9');
+	define('MS_PROJECT_WB_ULLO_ID', 'f50eda7d-d691-11ef-0a80-068e00252db9');
 	
 	//Ozon
 	define('OZON_TESTMODE', false);
@@ -349,6 +351,7 @@
 	
 	define('WB_WAREHOUSE', 3299);
 	define('WB_WAREHOUSE_KOSMOS', 1073256);
+	define('WB_WAREHOUSE_ULLO', 1210720);
 	
 	//sbermegamarket
 	define('SBMM_TESTMODE', false);

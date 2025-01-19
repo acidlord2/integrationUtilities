@@ -2,9 +2,9 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Products.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-$log = new \Classes\Common\Log ('wildberriesKaori - updatePrices.log');
+$log = new \Classes\Common\Log ('wildberriesUllo - updatePrices.log');
 
-$productsWBclass = new \Classes\Wildberries\v1\Products('Kaori');
+$productsWBclass = new \Classes\Wildberries\v1\Products('Ullo');
 $productsWB = $productsWBclass->cardList();
 
 $productCodes = array_column($productsWB, 'supplierVendorCode');
