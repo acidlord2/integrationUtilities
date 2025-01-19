@@ -98,7 +98,8 @@
 					<?php if ($agent == 'WB') { ?>
 						<span id="s2">Организация: 
 							<select id="org" value="<?php echo $org; ?>">
-								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
+							<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
+							<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
 							</select>
 						</span>
 					<?php } ?>
