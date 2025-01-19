@@ -48,7 +48,7 @@
 				<?php if ($agent == 'WB') { ?>
 					<select id="org" value="Kosmos">
 						<option value="Kosmos" <?php echo $org=='Kosmos' ? 'selected' : ''; ?>>Космос</option>
-						<option value="Kaori" <?php echo $org=='Kaori' ? 'selected' : ''; ?>>Каори</option>
+						<option value="Ullo" <?php echo $org=='Ullo' ? 'selected' : ''; ?>>Юлло</option>
 					</select>
 				<?php } ?>
 				<?php if ($agent == 'Curiers') { ?>
