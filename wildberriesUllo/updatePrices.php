@@ -5,11 +5,16 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 $log = new \Classes\Common\Log ('wildberriesUllo - updatePrices.log');
 
 $productsWBclass = new \Classes\Wildberries\v1\Products('Ullo');
-$productsWB = $productsWBclass->cardList();
+$productsWB = $productsWBclass->getCardsList();
 
-$productCodes = array_column($productsWB, 'supplierVendorCode');
+$productCodes = array();
+foreach ($productsWB as $product)
+{
+    if(isset($product['sizes'][0]['skus'][0]))
+        $productCodes[$product['vendorCode']] = $product['nmID'];
+}
+
 $log->write (__LINE__ . ' productCodes - ' . json_encode ($productCodes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-$productCodesMS = array_diff($productCodes, ['']);
 
 if (!count($productCodes)){
     echo 'No products';
@@ -17,50 +22,36 @@ if (!count($productCodes)){
 }
 
 $productsMSClass = new \ProductsMS();
-$productsMS = $productsMSClass->getAssortment($productCodes);
-//$log->write (__LINE__ . ' productsMS - ' . json_encode ($productsMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-
-$data = array();
-$dataDiscounts = array();
-$processed = 0;
-$notProcessed = 0;
-foreach ($productsMS as $product)
+$updated = 0;
+foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
 {
-    $productWBKey = array_search($product['code'], $productCodes);
-    $priceTypes = array_column($product['salePrices'], 'priceType');
-	//$logger->write ('priceTypes - ' . json_encode ($priceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $priceKey = array_search('Цена WB', array_column($priceTypes, 'name'));
-	//$logger->write ('priceKey - ' . json_encode ($priceKey, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	
-    if ((int)($product['salePrices'][$priceKey]['value'])){
-        if (isset($productsWB[$productWBKey]['nomenclatures'][0]['nmId'])){
+    $productsMS = $productsMSClass->getAssortment($chunk);
+
+    $data = array();
+    foreach ($productsMS as $product)
+    {
+        $priceTypes = array_column($product['salePrices'], 'priceType');
+        $priceKey = array_search('Цена WB', array_column($priceTypes, 'name'));
+        
+        if ((int)($product['salePrices'][$priceKey]['value'])){
             $data[] = array (
-                'nmId' => $productsWB[$productWBKey]['nomenclatures'][0]['nmId'],
-                'price' => $product['salePrices'][$priceKey]['value'] / 100
+                'nmId' => $productCodes[$product['code']],
+                'price' => $product['salePrices'][$priceKey]['value'] / 100,
+                'discount' => 0
             );
-            $dataDiscounts[] = array(
-                'discount' => 40,
-                'nmId' => $productsWB[$productWBKey]['nomenclatures'][0]['nmId']
-            );
-            $processed++;
         }
         else
-        {
-            $log->write(__LINE__ . ' nmId not set - ' . $productsWB[$productWBKey]['id']);
-            $notProcessed++;
-        }
+            $log->write(__LINE__ . ' price not set - ' . $product['code']);
     }
-	else
-	{
-	    $log->write (__LINE__ . ' price not set - ' . $productsWB[$productWBKey]['id']);
-		$notProcessed++;
-	}
+    if (count ($data))
+    {
+        $updated += count($data);
+        $postData = array(
+            'data' => $data
+        );
+        $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $productsWBclass->setPrices($postData);
+    }
 }
-if (count ($data))
-{
-	//$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $productsWBclass->setPrices($data);
-    $productsWBclass->setDiscounts($dataDiscounts);
-}
-echo 'Total: ' . count($productsMS) . ', updated: ' . $processed . ', not updated: ' . $notProcessed;
+echo 'Total: ' . count($productCodes) . ', updated: ' . $updated . ', not updated: ' . (count($productCodes) - $updated);
 ?>

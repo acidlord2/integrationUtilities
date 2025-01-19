@@ -5,49 +5,77 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 $log = new \Classes\Common\Log ('wildberriesUllo - updateStock.log');
 
 $productsWBclass = new \Classes\Wildberries\v1\Products('Ullo');
-$productsWB = $productsWBclass->cardList();
+$productsWB = $productsWBclass->getCardsList();
 
-$productCodes = array_column($productsWB, 'supplierVendorCode');
+$productCodes = array();
+foreach ($productsWB as $product)
+{
+    if(isset($product['sizes'][0]['skus'][0]))
+        $productCodes[$product['vendorCode']] = $product['sizes'][0]['skus'][0];
+}
+
 $log->write (__LINE__ . ' productCodes - ' . json_encode ($productCodes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-$productCodesMS = array_diff($productCodes, ['']);
 
 if (!count($productCodes)){
     echo 'No products';
     return;
 }
 
-$productsMSClass = new \ProductsMS();
-$productsMS = $productsMSClass->getAssortment($productCodes);
-//$log->write (__LINE__ . ' productsMS - ' . json_encode ($productsMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+$log->write (__LINE__ . ' array_keys - ' . json_encode (array_keys($productCodes), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-$data = array();
-$processed = 0;
-$notProcessed = 0;
-foreach ($productsMS as $product)
+$productsMSClass = new \ProductsMS();
+$updated = 0;
+foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
 {
-    $productWBKey = array_search($product['code'], $productCodes);
-    //$logger->write ('priceTypes - ' . json_encode ($priceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    //$logger->write ('priceKey - ' . json_encode ($priceKey, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    
-    if (isset($productsWB[$productWBKey]['nomenclatures'][0]['variations'][0]['barcodes'][0])){
-        $data[] = array (
-            'barcode' => $productsWB[$productWBKey]['nomenclatures'][0]['variations'][0]['barcodes'][0],
-            //'stock' => $product['quantity'] < 0 ? 0 : $product['quantity'],
-            'stock' => 0,
-            'warehouseId' => WB_WAREHOUSE_ULLO
-        );
-        $processed++;
-    }
-    else
+    # if local current time between 2024-12-29 08:00:00 and 2025-01-01 13:00:00 then set quantity = 0
+    $currentDate = date('Y-m-d H:i:s');
+    $currentDate = strtotime($currentDate);
+    $startDate = strtotime('2024-12-29 08:00:00');
+    $endDate = strtotime('2025-01-01 13:00:00');
+
+    // if ($currentDate >= $startDate && $currentDate <= $endDate)
+    // {
+    //     $log->write (__LINE__ . ' current date - ' . $currentDate);
+    //     $log->write (__LINE__ . ' start date - ' . $startDate);
+    //     $log->write (__LINE__ . ' end date - ' . $endDate);
+    //     $log->write (__LINE__ . ' current date between start and end date');
+    //     $log->write (__LINE__ . ' chunk - ' . json_encode ($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        
+    //     $data = array();
+    //     foreach ($chunk as $productCode)
+    //     {
+    //         $data[] = array (
+    //             'sku' => $productCodes[$productCode],
+    //             'amount' => 0
+    //         );
+    //     }
+    // }
+    // else
+    // {
+        $productsMS = $productsMSClass->getAssortment($chunk);
+
+        $data = array();
+        foreach ($productsMS as $product)
+        {
+            //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            $data[] = array (
+                'sku' => $productCodes[$product['code']],
+                'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 2
+                //'stock' => 0,
+            );
+            $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        }
+    // }
+    if (count ($data))
     {
-        $log->write(__LINE__ . ' barcode not set - ' . $productsWB[$productWBKey]['id']);
-        $notProcessed++;
+        $updated += count($data);
+        //$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $postData = array(
+            'stocks' => $data
+        );
+        $log->write (__LINE__ . ' postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $productsWBclass->setStock($postData);
     }
 }
-if (count ($data))
-{
-    //$logger->write ('postData - ' . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-    $productsWBclass->setStock($data);
-}
-echo 'Total: ' . count($productsMS) . ', updated: ' . $processed . ', not updated: ' . $notProcessed;
+echo 'Total: ' . count($productCodes) . ', updated: ' . $updated . ', not updated: ' . (count($productCodes) - $updated);
 ?>
