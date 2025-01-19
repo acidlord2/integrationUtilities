@@ -262,6 +262,17 @@
 		        $return = $ordersWBClass->changeOrdersStatus($data);
 		        $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ULLO_ID : false)
+			{
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
+			    
+			    $data = array(
+			        'orderId' => substr($orderData['name'], 2),
+			        'status' => 7
+			    );
+		        $return = $ordersWBClass->changeOrdersStatus($data);
+		        $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			}
 		}
 		// заказ подтвержден
 		else if ($state == MS_CONFIRM_STATE_ID)
@@ -351,6 +362,17 @@
 			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ID : false)
 			{
 			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kaori');
+			    
+			    $data = array(
+			        'orderId' => substr($orderData['name'], 2),
+			        'status' => 1
+			    );
+			    $return = $ordersWBClass->changeOrdersStatus($data);
+			    $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			}
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ULLO_ID : false)
+			{
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
 			    
 			    $data = array(
 			        'orderId' => substr($orderData['name'], 2),
@@ -596,6 +618,17 @@
 			    $return = $ordersWBClass->changeOrdersStatus($data);
 			    $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ULLO_ID : false)
+			{
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
+			    
+			    $data = array(
+			        'orderId' => substr($orderData['name'], 2),
+			        'status' => 5
+			    );
+			    $return = $ordersWBClass->changeOrdersStatus($data);
+			    $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			}
 		}
 		// заказ доставлен
 		else if ($state == MS_DELIVERED_STATE_ID)
@@ -670,6 +703,17 @@
 			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ID : false)
 			{
 			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kaori');
+			    
+			    $data = array(
+			        'orderId' => substr($orderData['name'], 2),
+			        'status' => 6
+			    );
+			    $return = $ordersWBClass->changeOrdersStatus($data);
+			    $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			}
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ULLO_ID : false)
+			{
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
 			    
 			    $data = array(
 			        'orderId' => substr($orderData['name'], 2),
