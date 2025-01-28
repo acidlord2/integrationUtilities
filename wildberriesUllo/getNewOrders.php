@@ -14,7 +14,7 @@ $endDate = NULL;
 $status = 0;
 
 $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
-$suppliesWBClass = new \Classes\Wildberries\v1\Supplies('U;;p');
+$suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Ullo');
 
 $newOrders = $ordersWBClass->getNewOrders();
 
