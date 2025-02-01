@@ -16,10 +16,10 @@
 	    $orderClass = new OrdersYandex(BERU_API_ARUBA_CAMPAIGN);
 	    echo $orderClass->getOrdersLabels(json_decode ($postingNumbers, true), $count);
 	}
-	elseif ($org == 'Ullo') {
+	elseif ($agent == 'Ozon' and $org == 'Ullo') {
 		echo OrdersOzon::getOrderLabel (json_decode ($postingNumbers, true), $count, false);
 	}
-	else if ($agent == 'WB') {
+	elseif ($agent == 'WB') {
 		$report = ReportsMS::findReportByName ('customerorder', 'Стикер WB');
 		$files = array();
 		$arrContextOptions = array(
