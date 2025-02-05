@@ -31,7 +31,7 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
     foreach ($productsMS as $product)
     {
         $priceTypes = array_column($product['salePrices'], 'priceType');
-        $priceKey = array_search('Цена WB', array_column($priceTypes, 'name'));
+        $priceKey = array_search('Цена WB ULLO', array_column($priceTypes, 'name'));
         
         if ((int)($product['salePrices'][$priceKey]['value'])){
             $data[] = array (
