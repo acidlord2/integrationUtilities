@@ -36,7 +36,7 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
         if ((int)($product['salePrices'][$priceKey]['value'])){
             $data[] = array (
                 'nmId' => $productCodes[$product['code']],
-                'price' => ($product['salePrices'][$priceKey]['value'] / 100) - 10,
+                'price' => ($product['salePrices'][$priceKey]['value'] / 100),
                 'discount' => 0
             );
         }
