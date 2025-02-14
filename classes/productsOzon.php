@@ -17,7 +17,7 @@ class ProductsOzon
 		$logger = new Log (self::$logFilename);
 		
 		$products_ozon = array();
-		$postdata = array ('limit' => 1000, 'last_id' => '', 'filter' => array ());
+		$postdata = array ('limit' => 1000, 'last_id' => '', 'filter' => (object) []);
 		
 		while (true)
 		{
