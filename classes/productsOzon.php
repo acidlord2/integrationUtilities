@@ -22,7 +22,7 @@ class ProductsOzon
 		while (true)
 		{
 		    $logger -> write (__LINE__ . ' getOzonProducts.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			$return = ApiOzon::postOzonData(OZON_MAINURL . 'v2/product/list', $postdata, $kaori);
+			$return = ApiOzon::postOzonData(OZON_MAINURL . 'v3/product/list', $postdata, $kaori);
 			$logger -> write (__LINE__ . ' getOzonProducts.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if ($return ['result']['last_id'] == '')
 			{
