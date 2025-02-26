@@ -95,6 +95,9 @@
 	
 	define('MS_DELIVERY_VALUE0', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/b6108feb-369d-11e9-9ff4-34e80012330e');
 	define('MS_DELIVERY_VALUE_WB', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/0218e923-6b7d-11eb-0a80-06e50006ee79');
+	define('MS_DELIVERY_VALUE_RPOST', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/6eee2db2-efe8-11ef-0a80-13b40001c620');
+	define('MS_DELIVERY_VALUE_SDEK', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/e1b429c5-efe8-11ef-0a80-14130001f232');
+	define('MS_DELIVERY_VALUE_YANDEX', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/06283054-efe9-11ef-0a80-030c0001f22e');
 	define('MS_DELIVERY_VALUEALI', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/1a048b1f-d61f-11e8-9109-f8fc0021c485/0bc2bb48-1a65-11eb-0a80-050d0001b40b');
 	define('MS_DELIVERYTIME_VALUE1', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/e7a5f365-d62d-11e8-9107-50480021c6c8/e0460dd7-d62e-11e8-9ff4-34e8002207d8');
 	define('MS_PAYMENTTYPE_VALUE1', 'https://api.moysklad.ru/api/remap/1.2/entity/customentity/e0430541-d622-11e8-9109-f8fc00212299/14876972-d623-11e8-9109-f8fc00212414');
@@ -268,6 +271,8 @@
 	define('MS_PROJECT_YANDEX_KOSMOS_ID', 'd2085d76-874e-11ef-0a80-070300359321');
 	define('MS_PROJECT_WB_ULLO', 'https://api.moysklad.ru/api/remap/1.2/entity/project/f50eda7d-d691-11ef-0a80-068e00252db9');
 	define('MS_PROJECT_WB_ULLO_ID', 'f50eda7d-d691-11ef-0a80-068e00252db9');
+	define('MS_PROJECT_WB_CCD', 'https://api.moysklad.ru/api/remap/1.2/entity/project/cba9f0d6-ed89-11ef-0a80-0ee10001da42');
+	define('MS_PROJECT_WB_CCD_ID', 'cba9f0d6-ed89-11ef-0a80-0ee10001da42');
 	
 	//Ozon
 	define('OZON_TESTMODE', false);

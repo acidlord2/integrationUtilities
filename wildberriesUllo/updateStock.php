@@ -57,10 +57,15 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
         $data = array();
         foreach ($productsMS as $product)
         {
+            $priceTypes = array_column($product['salePrices'], 'priceType');
+            $priceKey = array_search('Цена WB ULLO', array_column($priceTypes, 'name'));
+            $price = 0;
+            if ((int)($product['salePrices'][$priceKey]['value']))
+                $price = ($product['salePrices'][$priceKey]['value'] / 100);
             //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $data[] = array (
                 'sku' => $productCodes[$product['code']],
-                'amount' => $product['quantity'] - 2 < 0 ? 0 : $product['quantity'] - 2
+                'amount' => $product['quantity'] - 2 < 0 ? 0 : ($price === 0 ? 0 : $product['quantity'] - 2)
                 //'stock' => 0,
             );
             $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
