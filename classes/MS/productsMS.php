@@ -60,7 +60,7 @@ class ProductsMS
 		    {
 		        $filter = '?filter=';
 		        foreach ($chunk as $code){
-				    $filter .= 'code=' . $code . ';';
+				    $filter .= 'code=' . urlencode($code)  . ';';
 		        }
                 $service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_PRODUCT . $filter;
                 $this->logger->write (__LINE__ . ' findProductsByCode.service_url - ' . $service_url);
