@@ -31,7 +31,7 @@
 	$data = json_decode (file_get_contents('php://input'), true);
 	$logger = new Log('beru-kosmos - order - notification.log'); //just passed the file name as file_name.log
 	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	$orderId = $data['orderId'] + 'duble';
+	$orderId = $data['orderId'] . 'double';
 	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'PROCESSING' && $data['substatus'] == 'READY_TO_SHIP') {
 		$logger->write(__LINE__ . ' order ' . $orderId . ' is processing. Returned OK');
 		
