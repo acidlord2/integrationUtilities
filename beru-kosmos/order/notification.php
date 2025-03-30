@@ -41,14 +41,6 @@
 		return;
 	}
 	{
-		$logger->write(__LINE__ . ' order ' . $orderId . ' is delivered. Returned OK');
-		
-		header('Content-Type: application/json');
-		header('HTTP/1.0 200 OK');
-		echo json_encode($return);
-		return;
-	}
-	{
 		$ordersYandexClass = new OrdersYandex($data['campaignId']);
 		$orderDataYandex = $ordersYandexClass->getOrder ($orderId);
 
