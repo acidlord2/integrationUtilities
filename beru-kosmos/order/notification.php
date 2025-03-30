@@ -13,7 +13,7 @@
 	//require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/products.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiOrderCache.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/ordersYandex.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/ordersYandex2.php');
 
 	if (($_SERVER['REQUEST_METHOD'] != 'POST'))
 	{
@@ -33,7 +33,7 @@
 	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	$orderId = $data['orderId'] . 'double';
 	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'PROCESSING' && $data['substatus'] == 'READY_TO_SHIP') {
-		$ordersYandexClass = new OrdersYandex($data['campaignId']);
+		$ordersYandexClass = new Yandex\v2\OrdersYandex($data['campaignId']);
 		$orderDataYandex = $ordersYandexClass->getOrder ($data['orderId']); 
 		$logger->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
