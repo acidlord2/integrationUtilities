@@ -181,6 +181,7 @@
 		{
 			$vat = 0;
 			$product = $productClass->findProductsByCode($item['offerId']);
+			$logger->write(__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if (isset($product[0]))
 			{
 				$order_data['positions'][] = array(
