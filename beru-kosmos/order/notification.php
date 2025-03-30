@@ -29,6 +29,9 @@
 		'version' => '1.0',
 		'time' => date('Y-m-dTH:i:sZ')
 	);
-	
+
+	header('Content-Type: application/json');
+	header('HTTP/1.0 200 OK');
+	echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 	return json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 ?>
