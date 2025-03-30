@@ -27,6 +27,11 @@
 		'version' => '1.0.0',
 		'time' => (new DateTime())->format('Y-m-d\TH:i:s.u\Z')
 	);
+	// temporary closing
+	header('Content-Type: application/json');
+	header('HTTP/1.0 200 OK');
+	echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+	return;
 
 	$data = json_decode (file_get_contents('php://input'), true);
 	$logger = new Log('beru-kosmos - order - notification.log'); //just passed the file name as file_name.log
@@ -37,18 +42,18 @@
 		$orderDataYandex = $ordersYandexClass->getOrder ($data['orderId']); 
 		$logger->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-		// $cacheOrder = APIOrderCache::getOrderCache($orderId);
+		$cacheOrder = APIOrderCache::getOrderCache($orderId);
 
-		// if (count($cacheOrder)) {
-		// 	$logger->write(__LINE__ . ' order ' . $orderId . ' is still processing. Returned OK');
+		if (count($cacheOrder)) {
+			$logger->write(__LINE__ . ' order ' . $orderId . ' is still processing. Returned OK');
 		
-		// 	header('Content-Type: application/json');
-		// 	header('HTTP/1.0 200 OK');
-		// 	echo json_encode($return);
-		// 	return;
-		// }
+			header('Content-Type: application/json');
+			header('HTTP/1.0 200 OK');
+			echo json_encode($return);
+			return;
+		}
 		
-		// APIOrderCache::saveOrderCache($orderId, 'processing');
+		APIOrderCache::saveOrderCache($orderId, 'processing');
 		
 		$ok = true;
 		$orderClass = new OrdersMS();
