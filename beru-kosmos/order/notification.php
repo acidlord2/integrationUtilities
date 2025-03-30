@@ -29,5 +29,6 @@
 		'version' => '1.0',
 		'time' => date('Y-m-dTH:i:sZ')
 	);
-	return $return;
+	
+	return json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 ?>
