@@ -37,18 +37,18 @@
 		$orderDataYandex = $ordersYandexClass->getOrder ($data['orderId']); 
 		$logger->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-		$cacheOrder = APIOrderCache::getOrderCache($orderId);
+		// $cacheOrder = APIOrderCache::getOrderCache($orderId);
 
-		if (count($cacheOrder)) {
-			$logger->write(__LINE__ . ' order ' . $orderId . ' is still processing. Returned OK');
+		// if (count($cacheOrder)) {
+		// 	$logger->write(__LINE__ . ' order ' . $orderId . ' is still processing. Returned OK');
 		
-			header('Content-Type: application/json');
-			header('HTTP/1.0 200 OK');
-			echo json_encode($return);
-			return;
-		}
+		// 	header('Content-Type: application/json');
+		// 	header('HTTP/1.0 200 OK');
+		// 	echo json_encode($return);
+		// 	return;
+		// }
 		
-		APIOrderCache::saveOrderCache($orderId, 'processing');
+		// APIOrderCache::saveOrderCache($orderId, 'processing');
 		
 		$ok = true;
 		$orderClass = new OrdersMS();
