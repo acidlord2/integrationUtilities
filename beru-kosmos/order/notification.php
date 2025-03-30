@@ -42,7 +42,7 @@
 	}
 	{
 		$ordersYandexClass = new OrdersYandex($data['campaignId']);
-		$orderDataYandex = $ordersYandexClass->getOrder ($orderId);
+		$orderDataYandex = $ordersYandexClass->getOrder ($data['orderId']);
 		$logger->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 		$cacheOrder = APIOrderCache::getOrderCache($orderId);
