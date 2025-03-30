@@ -26,8 +26,8 @@
 	
 	$return = array(
 		'name' => 'beru-kosmos',
-		'version' => '1.0',
-		'time' => date('Y-m-dTH:i:sZ')
+		'version' => '1.0.0',
+		'time' => (new DateTime())->format('Y-m-d\TH:i:s.u\Z')
 	);
 
 	header('Content-Type: application/json');
