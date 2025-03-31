@@ -23,13 +23,13 @@
 	}
 
 	$return = array(
-		'name' => 'beru-kosmos',
+		'name' => 'beru-summit',
 		'version' => '1.0.0',
 		'time' => (new DateTime())->format('Y-m-d\TH:i:s.u\Z')
 	);
 
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger = new Log('beru-kosmos - order - notification.log'); //just passed the file name as file_name.log
+	$logger = new Log('beru-summit - order - notification.log'); //just passed the file name as file_name.log
 	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	// temporary closing
@@ -75,7 +75,7 @@
 		$order_data['name'] = (string)$orderId;
 		$order_data['organization'] = array(
 			'meta' => array(
-				'href' => MS_KOSMOS,
+				'href' => MS_ALIANS,
 				'type' => 'organization',
 				'mediaType' => 'application/json'
 			)
@@ -122,7 +122,7 @@
 		
 		$order_data['project'] = array(
 			'meta' => array(
-				'href' => MS_PROJECT_YANDEX_KOSMOS,
+				'href' => MS_PROJECT_YANDEX_SUMMIT,
 				'type' => 'project',
 				'mediaType' => 'application/json'
 			)
