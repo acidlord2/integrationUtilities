@@ -39,8 +39,8 @@
 	// return;
 	
 
-	$orderId = $data['orderId'];
 	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'PROCESSING' && $data['substatus'] == 'READY_TO_SHIP') {
+		$orderId = $data['orderId'];
 		$ordersYandexClass = new Yandex\v2\OrdersYandex($data['campaignId']);
 		$orderDataYandex = $ordersYandexClass->getOrder ($data['orderId']); 
 		$logger->write(__LINE__ . ' orderDataYandex - ' . json_encode ($orderDataYandex, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -221,6 +221,7 @@
 	}
 	// delivered
 	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'DELIVERED') {
+		$orderId = $data['orderId'];
 		$post_data = array (
 			'state' => array(
 				'meta' => array(
@@ -237,6 +238,7 @@
 	}
 	// cancel
 	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'CANCELLED') {
+		$orderId = $data['orderId'];
 		$orderClass = new OrdersMS();
 		$order = $orderClass->findOrders('name=' . $orderId);
 		if (isset($order[0])){
