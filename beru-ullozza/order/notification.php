@@ -23,13 +23,13 @@
 	}
 
 	$return = array(
-		'name' => 'beru-kosmos',
+		'name' => 'beru-ullozza',
 		'version' => '1.0.0',
 		'time' => (new DateTime())->format('Y-m-d\TH:i:s.u\Z')
 	);
 
 	$data = json_decode (file_get_contents('php://input'), true);
-	$logger = new Log('beru-kosmos - order - notification.log'); //just passed the file name as file_name.log
+	$logger = new Log('beru-ullozza - order - notification.log'); //just passed the file name as file_name.log
 	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	// temporary closing
@@ -37,7 +37,6 @@
 	header('HTTP/1.0 200 OK');
 	echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 	return;
-	
 
 	$orderId = $data['orderId'];
 	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'PROCESSING' && $data['substatus'] == 'READY_TO_SHIP') {
@@ -75,7 +74,7 @@
 		$order_data['name'] = (string)$orderId;
 		$order_data['organization'] = array(
 			'meta' => array(
-				'href' => MS_KOSMOS,
+				'href' => MS_ULLO,
 				'type' => 'organization',
 				'mediaType' => 'application/json'
 			)
@@ -122,7 +121,7 @@
 		
 		$order_data['project'] = array(
 			'meta' => array(
-				'href' => MS_PROJECT_YANDEX_KOSMOS,
+				'href' => MS_PROJECT_YANDEX_ULLO,
 				'type' => 'project',
 				'mediaType' => 'application/json'
 			)
@@ -220,12 +219,6 @@
 		}				
 	}
 	
-	$return = array(
-		'name' => 'beru-kosmos',
-		'version' => '1.0.0',
-		'time' => (new DateTime())->format('Y-m-d\TH:i:s.u\Z')
-	);
-
 	header('Content-Type: application/json');
 	header('HTTP/1.0 200 OK');
 	echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
