@@ -218,6 +218,72 @@
 			$order['name'] = $orderDataYandex['order']['id'];
 		}				
 	}
+	// delivered
+	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'DELIVERED') {
+		$post_data = array (
+			'state' => array(
+				'meta' => array(
+				    'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDERSTATE . '/' . MS_DELIVERED_STATE_ID,
+					'type' => 'state',
+					'mediaType' => 'application/json'
+				)
+			)
+		);
+
+		$orderClass = new OrdersMS();
+		$order = $orderClass->updateCustomerorder ($orderId, $post_data);
+		$logger->write(__LINE__ . ' order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	}
+	// cancelled
+	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'CANCELLED') {
+		$orderClass = new OrdersMS();
+		$order = $orderClass->findOrders('name=' . $orderId);
+		if (isset($order[0])){
+			$orderData = $order[0];
+			if (strpos($orderData['state']['meta']['href'], MS_CONFIRMBERU_STATE_ID) || strpos($order['state']['meta']['href'], MS_CONFIRM_STATE_ID))
+				$post_data = array (
+					'state' => array(
+						'meta' => array(
+							'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDERSTATE . '/' . MS_CANCEL_STATE_ID,
+							'type' => 'state',
+							'mediaType' => 'application/json'
+						)
+					),
+					'attributes' => array(
+						array (
+							'meta' => array(
+								'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'type' => 'attributemetadata',
+								'mediaType' => 'application/json'
+							),
+							'value' => true
+						)
+					)
+				);
+			else
+			$post_data = array (
+				'attributes' => array(
+					array(
+						'meta' => array(
+							'href' => MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_CUSTOMERORDER . MS_API_ATTRIBUTES . '/' . MS_MPCANCEL_ATTR_ID, 'type' => 'attributemetadata',
+							'mediaType' => 'application/json'
+						),
+						'value' => true
+					)
+				)
+			);
+			$order = $orderClass->updateCustomerorder ($orderId, $post_data);
+			$logger->write(__LINE__ . ' order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		}
+		else
+		{
+			$logger->write(__LINE__ . ' order ' . $orderId . ' not found. Returned OK');
+			
+			header('Content-Type: application/json');
+			header('HTTP/1.0 200 OK');
+			echo json_encode($return);
+			return;
+		}
+	}
 	
 	header('Content-Type: application/json');
 	header('HTTP/1.0 200 OK');
