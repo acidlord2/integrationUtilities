@@ -33,10 +33,10 @@
 	$logger->write(__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	// temporary closing
-	header('Content-Type: application/json');
-	header('HTTP/1.0 200 OK');
-	echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-	return;
+	// header('Content-Type: application/json');
+	// header('HTTP/1.0 200 OK');
+	// echo json_encode($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+	// return;
 	
 
 	$orderId = $data['orderId'];
