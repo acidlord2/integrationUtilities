@@ -217,6 +217,8 @@
 		if (isset ($order['errors'][0]) ? ($order['errors'][0]['code'] == 3006 && $order['errors'][0]['parameter'] == 'name') : false) {
 			$order['name'] = $orderDataYandex['order']['id'];
 		}				
+		$return = $ordersYandexClass->updateStatus ($orderData['name'], 'PROCESSING', 'READY_TO_SHIP');
+		$logger->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));		
 	}
 	// delivered
 	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'DELIVERED') {
