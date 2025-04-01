@@ -1,18 +1,18 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex2.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
-$skuYandexClass = new SkuYandex2(BERU_API_ULLOZZA_CAMPAIGN, BERU_API_ULLOZZA_BUSINESS_ID);
+$skuYandexClass = new SkuYandex(BERU_API_ULLOZZA_CAMPAIGN);
 $productsClass = new ProductsMS();
 
-$skus = $skuYandexClass->offerMappings();
+$skus = $skuYandexClass->offerMappingEntries();
 
 $shopSku = array();
 foreach ($skus as $key => $sku)
 {
-    array_push($shopSku, $sku['offer']['offerId']);
+    array_push($shopSku, $sku['offer']['shopSku']);
     if (count($shopSku) == 50 || $key + 1 == count($skus))
     {
         $assortments = $productsClass->getAssortment($shopSku);
@@ -22,7 +22,7 @@ foreach ($skus as $key => $sku)
         {
             $data['skus'][] = array(
                 'sku' => $assortment['code'],
-                'warehouseId' => BERU_API_ULLOZZA_WAREHOUSE,
+                'warehouseId' => 47798,
                 'items' => array(
                     0 => array(
                         'type' => 'FIT',
@@ -36,7 +36,7 @@ foreach ($skus as $key => $sku)
         $shopSku = array();
     }
 }
-echo count($skus) . ' Stocks updated';
+
 
 ?>
 
