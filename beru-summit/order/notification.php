@@ -39,7 +39,7 @@
 	// return;
 	
 
-	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'PROCESSING' && $data['substatus'] == 'READY_TO_SHIP') {
+	if ($data['notificationType'] == 'ORDER_STATUS_UPDATED' && $data['status'] == 'PROCESSING' && $data['substatus'] == 'STARTED') {
 		$orderId = $data['orderId'];
 		$ordersYandexClass = new Yandex\v2\OrdersYandex($data['campaignId']);
 		$orderDataYandex = $ordersYandexClass->getOrder ($data['orderId']); 
