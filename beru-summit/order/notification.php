@@ -243,7 +243,7 @@
 		$order = $orderClass->findOrders('name=' . $orderId);
 		if (isset($order[0])){
 			$orderData = $order[0];
-			if (strpos($orderData['state']['meta']['href'], MS_CONFIRMBERU_STATE_ID) || strpos($order['state']['meta']['href'], MS_CONFIRM_STATE_ID))
+			if (strpos($orderData['state']['meta']['href'], MS_CONFIRMBERU_STATE_ID) || strpos($orderData['state']['meta']['href'], MS_CONFIRM_STATE_ID))
 				$post_data = array (
 					'state' => array(
 						'meta' => array(
