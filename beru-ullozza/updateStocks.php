@@ -32,7 +32,8 @@ foreach ($skus as $key => $sku)
                 )
             );
         }
-        $skuYandexClass->putStocks($data);
+        if(count($data['skus']))
+            $skuYandexClass->putStocks($data);
         $shopSku = array();
     }
 }
