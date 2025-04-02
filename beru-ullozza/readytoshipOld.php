@@ -1,7 +1,7 @@
 <?php
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersBeru2.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersBeru.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	$logger = new Log ('beru-ullozza - readytoship.log');
 	
@@ -15,7 +15,7 @@
 		'substatus' => 'STARTED',
 		'fromDate' => $date
 	);
-	$ordersBeru = OrdersBeru2::getOrders (BERU_API_ULLOZZA_CAMPAIGN, $filters);
+	$ordersBeru = OrdersBeru::getOrders (BERU_API_ULLOZZA_CAMPAIGN, $filters);
 	$logger->write (__LINE__ . ' orderBeru - ' . json_encode ($ordersBeru, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (is_array ($ordersBeru) && !count ($ordersBeru))
@@ -58,7 +58,7 @@
 				)
 			)
 		);
-		OrdersBeru2::packOrder (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $orderBeru['delivery']['shipments'][0]['id'], $boxes);
+		OrdersBeru::packOrder (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $orderBeru['delivery']['shipments'][0]['id'], $boxes);
 		
 		$statusData = array (
 			'order' => array (
@@ -66,8 +66,8 @@
 				'substatus' => 'READY_TO_SHIP'
 			)
 		);
-		OrdersBeru2::updateOrderStatus (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $statusData);
-		$orderLabels = OrdersBeru2::getOrdersLebels (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id']);
+		OrdersBeru::updateOrderStatus (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $statusData);
+		$orderLabels = OrdersBeru::getOrdersLebels (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id']);
 		if (isset ($orderLabels['result']['parcelBoxLabels'][0]['deliveryServiceId']))
 		{
 			$ordersMSUpdate[] = array (
