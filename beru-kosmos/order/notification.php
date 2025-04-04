@@ -193,7 +193,7 @@
 						)
 					),
 					'quantity' => $item['count'],
-					'price' => (int)(($item['price'] + (isset($item['subsidy']) ? $item['subsidy'] : 0)) * 100),
+					'price' => (int)$item['priceBeforeDiscount'] * 100,
 					'vat' => $vat,
 					'discount' => (int)0,
 					'reserve' => $item['count']
