@@ -140,13 +140,13 @@
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Интеграция с Ozon Юлло</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/updateProducts.php', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/updateProducts.php', '_blank')">
 					Обновить остатки и цены Ozon
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/getNewOrders.php', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/getNewOrders.php', '_blank')">
 					Получить новые заказы Ozon
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/cancelOrder', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/cancelOrder', '_blank')">
 					Обновить статус по отмененным Ozon
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/updateBarcodes', '_blank')">
