@@ -41,7 +41,7 @@
 			$price = $keyOzonPrice !== false ? $productMS['salePrices'][$keyOzonPrice]['value'] / 100 : 0;
 			$quantity = $keyOzonPrice !== false ? ($productMS['quantity'] < 0 ? 0 : $productMS['quantity']) : 0;
 
-			array_push ($prices['prices'], array ('offer_id' => $productMS['code'], 'price' => (string)$price));
+			array_push ($prices['prices'], array ('offer_id' => $productMS['code'], 'price' => (string)$price, 'old_price' => (string)(int)($price * 1.2)));
 			array_push ($stocks['stocks'], array ('offer_id' => $productMS['code'], 'stock' => ($price == 0 ? 0 : $quantity)));
 			
 			if (count ($stocks['stocks']) == 100 || count ($productsMS) == ($key + 1))
