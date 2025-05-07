@@ -30,8 +30,7 @@ foreach ($skus as $key => $sku)
                 'offerId' => $assortment['code'],
                 'price' => array(
                     'value' => $price,
-                    'currencyId' => 'RUR',
-                    'discountBase' => 0,
+                    'currencyId' => 'RUR'
                 )
             );
         }
