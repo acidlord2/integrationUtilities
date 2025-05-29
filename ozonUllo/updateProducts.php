@@ -52,7 +52,7 @@
 					'product_id' => $products[$productMS['code']]['product_id'],
 					'quant_size' => 1,
 					'stock' => ($price == 0 ? 0 : $quantity),
-					'warehouse_id' => OZON_WEARHOUSE2_ID
+					'warehouse_id' => OZON_ULLO_WEARHOUSE_MAIN
 				)
 			);
 			
