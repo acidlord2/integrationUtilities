@@ -1,7 +1,7 @@
 <?php
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersBeru.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersBeru2.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	$logger = new Log ('beru-ullozza - readytoship.log');
 	
@@ -15,7 +15,7 @@
 		'substatus' => 'STARTED',
 		'fromDate' => $date
 	);
-	$ordersBeru = OrdersBeru::getOrders (BERU_API_ULLOZZA_CAMPAIGN, $filters);
+	$ordersBeru = OrdersBeru2::getOrders (BERU_API_ULLOZZA_CAMPAIGN, $filters);
 	$logger->write (__LINE__ . ' orderBeru - ' . json_encode ($ordersBeru, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
 	if (is_array ($ordersBeru) && !count ($ordersBeru))
@@ -40,25 +40,25 @@
 			$logger->write (__LINE__ . ' orderBeru[id] doesn\'t exists in MS - ' . json_encode ($orderBeru['id'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			continue;
 		}
-		$items = array();
-		foreach ($orderBeru['items'] as $item)
-		{
-		    $items[] = array ('id' => $item['id'], 'count' => $item['count']);
-		}
-		// compile boxes
-		$boxes = array(
-			'boxes' => array(
-				0 => array (
-					'fulfilmentId' => $orderBeru['id'] . '-1',
-				    'weight' => isset($orderBeru['delivery']['shipments'][0]['weight']) ? $orderBeru['delivery']['shipments'][0]['weight'] + 200 : 1000,
-				    'width' => isset($orderBeru['delivery']['shipments'][0]['width']) ? $orderBeru['delivery']['shipments'][0]['width'] + 10 : 20,
-				    'height' => isset($orderBeru['delivery']['shipments'][0]['height']) ? $orderBeru['delivery']['shipments'][0]['height'] + 10 : 20,
-				    'depth' => isset($orderBeru['delivery']['shipments'][0]['depth']) ? $orderBeru['delivery']['shipments'][0]['depth'] + 10 : 20,
-				    'items' => isset($orderBeru['delivery']['shipments'][0]['items']) ? $orderBeru['delivery']['shipments'][0]['items'] : $items
-				)
-			)
-		);
-		OrdersBeru::packOrder (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $orderBeru['delivery']['shipments'][0]['id'], $boxes);
+		// $items = array();
+		// foreach ($orderBeru['items'] as $item)
+		// {
+		//     $items[] = array ('id' => $item['id'], 'count' => $item['count']);
+		// }
+		// // compile boxes
+		// $boxes = array(
+		// 	'boxes' => array(
+		// 		0 => array (
+		// 			'fulfilmentId' => $orderBeru['id'] . '-1',
+		// 		    'weight' => isset($orderBeru['delivery']['shipments'][0]['weight']) ? $orderBeru['delivery']['shipments'][0]['weight'] + 200 : 1000,
+		// 		    'width' => isset($orderBeru['delivery']['shipments'][0]['width']) ? $orderBeru['delivery']['shipments'][0]['width'] + 10 : 20,
+		// 		    'height' => isset($orderBeru['delivery']['shipments'][0]['height']) ? $orderBeru['delivery']['shipments'][0]['height'] + 10 : 20,
+		// 		    'depth' => isset($orderBeru['delivery']['shipments'][0]['depth']) ? $orderBeru['delivery']['shipments'][0]['depth'] + 10 : 20,
+		// 		    'items' => isset($orderBeru['delivery']['shipments'][0]['items']) ? $orderBeru['delivery']['shipments'][0]['items'] : $items
+		// 		)
+		// 	)
+		// );
+		// OrdersBeru2::packOrder (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $orderBeru['delivery']['shipments'][0]['id'], $boxes);
 		
 		$statusData = array (
 			'order' => array (
@@ -66,8 +66,8 @@
 				'substatus' => 'READY_TO_SHIP'
 			)
 		);
-		OrdersBeru::updateOrderStatus (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $statusData);
-		$orderLabels = OrdersBeru::getOrdersLebels (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id']);
+		OrdersBeru2::updateOrderStatus (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $statusData);
+		$orderLabels = OrdersBeru2::getOrdersLebels (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id']);
 		if (isset ($orderLabels['result']['parcelBoxLabels'][0]['deliveryServiceId']))
 		{
 			$ordersMSUpdate[] = array (

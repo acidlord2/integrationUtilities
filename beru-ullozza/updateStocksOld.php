@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
-$skuYandexClass = new SkuYandex(BERU_API_10KIDS_CAMPAIGN);
+$skuYandexClass = new SkuYandex(BERU_API_ULLOZZA_CAMPAIGN);
 $productsClass = new ProductsMS();
 
 $skus = $skuYandexClass->offerMappingEntries();

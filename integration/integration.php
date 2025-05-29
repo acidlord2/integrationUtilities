@@ -116,31 +116,37 @@
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Яндекс</p>
-				<button class = "integration-button" onclick = "window.open('http://kids-universe.ru/beru/readytoship', '_blank')">
-					Подтверждение заказов Яндекс ЮЛЛО
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/beru/readytoship', '_blank')">
-					Подтверждение заказов Яндекс 4cleaning
-				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ms-duplicates/remove-duplicates', '_blank')">
 					Удаление дублей заказов
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-summit/updateStock', '_blank')">
 					Обновление остатков Саммит
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-vysota/updateStock', '_blank')">
-					Обновление остатков Высота
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-summit/updatePrices', '_blank')">
+					Обновление цен Саммит
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-kosmos/updateStock', '_blank')">
+					Обновление остатков Космос
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-kosmos/updatePrices', '_blank')">
+					Обновление цен Космос
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-ullozza/updateStock', '_blank')">
+					Обновление остатков Юлло
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-ullozza/updatePrices', '_blank')">
+					Обновление цен Юлло
 				</button>
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Интеграция с Ozon Юлло</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/updateProducts.php', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/updateProducts.php', '_blank')">
 					Обновить остатки и цены Ozon
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/getNewOrders.php', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/getNewOrders.php', '_blank')">
 					Получить новые заказы Ozon
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozon/cancelOrder', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/cancelOrder', '_blank')">
 					Обновить статус по отмененным Ozon
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/updateBarcodes', '_blank')">
