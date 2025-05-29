@@ -10,9 +10,11 @@
 		$productsMS = array();
 		//$logger -> write ('productsOzon - ' . json_encode ($productsOzon, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
+		$products = array();
 		foreach ($productsOzon as $key => $productOzon)
 		{
 			$filter .= 'code=' . $productOzon['offer_id'] . ';';
+			$products[$productOzon['offer_id']] = $productOzon;
 			if (($key + 1) % 200 == 0 || $key + 1 == count ($productsOzon))
 			{
 				$productsMStmp = null;
