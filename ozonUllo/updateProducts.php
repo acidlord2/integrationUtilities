@@ -10,9 +10,11 @@
 		$productsMS = array();
 		//$logger -> write ('productsOzon - ' . json_encode ($productsOzon, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
+		$products = array();
 		foreach ($productsOzon as $key => $productOzon)
 		{
 			$filter .= 'code=' . $productOzon['offer_id'] . ';';
+			$products[$productOzon['offer_id']] = $productOzon;
 			if (($key + 1) % 200 == 0 || $key + 1 == count ($productsOzon))
 			{
 				$productsMStmp = null;
@@ -42,7 +44,17 @@
 			$quantity = $keyOzonPrice !== false ? ($productMS['quantity'] < 0 ? 0 : $productMS['quantity']) : 0;
 
 			array_push ($prices['prices'], array ('offer_id' => $productMS['code'], 'price' => (string)$price, 'old_price' => (string)(int)($price * 1.2)));
-			array_push ($stocks['stocks'], array ('offer_id' => $productMS['code'], 'stock' => ($price == 0 ? 0 : $quantity)));
+
+			array_push (
+				$stocks['stocks'],
+				array (
+					'offer_id' => $productMS['code'],
+					'product_id' => $products[$productMS['code']]['product_id'],
+					'quant_size' => 1,
+					'stock' => ($price == 0 ? 0 : $quantity),
+					'warehouse_id' => OZON_ULLO_WEARHOUSE_MAIN
+				)
+			);
 			
 			if (count ($stocks['stocks']) == 100 || count ($productsMS) == ($key + 1))
 			{

@@ -68,7 +68,7 @@ class ProductsOzon
 		$logger = new Log (self::$logFilename);
 
 		$logger -> write (__LINE__ . ' updateStock.stockData - ' . json_encode ($stockData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		$return = ApiOzon::postOzonData(OZON_MAINURL . 'v1/product/import/stocks', $stockData, $kaori);
+		$return = ApiOzon::postOzonData(OZON_MAINURL . '/v2/products/stocks', $stockData, $kaori);
 		$logger -> write (__LINE__ . ' updateStock.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		return $return;
 	}
