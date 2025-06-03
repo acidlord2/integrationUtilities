@@ -42,7 +42,7 @@
 				)
 			);
 			$data['externalCode'] = (string)$order['order_id'];
-			$date = new DateTime($order['in_process_at'], new DateTimeZone('UTC')); 
+			$date = new DateTime($order['in_process_at'], new DateTimeZone('UTC'));
 			$date->setTimezone(new DateTimeZone('Europe/Moscow'));
 			$data['moment'] = $date->format('Y-m-d H:i:s');
 			
