@@ -76,7 +76,7 @@
 			if (count ($stocks['stocks']) == 100 || count ($productsMS) == ($key + 1))
 			{
 				ProductsOzon::updatePrices($prices, true);
-				ProductsOzon::updateStock($stocks, true);
+				ProductsOzon::updateStock($stocks, true); 
 				$prices = array ('prices' => array());
 				$stocks = array ('stocks' => array());
 			}
