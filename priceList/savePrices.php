@@ -22,8 +22,7 @@
 		foreach ($prices as $priceId => $price)
 		{
 			$priceTypeName = '';
-			//$logger -> write (__LINE__ . ' productPriceTypes - ' . json_encode ($_SESSION['productPriceTypes'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-
+			$logger -> write (__LINE__ . ' productPriceTypes - ' . json_encode ($_SESSION['productPriceTypes'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			foreach ($_SESSION['productPriceTypes'] as $priceType)
 				if ($priceId == $priceType['priceType_id'])
 				{
