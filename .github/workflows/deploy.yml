@@ -31,7 +31,6 @@ jobs:
         while IFS= read -r file; do
           if [[ -f "$file" ]]; then
             echo "Uploading $file..."
-            echo -e "open $FTP_HOST\nset ftp:ssl-allow no\nput -O /www/kids-universe.ru/ \"$file\"\nbye" > upload.cmd
-            lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -f upload.cmd
+            lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_HOST" -e "set ftp:ssl-allow no; put -O /www/kids-universe.ru/ \"$file\"; bye"
           fi
         done <<< "$CHANGED_FILES"
