@@ -32,8 +32,9 @@ jobs:
           if [[ -f "$file" ]]; then
             echo "Uploading $file..."
             lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_HOST" <<EOF
-              set ftp:ssl-allow no
-              put -O /www/kids-universe.ru/ "$file"
-              bye EOF
+set ftp:ssl-allow no
+put -O /www/kids-universe.ru/ "$file"
+bye
+EOF
           fi
         done <<< "$CHANGED_FILES"
