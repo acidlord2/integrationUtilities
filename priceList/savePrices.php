@@ -32,7 +32,7 @@
 				
 			if ($priceTypeName == '')
 			{
-				$logger -> write (__LINE__ . ' не найдена цена ' . $priceId . ' в prices - ' . json_encode ($prices, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$logger -> write (__LINE__ . ' не найдена цена ' . $priceId . ' в prices - ' . json_encode ($prices, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)); 
 				continue;
 			}
 			
