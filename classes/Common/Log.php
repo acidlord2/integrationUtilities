@@ -14,7 +14,7 @@ class Log {
 		date_default_timezone_set('Europe/Moscow');
 		$this->folder = $_SERVER['DOCUMENT_ROOT'] . '/logs/';
 		$this->archiveFolder = $_SERVER['DOCUMENT_ROOT'] . '/logs/archive/';
-		$this->fileSize = 30000000;
+		$this->fileSize = 15000000;
 		$this->checkFile($filename);
 		$this->handle = fopen($this->folder . $filename, 'a');
 	}
