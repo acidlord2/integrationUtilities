@@ -32,5 +32,6 @@ jobs:
 
         while IFS= read -r file; do
           echo "Uploading $file..."
-          lftp -d -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_HOST" -e "set ftp:ssl-allow no; put -O /www/kids-universe.ru/ \"$file\"; bye"
+          dir=$(dirname "$file")
+          lftp -d -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_HOST" -e "set ftp:ssl-allow no; mkdir -p /www/kids-universe.ru/$dir; put -O /www/kids-universe.ru/$dir \"$file\"; bye"
         done < changed_files.txt
