@@ -16,10 +16,8 @@ jobs:
       id: changed
       run: |
         git fetch origin master --depth=2
-        echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
-        git diff --name-only HEAD^ HEAD >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
-
+        git diff --name-only HEAD^ HEAD > changed_files.txt
+    
     - name: Upload changed files via FTP
       env:
         FTP_HOST: ${{ secrets.FTP_HOST }}
@@ -33,4 +31,4 @@ jobs:
             echo "Uploading $file..."
             lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_HOST" -e "set ftp:ssl-allow no; put -O /www/kids-universe.ru/ \"$file\"; bye"
           fi
-        done <<< "$CHANGED_FILES"
+        done < changed_files.txt
