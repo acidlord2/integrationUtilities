@@ -37,12 +37,11 @@ class Log {
 	}
 
 	public function archiveFile($filename) {
-		$filenameSplit = explode  ('.', $filename);
-		if (!is_dir ($this->archiveFolder))
-			mkdir ($this->archiveFolder);
+		$filenameSplit = explode('.', $filename);
+		if (!is_dir($this->archiveFolder))
+			mkdir($this->archiveFolder, 0777, true); // ensure recursive and permissions
 		//rename($this->folder . $filename, $this->archiveFolder . $filenameSplit[0] . '-' . date('Ymd_H') . '.' . $filenameSplit[1]);
 		rename($this->folder . $filename, $this->archiveFolder . $filename);
 	}
 }
 
-?>

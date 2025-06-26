@@ -16,10 +16,9 @@ jobs:
       id: changed
       run: |
         git fetch origin master --depth=2
-        echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
-        git diff --name-only HEAD^ HEAD >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
-
+        git diff --name-only HEAD^ HEAD > changed_files.txt
+        echo "Changed files:" && cat changed_files.txt
+    
     - name: Upload changed files via FTP
       env:
         FTP_HOST: ${{ secrets.FTP_HOST }}
@@ -28,9 +27,11 @@ jobs:
       run: |
         sudo apt-get update && sudo apt-get install -y lftp
 
+        echo "Uploading the following files:"
+        cat changed_files.txt
+
         while IFS= read -r file; do
-          if [[ -f "$file" ]]; then
-            echo "Uploading $file..."
-            lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_HOST" -e "set ftp:ssl-allow no; put -O /www/kids-universe.ru/ \"$file\"; bye"
-          fi
-        done <<< "$CHANGED_FILES"
+          echo "Uploading $file..."
+          dir=$(dirname "$file")
+          lftp -d -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_HOST" -e "set ftp:ssl-allow no; mkdir -p /www/kids-universe.ru/$dir; put -O /www/kids-universe.ru/$dir \"$file\"; bye"
+        done < changed_files.txt

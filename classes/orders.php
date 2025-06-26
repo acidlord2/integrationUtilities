@@ -720,7 +720,7 @@ class Orders
 		$orders = array();
 		while (true)
 		{	
-			$service_url = OZON_MAINURL . 'v2/posting/fbs/list';
+			$service_url = OZON_MAINURL . 'v3/posting/fbs/list';
 			$logger->write("getOzonOrders.service_url - " . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$logger->write("getOzonOrders.postData - " . json_encode ($postData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			self::postOzonData ($service_url, $postData, $order_list, $kaori);

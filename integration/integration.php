@@ -54,67 +54,6 @@
 				</button>
 			</div>
 			<div class = "integration-block">
-				<p class = "integration-block-header">Сбермегамаркет</p>
-				<!-- <button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/importorders/importorders10kids', '_blank')"> -->
-				<button class = "integration-button" onclick = "getSberOrders(this)">
-					Ипортировать заказы Каори
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/goods/updatePrices', '_blank')">
-					Обновить цены Каори
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/goods/updateStocks', '_blank')">
-					Обновить остатки Каори
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/importorders/importorders', '_blank')">
-					Ипортировать заказы Юлло
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/goods/updatePrices', '_blank')">
-					Обновить цены Юлло
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/goods/updateStocks', '_blank')">
-					Обновить остатки Юлло
-				</button>
-				<br>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast1/importOrders', '_blank')">
-					Ипортировать заказы Альянс
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast1/updatePricesStock', '_blank')">
-					Обновить цены и остатки Альянс
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast2/importOrders', '_blank')">
-					Ипортировать заказы Космос
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast2/updatePricesStock', '_blank')">
-					Обновить цены и остатки Космос
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast3/importOrders', '_blank')">
-					Ипортировать заказы Комета
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast3/updatePricesStock', '_blank')">
-					Обновить цены и остатки Комета
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast4/importOrders', '_blank')">
-					Ипортировать заказы Аполлон
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast4/updatePricesStock', '_blank')">
-					Обновить цены и остатки Аполлон
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast5/importOrders', '_blank')">
-					Ипортировать заказы Плутон
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast5/updatePricesStock', '_blank')">
-					Обновить цены и остатки Плутон
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast6/importOrders', '_blank')">
-					Ипортировать заказы Высота
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sbmm-ast6/updatePricesStock', '_blank')">
-					Обновить цены и остатки Высота
-				</button>
-				<div id="sberInfo"></div>
-
-			</div>
-			<div class = "integration-block">
 				<p class = "integration-block-header">Яндекс</p>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ms-duplicates/remove-duplicates', '_blank')">
 					Удаление дублей заказов
@@ -146,7 +85,7 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/getNewOrders.php', '_blank')">
 					Получить новые заказы Ozon
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/cancelOrder', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/cancelOrders', '_blank')">
 					Обновить статус по отмененным Ozon
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonUllo/updateBarcodes', '_blank')">
@@ -161,26 +100,11 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonKaori/getNewOrders.php', '_blank')">
 					Получить новые заказы Ozon
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonKaori/cancelOrder', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonKaori/cancelOrders', '_blank')">
 					Обновить статус по отмененным Ozon
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ozonKaori/updateBarcodes', '_blank')">
 					Обновить Штрихкоды заказов
-				</button>
-			</div>
-			<div class = "integration-block">
-				<p class = "integration-block-header">Интеграция с Aliexpress</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/aliexpress/syncProducts.php', '_blank')">
-					Синхронизировать товары (если на али добавлены)
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/aliexpress/updateQuantities', '_blank')">
-					Обновить остатки
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/aliexpress/updatePrices', '_blank')">
-					Обновить цены
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/aliexpress/importOrders', '_blank')">
-					Загрузить заказы
 				</button>
 			</div>
 			<div class = "integration-block">
@@ -211,5 +135,4 @@
 		</script>
 	</body>
 </html>
-
 
