@@ -386,7 +386,7 @@
 	// DB
 	define('DB_HOSTNAME', 'localhost');
 	define('DB_USERNAME', 'u1003281_default');
-	define('DB_PASSWORD', 'L8t5O7k0');
+	define('DB_PASSWORD', 'zU8hH8hI2quQ5vG2');
 	define('DB_DATABASE', 'u1003281_stock');
 	define('DB_DATABASE2', 'u1003281_stock');
 
