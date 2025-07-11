@@ -3,7 +3,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Product-v1.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ProductsMS.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 
 $clientId = SPORTMASTER_ULLO_CLIENT_ID;
 $warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
