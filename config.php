@@ -393,4 +393,3 @@
 	define('SPORTMASTER_ULLO_CLIENT_ID', '255300299');
 	define('SPORTMASTER_ULLO_WAREHOUSE_ID', '27398540299');
 	define('SPORTMASTER_BASE_URL', 'https://api-seller.sportmaster.ru/api/');
-?>
