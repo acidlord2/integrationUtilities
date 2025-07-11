@@ -88,7 +88,7 @@ class Api
 		//$this->logger->write (__LINE__ . ' header - ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
-		$jsonOut = gzdecode(curl_exec($curl));
+		$jsonOut = curl_exec($curl);
 		$info = curl_getinfo($curl);			
 		curl_close($curl);
 		
@@ -110,7 +110,7 @@ class Api
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
-		$jsonOut = gzdecode(curl_exec($curl));
+		$jsonOut = curl_exec($curl);
 		$info = curl_getinfo($curl);			
 		curl_close($curl);
 

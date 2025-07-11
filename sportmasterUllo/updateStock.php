@@ -30,7 +30,7 @@ foreach ($stocks as $stock) {
     }
 }
 if ($productClass->stockImport($warehouseId, $postStock)) {
-    echo len ($postStock) . ' stocks updated successfully';
+    echo count($postStock) . ' stocks updated successfully';
 } else {
     echo 'Failed to update stocks';
 }
