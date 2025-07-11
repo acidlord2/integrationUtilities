@@ -14,17 +14,18 @@ $msProductClass = new ProductsMS();
 $assortment = $msProductClass->getAssortment(array_column($stocks, 'offerId'));
 $postStock = array();
 foreach ($stocks as $stock) {
-    $product = array_filter($assortment, function($item) use ($stock) {
-        return $item['code'] === $stock['offerId'];
-    });
-    if (!empty($product)) {
+    $matched = array_values(array_filter($assortment, function($item) use ($stock) {
+        return isset($item['code']) && $item['code'] === $stock['offerId'];
+    }));
+    if (!empty($matched)) {
+        $product = $matched[0];
         $postStock[] = array(
             'offerId' => $product['code'],
-            'warehouseStock' => $stock['quantity'],
+            'warehouseStock' => product['quantity'],
         );
     } else {
         $postStock[] = array(
-            'offerId' => $product['code'],
+            'offerId' => isset($stock['offerId']) ? $stock['offerId'] : null,
             'warehouseStock' => 0,
         );
     }
