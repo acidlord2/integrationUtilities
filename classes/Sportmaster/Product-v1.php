@@ -19,7 +19,7 @@ class Product
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Api-v1.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 		
-        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), '-');
+        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
         $logName .= '.log';
         $this->log = new \Classes\Common\Log($logName);
 		$this->apiClass = new \Classes\Sportmaster\v1\Api($cliendtId);

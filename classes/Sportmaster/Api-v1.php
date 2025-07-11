@@ -13,7 +13,6 @@ class Api
 	
 	private $apiKey;
 	private $header;
-	private $clientId;
 	private $token;
 
 	private $dbClass;
@@ -26,7 +25,7 @@ class Api
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
 		
 		$this->clientId = $clientId;
-        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), '-');
+        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
         $logName .= '.log';
         $this->logger = new \Classes\Common\Log($logName);
 		
@@ -37,11 +36,12 @@ class Api
 		else {
 		    $this->logger->write (__LINE__ . ' API key not found (' . $clientId . ')');
 		}
+		$this->token = $this->getToken();
 		if ($this->getToken())
 		{
 			$this->header = array (
 				'Content-type: application/json',
-				'Client-ID: ' . $this->clientId,
+				'Client-ID: ' . $clientId,
 				'Authorization: Bearer ' . $this->token
 			);
 		}
