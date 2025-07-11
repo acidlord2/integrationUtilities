@@ -36,7 +36,6 @@ class Api
 		else {
 		    $this->logger->write (__LINE__ . ' API key not found (' . $clientId . ')');
 		}
-		$this->token = $this->getToken();
 		if ($this->getToken())
 		{
 			$this->header = array (
@@ -77,7 +76,7 @@ class Api
 		}
 		$arrayOut = json_decode ($jsonOut, true);
 		curl_close($curl);
-		$this->tocken = $arrayOut['accessToken'];
+		$this->token = $arrayOut['accessToken'];
 		return true;
 	}
 			
