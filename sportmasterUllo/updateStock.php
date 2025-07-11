@@ -10,7 +10,7 @@ $warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
 $productClass = new \Classes\Sportmaster\v1\Product($clientId);
 $stocks = $productClass->stockList($warehouseId);
 // If you want to use MS Products class, uncomment the following lines
-$msProductClass = new \Classes\MS\ProductsMS();
+$msProductClass = new ProductsMS();
 $assortment = $msProductClass->getAssortment(array_column($stocks, 'offerId'));
 $postStock = array();
 foreach ($stocks as $stock) {
