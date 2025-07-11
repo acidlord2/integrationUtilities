@@ -21,7 +21,7 @@ foreach ($stocks as $stock) {
         $product = $matched[0];
         $postStock[] = array(
             'offerId' => $product['code'],
-            'warehouseStock' => product['quantity'],
+            'warehouseStock' => $product['quantity'],
         );
     } else {
         $postStock[] = array(
