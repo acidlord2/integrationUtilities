@@ -34,7 +34,7 @@ foreach ($stocks as $stock) {
         $log->write(__LINE__ . ' No matching product found for offerId: ' . $stock['offerId']);
     }
 }
-if ($productClass->pricesImport($postPrices)) {
+if ($productClass->pricesUpdate($postPrices)) {
     echo count($postPrices) . ' prices of ' . count($stocks) . ' updated successfully';
 } else {
     echo 'Failed to update prices';

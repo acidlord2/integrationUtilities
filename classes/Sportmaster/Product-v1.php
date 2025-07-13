@@ -12,6 +12,7 @@ class Product
 	private $log;
 	private $apiClass;
 	private $limit = 500;
+	private $sleepTime = 1; // seconds
 	
 	public function __construct($cliendtId)
 	{
@@ -53,12 +54,13 @@ class Product
 				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching stock list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				break;
 			}
+			sleep($thus->sleepTime); // Sleep to avoid hitting API rate limits
 	    }
 	    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' total products fetched - ' . count($products));
 	    return $products;
 	}
 
-	public function stockImport($warehouseId, $stocks)
+	public function stockUpdate($warehouseId, $stocks)
 	{
 		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' warehouseId - ' . $warehouseId);
 		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' stocks - ' . json_encode($stocks, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -77,12 +79,12 @@ class Product
 				return false;
 			}
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Import task created with ID: ' . $response['taskId']);
-			sleep(1); // Sleep to avoid hitting API rate limits
+			sleep($thus->sleepTime); // Sleep to avoid hitting API rate limits
 		}
 		return true;
 	}
 
-	public function pricesImport($prices)
+	public function pricesUpdate($prices)
 	{
 		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' prices - ' . json_encode($prices, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    $url = SPORTMASTER_BASE_URL . 'v1/product/prices/create-import-task';
@@ -99,7 +101,7 @@ class Product
 				return false;
 			}
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Import task created with ID: ' . $response['taskId']);
-			sleep(1); // Sleep to avoid hitting API rate limits
+			sleep($thus->sleepTime); // Sleep to avoid hitting API rate limits
 		}
 		return true;
 	}

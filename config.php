@@ -113,6 +113,8 @@
 	define('MS_OZON_AGENT_ID', 'e1490fb8-7054-11ea-0a80-01220017723b');
 	define('MS_ALI_AGENT', 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/ad56b3e8-e907-11ea-0a80-00e9000564f1');
 	define('MS_WB_AGENT', 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/2a755972-39e1-11ea-0a80-03840002a06c');
+	define('MS_SPORTMASTER_AGENT', 'https://api.moysklad.ru/api/remap/1.2/entity/counterparty/1830fe89-12ca-11f0-0a80-14640020ac73');
+	define('MS_SPORTMASTER_AGENT_ID', '1830fe89-12ca-11f0-0a80-14640020ac73');
 
 	// организации
 	// 10kids
@@ -275,6 +277,8 @@
 	define('MS_PROJECT_WB_ULLO_ID', 'f50eda7d-d691-11ef-0a80-068e00252db9');
 	define('MS_PROJECT_WB_CCD', 'https://api.moysklad.ru/api/remap/1.2/entity/project/cba9f0d6-ed89-11ef-0a80-0ee10001da42');
 	define('MS_PROJECT_WB_CCD_ID', 'cba9f0d6-ed89-11ef-0a80-0ee10001da42');
+	define('MS_PROJECT_SPORTMASTER', 'https://api.moysklad.ru/api/remap/1.2/entity/project/64e7b761-12ca-11f0-0a80-1657001ff205');
+	define('MS_PROJECT_SPORTMASTER_ID', '64e7b761-12ca-11f0-0a80-1657001ff205');
 	
 	//Ozon
 	define('OZON_TESTMODE', false);
