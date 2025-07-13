@@ -160,6 +160,8 @@
 	define('MS_SRURL', 'https://api.moysklad.ru/api/remap/1.2/entity/salesreturn/');
 	define('MS_DEMANDURL', 'https://api.moysklad.ru/api/remap/1.2/entity/demand/');
 
+	define('MS_PRICE_SPORTMASTER', 'Цена СпортМастер');
+
 	define('MS_API_BASE_URL', 'https://api.moysklad.ru/api/remap');
 	define('MS_API_VERSION_1_1', '/1.1');
 	define('MS_API_VERSION_1_2', '/1.2');

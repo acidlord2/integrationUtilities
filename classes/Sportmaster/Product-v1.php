@@ -90,7 +90,7 @@ class Product
 		foreach(array_chunk($prices, $this->limit) as $chunk) 
 		{
 			$post_data = array(
-				'prices' => $chunk
+				'productPrices' => $chunk
 			);
 			$response = $this->apiClass->postData($url, $post_data);
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
