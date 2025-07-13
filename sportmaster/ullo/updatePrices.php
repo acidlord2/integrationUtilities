@@ -24,10 +24,10 @@ foreach ($stocks as $stock) {
     if (!empty($matched)) {
         $product = $matched[0];
         $price = $msProductClass->getPrice($product, MS_PRICE_SPORTMASTER);
-        if ($price !== 0) {
+        if ($price != 0) {
             $postPrices[] = array(
                 'offerId' => $product['code'],
-                'price' => (string)$price
+                'price' => (int)$price
             );
         }
     } else {
