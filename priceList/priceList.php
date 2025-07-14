@@ -8,8 +8,8 @@
 
 	$loggerName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
 	$loggerName .= '.log';
-	$this->logger = new Log($loggerName);
-	$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' Session status: ' . session_status());
+	$logger = new Log($loggerName);
+	$logger->write(__LINE__ . ' ' . __FUNCTION__ . ' Session status: ' . session_status());
 
 	$productTypesClass = new ProductTypes();
 	$productAttributesClass = new ProductAttributes();
