@@ -16,13 +16,13 @@
 	
 	$postData = array();
 	
+	$logger -> write (__LINE__ . ' ' . __FUNCTION__ . ' $_SESSION[productPriceTypes] - ' . json_encode ($_SESSION['productPriceTypes'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	foreach ($data as $product => $prices)
 	{
 		$salesPrices = array();
 		foreach ($prices as $priceId => $price)
 		{
 			$priceTypeName = '';
-			//$logger -> write (__LINE__ . ' productPriceTypes - ' . json_encode ($_SESSION['productPriceTypes'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			foreach ($_SESSION['productPriceTypes'] as $priceType)
 				if ($priceId == $priceType['priceType_id'])
 				{
