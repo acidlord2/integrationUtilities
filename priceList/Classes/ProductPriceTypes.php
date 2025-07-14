@@ -21,7 +21,7 @@ class ProductPriceTypes
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
 
 		$this->productPriceTypes = Db::exec_query_array ('select * from prices_list_priceTypes order by sort_order');
-		$this-logger->write(__LINE__ . ' ' . __FUNCTION__ . ' Loaded product price types: ' . json_encode($this->productPriceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' Loaded product price types: ' . json_encode($this->productPriceTypes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	}	
 
 	public function getProductPriceTypes ()
