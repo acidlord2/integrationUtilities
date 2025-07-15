@@ -30,7 +30,7 @@ foreach ($stocks as $stock) {
         );
     }
 }
-if ($productClass->stockImport($warehouseId, $postStock)) {
+if ($productClass->stockUpdate($warehouseId, $postStock)) {
     echo count($postStock) . ' stocks updated successfully';
 } else {
     echo 'Failed to update stocks';

@@ -33,8 +33,6 @@ class OzonAPI
 			catch(Exception $e) {
 				continue;
 			}						
-			if 
-			return true;
 		}
 	}
 }

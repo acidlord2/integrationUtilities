@@ -140,7 +140,7 @@ class Customerorder
 	* @filter - ms filter 
 	* @return array - result as array of orders
 	*/
-	public static function findOrdersByFilter($filter)
+	public function findOrdersByFilter($filter)
     {
 	    $filterMS = '';
         foreach (get_object_vars($filter) as $filterName => $filterValue)
