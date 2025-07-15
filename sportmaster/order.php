@@ -67,7 +67,6 @@ Class OrderTransformation
                     $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No products found in package ' . json_encode($package, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
                 }
             }
-            $positions[] = $this->createPosition($this->sportmasterOrder['product'], $productMSClass);
         } else {
             $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No products found in order');
             return false;
@@ -116,7 +115,7 @@ Class OrderTransformation
             ),
             'value' => array(
                 'meta' => array(
-                    'href' => MS_DELIVERY_VALUE_WB,
+                    'href' => MS_DELIVERY_VALUE_SDEK,
                     'type' => 'customentity',
                     'mediaType' => 'application/json'
                 )
@@ -134,8 +133,8 @@ Class OrderTransformation
 		$orderMS['moment'] = $createdDate->format('Y-m-d H:i:s');
 		$orderMS['deliveryPlannedMoment'] = $shipmentDate->format('Y-m-d H:i:s');
         $orderMS['applicable'] = true;
-        $orderMS['vatEnabled'] = false;
-        $orderMS['vatIncluded'] = false;
+        $orderMS['vatEnabled'] = true;
+        $orderMS['vatIncluded'] = true;
         $orderMS['agent'] = array(
             'meta' => array(
                 'href' => MS_SPORTMASTER_AGENT,
@@ -192,7 +191,7 @@ Class OrderTransformation
         $position['quantity'] = $product['quantity'] ?? 1; // Default quantity
         $position['reserve'] = $product['quantity'] ?? 1; // Default reserve
         $position['price'] = $productMSClass->getPrice($productMS, MS_PRICE_SPORTMASTER);
-        $position['vat'] = $product['effectiveVat'] ?? 0; // Default VAT
+        $position['vat'] = $productMS['effectiveVat'] ?? 0; // Default VAT
         $position['assortment'] = array(
             'meta' => $productMS['meta']
         );
