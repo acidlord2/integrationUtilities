@@ -55,7 +55,7 @@ class Order
 				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching shipments list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				break;
 			}
-			sleep($this->sleepTime);
+			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 	    }
 	    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' total orders fetched - ' . count($orders));
 	    return $orders;
@@ -76,5 +76,6 @@ class Order
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching shipment: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			return false;
 		}
+		sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 	}
 }
