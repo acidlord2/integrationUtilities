@@ -43,7 +43,7 @@ class Order
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$response = $this->apiClass->postData($url, $post_data);
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			if ($response && isset($response['stocks']))
+			if ($response && isset($response['shipments']))
 			{
 				$orders = array_merge($orders, $response['shipments']);
 				$offset += $this->limit;
@@ -53,7 +53,7 @@ class Order
 			else
 			{
 				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching shipments list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-				break;
+				return false;
 			}
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 	    }
