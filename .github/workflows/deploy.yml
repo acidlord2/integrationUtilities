@@ -45,5 +45,5 @@ jobs:
           echo "Deleted files:" && cat deleted_files.txt
           while IFS= read -r file; do
             echo "Deleting $file from FTP..."
-            curl --ftp-create-dirs -u "$FTP_USERNAME:$FTP_PASSWORD" -Q "DELE /www/kids-universe.ru/$file" "ftp://$FTP_HOST/"
+            curl --ftp-create-dirs -u "$FTP_USERNAME:$FTP_PASSWORD" -Q "DELE /www/kids-universe.ru/$file" "ftp://$FTP_HOST/" || true
           done < deleted_files.txt
