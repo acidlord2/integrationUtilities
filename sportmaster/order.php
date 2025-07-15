@@ -74,8 +74,8 @@ Class OrderTransformation
         };
         $this->alignTotalAmount($positions, $this->sportmasterOrder['totalCost']['amount']);
 		
-	    $createdDate = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->sportmasterOrder['createDate']);
-        $shipmentDate = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->sportmasterOrder['plannedDate']);
+	    $createdDate = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->sportmasterOrder['createDate']);
+        $shipmentDate = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->sportmasterOrder['plannedDate']);
 
         // тип оплаты
         $attributes[] = array(
@@ -187,8 +187,8 @@ Class OrderTransformation
      */
     private function createPosition($product, $productMSClass)
     {
-        $productMS = $productMSClass->findProductsByCode($product['code']);
-        $productMS = isset($productMS[0]) ? $productMS[0] : $productMSClass->findProductsByCode('000-000')[0];
+        $productMS = $productMSClass->findProductsByCode($product['offerId']);
+        $productMS = isset($productMS[0]) ? $productMS[0] : $productMSClass->findProductsByCode('000-0000')[0];
         $position['quantity'] = $product['quantity'] ?? 1; // Default quantity
         $position['reserve'] = $product['quantity'] ?? 1; // Default reserve
         $position['price'] = $productMSClass->getPrice($productMS, MS_PRICE_SPORTMASTER);
