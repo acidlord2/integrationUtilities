@@ -41,7 +41,7 @@ Class OrderTransformation
         $orderMS = array();
         $attributes = array();
 
-        $productMSClass = new ProductsMS();
+        $productMSClass = new \ProductsMS();
 	    $positions = array();
         if (isset($this->sportmasterOrder['products']) && is_array($this->sportmasterOrder['products']) && count($this->sportmasterOrder['products']) > 0) {
             $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Processing products: ' . json_encode(order['products'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
