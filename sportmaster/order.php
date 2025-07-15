@@ -43,7 +43,7 @@ Class OrderTransformation
 
         $productMSClass = new ProductsMS();
 	    $positions = array();
-        if (isset(this->sportmasterOrder['products']) && is_array($this->sportmasterOrder['products']) && count($this->sportmasterOrder['products']) > 0) {
+        if (isset($this->sportmasterOrder['products']) && is_array($this->sportmasterOrder['products']) && count($this->sportmasterOrder['products']) > 0) {
             $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Processing products: ' . json_encode(order['products'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             foreach ($this->sportmasterOrder['products'] as $product) {
                 $positions[] = $this->createPosition($product, $productMSClass);
