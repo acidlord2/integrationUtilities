@@ -54,7 +54,7 @@ class Product
 				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching stock list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				break;
 			}
-			sleep($thus->sleepTime); // Sleep to avoid hitting API rate limits
+			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 	    }
 	    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' total products fetched - ' . count($products));
 	    return $products;
@@ -79,7 +79,7 @@ class Product
 				return false;
 			}
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Import task created with ID: ' . $response['taskId']);
-			sleep($thus->sleepTime); // Sleep to avoid hitting API rate limits
+			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 		}
 		return true;
 	}
@@ -101,7 +101,7 @@ class Product
 				return false;
 			}
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Import task created with ID: ' . $response['taskId']);
-			sleep($thus->sleepTime); // Sleep to avoid hitting API rate limits
+			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 		}
 		return true;
 	}
