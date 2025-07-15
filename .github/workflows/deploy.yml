@@ -28,8 +28,10 @@ jobs:
           local-dir: ./
           server-dir: /www/kids-universe.ru/
           exclude: |
-            .git*
-            .github*
+            .git/
+            .git/**
+            .github/
+            .github/**
             changed_files.txt
 
       - name: Delete removed files from FTP
