@@ -18,7 +18,7 @@
 		{
 ?>			
 		<tr>
-			<td class = "midHeader" colspan=<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB') { ?>11<?php } else { ?>10<?php } ?> style="vertical-align: middle;">
+			<td class = "midHeader" colspan=<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB' || $agent == 'SM') { ?>11<?php } else { ?>10<?php } ?> style="vertical-align: middle;">
 				<?php
 					if ($order['class'] == 1)
 						echo 'Заказы с косметикой';
@@ -33,7 +33,7 @@
 						echo 'Прочее';
 				?>
 				<span style="float:right;">
-					<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB') { ?>
+					<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB' || $agent == 'SM') { ?>
 						<button type="button" id = "printStickerButton" onclick="printSticker(<?php echo $order['class']; ?>)">Печать стикеров (по 20 шт)</button>
 					<?php } ?>
 					<button type="button" id = "printInvoiceButton" onclick="printInvoice(<?php echo $order['class']; ?>)">Печать вкладышей (по 20 шт)</button>
@@ -46,7 +46,7 @@
 		}
 ?>
 		<tr id = "<?php echo $order['id']; ?>">
-			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB') { ?>
+			<?php if ($agent == 'Ozon' || $org == 'aruba' || $agent == 'WB' || $agent == 'SM') { ?>
 				<td style = "text-align: center"><input type="checkbox" orderclass=<?php echo $order['class']; ?> id="oz<?php echo $order['name']; ?>" name = "ozonCheckbox<?php echo $order['class']; ?>" onChange="changeOzon()" disabled></td>
 			<?php } ?>
 			<td style = "text-align: center"><input type="checkbox" orderclass=<?php echo $order['class']; ?> id="ms<?php echo $order['id']; ?>" name = "msCheckbox<?php echo $order['class']; ?>" onChange="changeMS()" disabled></td>

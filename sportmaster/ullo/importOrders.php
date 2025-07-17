@@ -7,6 +7,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sportmaster/order.php');
 
+define('ORDER_STATUSES', ['FOR_PICKING']);
+
 $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
 $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
@@ -14,7 +16,7 @@ $log = new \Classes\Common\Log($logName);
 $clientId = SPORTMASTER_ULLO_CLIENT_ID;
 $warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
 $orderSportmasterClass = new \Classes\Sportmaster\v1\Order($clientId, $warehouseId);
-$orders = $orderSportmasterClass->shipmentsList(['FOR_PICKING', 'FOR_SHIPMENT']);
+$orders = $orderSportmasterClass->shipmentsList(ORDER_STATUSES);
 $ordersMS = array();
 $transformationClasses = array();
 // If you want to use MS Products class, uncomment the following lines
