@@ -27,6 +27,7 @@ foreach ($orders as $order) {
         continue;
     }
     $ordersMS[] = $orderMS;
+    break;
 }
 if (count($ordersMS) > 0) {
     $orderMSClass = new OrdersMS();
