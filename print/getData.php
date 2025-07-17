@@ -23,13 +23,10 @@
 			$filter .= 'agent=' . MS_BERU_AGENT . ';';
 		if ($agent == 'Ozon')
 			$filter .= 'agent=' . MS_OZON_AGENT . ';';
-		if ($agent == 'Ali')
-			$filter .= 'agent=' . MS_ALI_AGENT . ';';
+		if ($agent == 'SM')
+			$filter .= 'agent=' . MS_SPORTMASTER_AGENT . ';';
 		if ($agent == 'WB')
 			$filter .= 'agent=' . MS_WB_AGENT . ';';
-		if ($agent == 'Curiers')
-		    $filter .= 'project=' . MS_PROJECT_4CLEANING . ';project=' . MS_PROJECT_10KIDS . ';project=' . MS_PROJECT_YANDEX_DBS . ';project=' . MS_PROJECT_YANDEX_DBS . ';project=' . MS_PROJECT_MSKOREA . ';';
-
 		if ($org == 'Ullo')
 			$filter .= 'organization=' . MS_ULLO . ';';
 		if ($org == '4cleaning')
@@ -40,18 +37,6 @@
 		    $filter .= 'organization=' . MS_IPGYUMYUSH . ';';
 		if ($org == 'aruba')
 	        $filter .= 'project=' . MS_PROJECT_2HRS . ';';
-		if ($org == 'AST1')
-	        $filter .= 'project=' . MS_PROJECT_SBMM_AST1 . ';';
-		if ($org == 'AST2')
-	        $filter .= 'project=' . MS_PROJECT_SBMM_AST2 . ';';
-		if ($org == 'AST3')
-	        $filter .= 'project=' . MS_PROJECT_SBMM_AST3 . ';';
-		if ($org == 'AST4')
-	        $filter .= 'project=' . MS_PROJECT_SBMM_AST4 . ';';
-		if ($org == 'AST5')
-	        $filter .= 'project=' . MS_PROJECT_SBMM_AST5 . ';';
-		if ($org == 'AST6')
-	        $filter .= 'project=' . MS_PROJECT_SBMM_AST6 . ';';
 		if ($org == 'Summit')
 	        $filter .= 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 		if ($org == 'vysota')
@@ -64,8 +49,8 @@
 		
 		if ($agent == 'Curiers') {
 		    $filter .= 'state=' . MS_CONFIRM_STATE . ';';
-		} else if ($agent == 'WB') {
-			$filter .= 'state=' . MS_MPNEW_STATE . ';';
+		} else if ($agent == 'WB' || $agent == 'SM') {
+		    $filter .= 'state=' . MS_WBNEW_STATE . ';';
 		} else {
 		    $filter .= 'state=' . MS_CONFIRMGOODS_STATE . ';';
 		}
