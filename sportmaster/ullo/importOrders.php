@@ -69,7 +69,6 @@ foreach($transformationClasses as $transformationClass) {
     }
 }
 if (count($ordersMS) > 0) {
-    $orderMSClass = new OrdersMS();
     $result = $orderMSClass->createCustomerorder($ordersMS);
     if ($result) {
         $log->write(__LINE__ . ' '. __FUNCTION__ . ' Successfully updated ' . count($ordersMS) . ' orders in MS');
