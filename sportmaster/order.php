@@ -271,10 +271,10 @@ Class OrderTransformation
         }
         $package = array(
             'weightAndSizeCharacteristics' => array(
-                'weight' => round($totalWeight * 0.01), // add 1% to weight
-                'height' => round($totalHeight * 0.05), // add 5% to height
-                'length' => round($totalLength * 0.05), // add 5% to length
-                'width' => round($totalWidth * 0.05) // add 5% to width
+                'weight' => $totalWeight * 1.01, // add 1% to weight
+                'height' => round($totalHeight * 1.05), // add 5% to height
+                'length' => round($totalLength * 1.05), // add 5% to length
+                'width' => round($totalWidth * 1.05) // add 5% to width
             ),
             'exemplarIds' => $exemplarIds
         );
