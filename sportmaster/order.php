@@ -271,7 +271,7 @@ Class OrderTransformation
         }
         $package = array(
             'weightAndSizeCharacteristics' => array(
-                'weight' => $totalWeight * 1.01, // add 1% to weight
+                'weight' => round($totalWeight * 1.01, 3), // add 1% to weight, round to 3 decimals
                 'height' => round($totalHeight * 1.05), // add 5% to height
                 'length' => round($totalLength * 1.05), // add 5% to length
                 'width' => round($totalWidth * 1.05) // add 5% to width
