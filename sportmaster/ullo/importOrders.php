@@ -43,7 +43,7 @@ if (count($ordersMS) > 0) {
     echo 'No orders to process<br/>';
 }
 
-$orderMS = array();
+$ordersMS = array();
 $packages = array();
 foreach($transformationClasses as $transformationClass) {
     $packages = $transformationClass->transformToPackageChangeRequest();
@@ -67,6 +67,15 @@ foreach($transformationClasses as $transformationClass) {
     } else {
         $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to get label for order: ' . $sportMasterOrder['id']);
     }
-
+}
+if (count($ordersMS) > 0) {
+    $orderMSClass = new OrdersMS();
     $result = $orderMSClass->createCustomerorder($ordersMS);
+    if ($result) {
+        $log->write(__LINE__ . ' '. __FUNCTION__ . ' Successfully updated ' . count($ordersMS) . ' orders in MS');
+    } else {
+        $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to update orders in MS');
+    }
+} else {
+    $log->write(__LINE__ . ' '. __FUNCTION__ . ' No orders to update');
 }
