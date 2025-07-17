@@ -321,6 +321,7 @@ Class OrderTransformation
                 'content' => $labelContent
             )
         );
+        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' sportmasterOrder: ' . json_encode($this->sportmasterOrder, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Label added to ms order: ' . json_encode($this->sportmasterOrder['msOrder'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         // Placeholder for label addition logic
         return $this->sportmasterOrder['msOrder'];
