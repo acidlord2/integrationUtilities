@@ -42,12 +42,12 @@ Class OrderTransformation
         $attributes = array();
 
         $productMSClass = new \ProductsMS();
-	    $positions = array();
+        $positions = array();
         if (isset($this->sportmasterOrder['products']) && is_array($this->sportmasterOrder['products']) && count($this->sportmasterOrder['products']) > 0) {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Processing products: ' . json_encode(order['products'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Processing products: ' . json_encode($this->sportmasterOrder['products'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             foreach ($this->sportmasterOrder['products'] as &$product) {
                 $productMS = $this->getProductByOfferId($product['offerId'], $productMSClass);
-                $product['msProduct'] = $position; // Add the result to the product
+                $product['msProduct'] = $productMS; // Add the MS product to the product
                 $positions[] = $this->createPosition($product, $productMSClass);
             }
             unset($product); // Always unset reference after foreach
@@ -75,8 +75,8 @@ Class OrderTransformation
             return false;
         };
         $this->alignTotalAmount($positions, $this->sportmasterOrder['totalCost']['amount']);
-		
-	    $createdDate = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->sportmasterOrder['createDate']);
+        
+        $createdDate = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->sportmasterOrder['createDate']);
         $shipmentDate = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->sportmasterOrder['plannedDate']);
 
         // тип оплаты
@@ -133,8 +133,8 @@ Class OrderTransformation
             )
         );
         $orderMS['externalCode'] = $this->sportmasterOrder['id'];
-		$orderMS['moment'] = $createdDate->format('Y-m-d H:i:s');
-		$orderMS['deliveryPlannedMoment'] = $shipmentDate->format('Y-m-d H:i:s');
+        $orderMS['moment'] = $createdDate->format('Y-m-d H:i:s');
+        $orderMS['deliveryPlannedMoment'] = $shipmentDate->format('Y-m-d H:i:s');
         $orderMS['applicable'] = true;
         $orderMS['vatEnabled'] = true;
         $orderMS['vatIncluded'] = true;
@@ -208,13 +208,19 @@ Class OrderTransformation
      */
     private function createPosition($product, $productMSClass)
     {
-        $position['quantity'] = $product['quantity'] ?? 1; // Default quantity
-        $position['reserve'] = $product['quantity'] ?? 1; // Default reserve
-        $position['price'] = $productMSClass->getPrice($product['msProduct'], MS_PRICE_SPORTMASTER);
-        $position['vat'] = $product['msProduct']['effectiveVat'] ?? 0; // Default VAT
-        $position['assortment'] = array(
-            'meta' => $product['msProduct']['meta']
-        );
+        $position = array();
+        $position['quantity'] = isset($product['quantity']) ? $product['quantity'] : 1; // Default quantity
+        $position['reserve'] = isset($product['quantity']) ? $product['quantity'] : 1; // Default reserve
+        if (isset($product['msProduct']) && is_array($product['msProduct'])) {
+            $position['price'] = $productMSClass->getPrice($product['msProduct'], MS_PRICE_SPORTMASTER);
+            $position['vat'] = isset($product['msProduct']['effectiveVat']) ? $product['msProduct']['effectiveVat'] : 0; // Default VAT
+            $position['assortment'] = array(
+                'meta' => $product['msProduct']['meta']
+            );
+        } else {
+            $logger->write(__LINE__ . ' '. __FUNCTION__ . ' No MS product found for product: ' . json_encode($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            return false;
+        }
         return $position;
     }
 
