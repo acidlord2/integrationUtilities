@@ -50,7 +50,7 @@
 		if ($agent == 'Curiers') {
 		    $filter .= 'state=' . MS_CONFIRM_STATE . ';';
 		} else if ($agent == 'WB' || $agent == 'SM') {
-		    $filter .= 'state=' . MS_WBNEW_STATE . ';';
+			$filter .= 'state=' . MS_MPNEW_STATE . ';';
 		} else {
 		    $filter .= 'state=' . MS_CONFIRMGOODS_STATE . ';';
 		}
