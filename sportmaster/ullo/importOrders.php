@@ -13,8 +13,8 @@ $log = new \Classes\Common\Log($logName);
 
 $clientId = SPORTMASTER_ULLO_CLIENT_ID;
 $warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
-$orderSportmasterClass = new \Classes\Sportmaster\v1\Order($clientId);
-$orders = $orderSportmasterClass->shipmentsList($warehouseId, ['FOR_PICKING']);
+$orderSportmasterClass = new \Classes\Sportmaster\v1\Order($warehouseId,$clientId);
+$orders = $orderSportmasterClass->shipmentsList(['FOR_PICKING']);
 $ordersMS = array();
 $transformationClasses = array();
 // If you want to use MS Products class, uncomment the following lines
