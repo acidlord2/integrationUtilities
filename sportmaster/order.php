@@ -178,7 +178,7 @@ Class OrderTransformation
 
         $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Transformed order: ' . json_encode($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         $this->sportmasterOrder['msOrder'] = $orderMS;
-        return $this->sportmasterOrder;
+        return $orderMS;
     }
 
     /**

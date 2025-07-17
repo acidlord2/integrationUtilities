@@ -46,7 +46,7 @@ if (count($ordersMS) > 0) {
 $packages = array();
 foreach($transformationClasses as $transformationClass) {
     $packages = $transformationClass->transformToPackageChangeRequest();
-    if ($package) {
+    if ($packages) {
         $sportMasterOrder = $transformationClass->getSportmasterOrder();
         $response = $orderSportmasterClass->shipmentChangePackages($sportMasterOrder['id'], $packages);
     } else {
