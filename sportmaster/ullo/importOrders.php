@@ -61,7 +61,9 @@ foreach($transformationClasses as $transformationClass) {
     $response = $orderSportmasterClass->shipmentGetLabel($sportMasterOrder['id']);
     if ($response && isset($response['fileName']) && $response['fileName'] != null) {
         $log->write(__LINE__ . ' '. __FUNCTION__ . ' Successfully fetched label for order: ' . $sportMasterOrder['id']);
-        $orderMS = $transformationClass->addLabelToMsOrder($response);
+        $msOrderId = $orderMSClass->findOrders('name=' . $sportMasterOrder['orderNumber'])[0]['id'];
+        $orderSportmasterBarcode = $orderSportmasterClass->shipmentGet($sportMasterOrder['id'])['packages'][0]['barcode'];
+        $orderMS = $transformationClass->addLabelToMsOrder($response, $msOrderId, $orderSportmasterBarcode);
         $ordersMS[] = $orderMS;
         // Save the label file
     } else {
