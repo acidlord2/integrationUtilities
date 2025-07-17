@@ -131,6 +131,15 @@ class ProductsMS
 		}
 		return $price;
 	}
+
+	public function getAttribute($product, $attributeId)
+	{
+		$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' assortment - ' . json_encode($product['code'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' attributeId - ' . $attributeId);
+		$attributes = $product['attributes'] ?? [];
+		$found = array_filter($attributes, fn($attr) => $attr['id'] === $attributeId);
+		return $found ? reset($found)['value'] : false;
+	}
 }
 
 ?>

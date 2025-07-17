@@ -19,9 +19,11 @@ foreach ($stocks as $stock) {
     }));
     if (!empty($matched)) {
         $product = $matched[0];
+        $price = $msProductClass->getPrice($product, MS_PRICE_SPORTMASTER);
+    
         $postStock[] = array(
             'offerId' => $product['code'],
-            'warehouseStock' => $product['quantity'],
+            'warehouseStock' => $price == 0 ? 0 : $product['quantity'],
         );
     } else {
         $postStock[] = array(
