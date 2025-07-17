@@ -296,4 +296,33 @@ Class OrderTransformation
         }
         return $this->sportmasterOrder;
     }
+    /**
+     * Add label to the ms order.
+     * @return msOrder The sportmaster order object with the label added.
+     * This function is a placeholder and should be implemented to handle the label addition logic.
+     */
+    public function addLabelToMsOrder($label)
+    {
+        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Adding label to ms order: ' . json_encode($label['fileName'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        if (empty($this->sportmasterOrder)) {
+            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No sportmaster order found');
+            return false;
+        }
+        // decode the label file from base64
+        $labelContent = base64_decode($label['fileContent']);
+        $this->sportmasterOrder['msOrder']['attributes'][] = array(
+            'meta' => array (
+                'href' => MS_ATTR . MS_WB_FILE_ATTR,
+                'type' => 'attributemetadata',
+                'mediaType' => 'application/json'
+            ),
+            'file' => array(
+                'filename' => $label['fileName'],
+                'content' => $labelContent
+            )
+        );
+
+        // Placeholder for label addition logic
+        return $this->sportmasterOrder['msOrder'];
+    }
 }       

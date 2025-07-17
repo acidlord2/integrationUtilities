@@ -12,7 +12,7 @@ class Order
 	private $log;
 	private $apiClass;
 	private $limit = 500;
-	private $labelLimit = 10;
+	private $labelLimit = 1;
 	private $sleepTime = 2; // seconds
 	private $warehouseId;
 	
@@ -110,6 +110,9 @@ class Order
 		$url = SPORTMASTER_BASE_URL . 'v1/fbs/shipments/get-package-labels';
 		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
 		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' shipmentIds - ' . json_encode($shipmentIds, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		if (!is_array($shipmentIds)) {
+			$shipmentIds = array($shipmentIds);
+		}
 		$labels = array();
 		foreach(array_chunk($shipmentIds, $this->labelLimit) as $chunk) {
 			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' processing chunk - ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -117,20 +120,14 @@ class Order
 				'shipmentIds' => $chunk
 			);
 			$response = $this->apiClass->postData($url, $post_data);
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			if (!isset($response['labels']) || !is_array($response['labels'])) {
-				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No labels found in response: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-				return false;
+			if (isset($response['fileName']) && $response['fileName'] != null) {
+				$labels = array_merge($labels, $response);
+			} else {
+				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No fileName in response: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Skipping chunk: ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
-			$labels = array_merge($labels, $response['labels']);
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 		}
-		if ($labels) {
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Labels fetched successfully: ' . json_encode($labels, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			return $labels;
-		} else {
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No labels found for the provided shipment IDs');
-			return false;
-		}
+		return $labels;
 	}
 }

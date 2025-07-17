@@ -14,7 +14,7 @@ $log = new \Classes\Common\Log($logName);
 $clientId = SPORTMASTER_ULLO_CLIENT_ID;
 $warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
 $orderSportmasterClass = new \Classes\Sportmaster\v1\Order($clientId, $warehouseId);
-$orders = $orderSportmasterClass->shipmentsList(['FOR_PICKING']);
+$orders = $orderSportmasterClass->shipmentsList(['FOR_PICKING', 'FOR_SHIPMENT']);
 $ordersMS = array();
 $transformationClasses = array();
 // If you want to use MS Products class, uncomment the following lines
@@ -27,7 +27,6 @@ foreach ($orders as $order) {
         continue;
     }
     $ordersMS[] = $orderMS;
-    break;
 }
 if (count($ordersMS) > 0) {
     $orderMSClass = new OrdersMS();
@@ -44,6 +43,7 @@ if (count($ordersMS) > 0) {
     echo 'No orders to process<br/>';
 }
 
+$orderMS = array();
 $packages = array();
 foreach($transformationClasses as $transformationClass) {
     $packages = $transformationClass->transformToPackageChangeRequest();
@@ -56,10 +56,19 @@ foreach($transformationClasses as $transformationClass) {
     }
     if($response) {
         // get the order label
-        
+        $response = $orderSportmasterClass->shipmentGetLabel($sportMasterOrder['id']);
+        if ($response && isset($response['fileName']) && $response['fileName'] != null) {
+            $log->write(__LINE__ . ' '. __FUNCTION__ . ' Successfully fetched label for order: ' . $sportMasterOrder['id']);
+            $orderMS = $transformationClass->addLabelToMsOrder($response);
+            $ordersMS[] = $orderMS;
+            // Save the label file
+        } else {
+            $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to get label for order: ' . $sportMasterOrder['id']);
+        }
         
     } else {
         $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to change packages for order: ' . $sportMasterOrder['id']);
         echo 'Failed to change packages for order: ' . $sportMasterOrder['id'] . '<br/>';
     }
+    $result = $orderMSClass->createCustomerorder($ordersMS);
 }
