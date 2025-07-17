@@ -54,21 +54,19 @@ foreach($transformationClasses as $transformationClass) {
         $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to transform order to package: ' . json_encode($transformationClass, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         continue;
     }
-    if($response) {
-        // get the order label
-        $response = $orderSportmasterClass->shipmentGetLabel($sportMasterOrder['id']);
-        if ($response && isset($response['fileName']) && $response['fileName'] != null) {
-            $log->write(__LINE__ . ' '. __FUNCTION__ . ' Successfully fetched label for order: ' . $sportMasterOrder['id']);
-            $orderMS = $transformationClass->addLabelToMsOrder($response);
-            $ordersMS[] = $orderMS;
-            // Save the label file
-        } else {
-            $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to get label for order: ' . $sportMasterOrder['id']);
-        }
-        
-    } else {
+    if(!$response) {
         $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to change packages for order: ' . $sportMasterOrder['id']);
         echo 'Failed to change packages for order: ' . $sportMasterOrder['id'] . '<br/>';
     }
+    $response = $orderSportmasterClass->shipmentGetLabel($sportMasterOrder['id']);
+    if ($response && isset($response['fileName']) && $response['fileName'] != null) {
+        $log->write(__LINE__ . ' '. __FUNCTION__ . ' Successfully fetched label for order: ' . $sportMasterOrder['id']);
+        $orderMS = $transformationClass->addLabelToMsOrder($response);
+        $ordersMS[] = $orderMS;
+        // Save the label file
+    } else {
+        $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to get label for order: ' . $sportMasterOrder['id']);
+    }
+
     $result = $orderMSClass->createCustomerorder($ordersMS);
 }
