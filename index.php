@@ -13,20 +13,20 @@
 ?>
 
 <html>
-	<head>
-		<title>Помощь по складу</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<link rel = "stylesheet" type = "text/css"  href = "/css/styles.css?v=2" />
-	</head>
-	<body style="margin:0;padding:0">
-		<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php'); ?>
-		<div align="center">
-			<div id="header">
-				<div style="margin-bottom: 13px; margin-top: 14px; font-size: 200%; color:#F7971D;">
-					Главное меню
-				</div>
-			</div>
-			<div class = "button-wraper">
+   <head>
+	   <title>Помощь по складу</title>
+	   <meta http-equiv="content-type" content="text/html; charset=utf-8">
+   <link rel = "stylesheet" type = "text/css"  href = "/css/styles.css?v=2" />
+   </head>
+   <body>
+	   <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php'); ?>
+	   <div align="center">
+		   <div id="header">
+			   <div class="main-title">
+				   Главное меню
+			   </div>
+		   </div>
+		   <div class = "button-wraper">
 <?php 
 	while ($userRole =  mysqli_fetch_assoc($userRoles)) {
 ?>
@@ -37,6 +37,10 @@
 				<?php } if ($userRole['role_id'] == 4) { ?>
 				<button class = "main-menu-button" onclick = "window.location.href='priceList/priceList'">
 					Изменение цен
+				</button>
+				<?php } if ($userRole['role_id'] == 5) { ?>
+				<button class = "main-menu-button" onclick = "window.location.href='returns/returns.php'">
+					Возвраты
 				</button>
 				<?php } if ($userRole['role_id'] == 7) { ?>
 				<button class = "main-menu-button" onclick = "window.location.href='print/printList'">
@@ -50,10 +54,6 @@
 				<button class = "main-menu-button" onclick = "window.location.href='finances/finance'">
 					Разноска финансов
 				</button>
-				<?php } if ($userRole['role_id'] == 5) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='returns/returns.php'">
-					Возвраты
-				</button>
 				<?php } ?>			
 <?php } ?>			
 			</div>
@@ -62,7 +62,7 @@
 </html>
 		
 <?php
-	}
-?>		
-	
+?>
+
+
 
