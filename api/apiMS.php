@@ -464,6 +464,7 @@ class APIMS
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
 		curl_setopt($curl, CURLOPT_ENCODING, '');
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Follow redirects (302)
 		$response = curl_exec($curl);
 		$info = curl_getinfo($curl);			
 		curl_close($curl);
