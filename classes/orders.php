@@ -88,6 +88,8 @@ class Orders
 		// get orders
 		if ($agent == 'Goods')
 			$agentFilter = 'agent=' . MS_GOODS_AGENT . ';';
+		if ($agent == 'SM')
+			$agentFilter = 'agent=' . MS_SPORTMASTER_AGENT . ';';
 		if ($agent == 'Beru')
 			$agentFilter = 'agent=' . MS_BERU_AGENT . ';';
 		if ($agent == 'Ozon')
@@ -98,25 +100,9 @@ class Orders
 			$agentFilter = 'agent%21=' . MS_GOODS_AGENT . ';agent%21=' . MS_BERU_AGENT . ';agent%21=' . MS_OZON_AGENT . ';';
 
 		$curierFilter = '';
-		if ($agent == 'Internal')
-		{
-			if ($curier == '1')
-				$curierFilter = MS_SHIPTYPE_ATTR . '=' . MS_SHIPTYPE_CURIER1 . ';';
-			if ($curier == '2')
-				$curierFilter = MS_SHIPTYPE_ATTR . '=' . MS_SHIPTYPE_CURIER2 . ';';
-			if ($curier == '3')
-				$curierFilter = MS_SHIPTYPE_ATTR . '=' . MS_SHIPTYPE_CURIER3 . ';';
-			if ($curier == '4')
-				$curierFilter = MS_SHIPTYPE_ATTR . '=' . MS_SHIPTYPE_CURIER4 . ';';
-			if ($curier == '5')
-				$curierFilter = MS_SHIPTYPE_ATTR . '=' . MS_SHIPTYPE_CURIER5 . ';';
-			if ($curier == '10')
-				$curierFilter = MS_SHIPTYPE_ATTR . '=' . MS_SHIPTYPE_CURIER10 . ';';
-		}
-			
 		
 		$orgFilter = '';
-		if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods' || $agent == 'WB')
+		if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods' || $agent == 'WB' || $agent == 'SM')
 		{
 			if ($org == 'ullo')
 				$orgFilter = 'organization=' . MS_ULLO . ';';
@@ -124,18 +110,6 @@ class Orders
 				$orgFilter = 'organization=' . MS_4CLEANING . ';';
 			if ($org == 'kaori')
 				$orgFilter = 'organization=' . MS_KAORI . ';';
-			if ($org == 'ast1')
-				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST1 . ';';
-			if ($org == 'ast2')
-				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST2 . ';';
-			if ($org == 'ast3')
-				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST3 . ';';
-			if ($org == 'ast4')
-				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST4 . ';';
-			if ($org == 'ast5')
-				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST5 . ';';
-			if ($org == 'ast6')
-				$orgFilter = 'project=' . MS_PROJECT_SBMM_AST6 . ';';
 			if ($org == 'summit')
 				$orgFilter = 'project=' . MS_PROJECT_YANDEX_SUMMIT . ';';
 			if ($org == 'kosmos')

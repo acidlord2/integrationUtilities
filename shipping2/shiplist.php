@@ -22,7 +22,7 @@
 	if(isset($_GET['agent']))
 		$agent = $_GET["agent"];
 	else
-		$agent = 'Goods';
+		$agent = 'Beru';
 	
 	if(isset($_GET['curier']))
 		$curier = $_GET["curier"];
@@ -32,7 +32,7 @@
 	if(isset($_GET['org']))
 		$org = $_GET["org"];
 	else
-		$org = '4cleaning';
+		$org = 'ullo';
 	
 	$_SESSION['colWidth'] = array('40px', '8%', '8%', '8%', '8%', '5%', '12%', '8%', '8%', '8%', '8%', '8%');
 		
@@ -58,30 +58,15 @@
 				<div style="margin-bottom: 13px; margin-top: 14px;"> 
 					Дата отгрузки: <input type="date" id="shippingDate" data-date-format="DD.MM.YYYY" value="<?php echo $shippingDate; ?>">
 					Контрагент: <select id="agent" value="<?php echo $agent; ?> " onchange="change()">
-						<option value="Goods" <?php echo $agent=='Goods' ? ' selected' : ''; ?>>Сбермегамаркет</option>
 						<option value="Beru" <?php echo $agent=='Beru' ? ' selected' : ''; ?>>Яндекс маркет</option>
 						<option value="Ozon" <?php echo $agent=='Ozon' ? ' selected' : ''; ?>>Ozon</option>
 						<option value="WB" <?php echo $agent=='WB' ? ' selected' : ''; ?>>Wildberries</option>
-						<option value="Internal" <?php echo $agent=='Internal' ? ' selected' : ''; ?>>Заказы сайта</option>
+						<option value="SM" <?php echo $agent=='SM' ? ' selected' : ''; ?>>Спортмастер</option>
 					</select>
-					<span id="s" style="display:<?php echo $agent=='Internal' ? 'inline' : 'none'; ?>">Курьер: 
-						<select id="curier" value="<?php echo $curier; ?>">
-							<option value="1" <?php echo $curier=='1' ? ' selected' : ''; ?>>(П) Курьер № 1</option>
-							<option value="5" <?php echo $curier=='5' ? ' selected' : ''; ?>>Курьер № 5</option>
-							<option value="4" <?php echo $curier=='4' ? ' selected' : ''; ?>>Курьер № 4</option>
-							<option value="3" <?php echo $curier=='3' ? ' selected' : ''; ?>>Курьер № 3</option>
-							<option value="10" <?php echo $curier=='10' ? ' selected' : ''; ?>>Курьер № 10</option>
-							<option value="2" <?php echo $curier=='2' ? ' selected' : ''; ?>>Курьер № 2</option>
-						</select>
-					</span>
 					<?php if ($agent == 'Beru') { ?>
 						<span id="s2">Организация: 
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
-								<!-- <option value="4cleaning" <?php echo $org=='4cleaning' ? ' selected' : ''; ?>>4cleaning</option>
-								<option value="aruba" <?php echo $org=='aruba' ? ' selected' : ''; ?>>Доставка 2 часа</option>
-								<option value="alians" <?php echo $org=='alians' ? ' selected' : ''; ?>>Альянс</option>
-								<option value="vysota" <?php echo $org=='vysota' ? ' selected' : ''; ?>>Высота</option> -->
 								<option value="kosmos" <?php echo $org=='kosmos' ? ' selected' : ''; ?>>Космос</option>
 								<option value="summit" <?php echo $org=='summit' ? ' selected' : ''; ?>>Саммит</option>
 							</select>
@@ -103,17 +88,10 @@
 							</select>
 						</span>
 					<?php } ?>
-					<?php if ($agent == 'Goods') { ?>
+					<?php if ($agent == 'SM') { ?>
 						<span id="s2">Организация: 
 							<select id="org" value="<?php echo $org; ?>">
 								<option value="ullo" <?php echo $org=='ullo' ? ' selected' : ''; ?>>Юлло</option>
-								<option value="kaori" <?php echo $org=='kaori' ? ' selected' : ''; ?>>Каори</option>
-								<!-- <option value="ast1" <?php echo $org=='ast1' ? ' selected' : ''; ?>>Акция 1 (Аруба)</option>
-								<option value="ast2" <?php echo $org=='ast2' ? ' selected' : ''; ?>>Акция 2 (Лотус)</option>
-								<option value="ast3" <?php echo $org=='ast3' ? ' selected' : ''; ?>>Акция 3 (Комета)</option>
-								<option value="ast4" <?php echo $org=='ast4' ? ' selected' : ''; ?>>Акция 4 (Аполлон)</option>
-								<option value="ast5" <?php echo $org=='ast5' ? ' selected' : ''; ?>>Акция 5 (Плутон)</option>
-								<option value="ast6" <?php echo $org=='ast6' ? ' selected' : ''; ?>>Акция 6 (Высота)</option> -->
 							</select>
 						</span>
 					<?php } ?>

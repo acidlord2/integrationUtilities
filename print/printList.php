@@ -34,7 +34,6 @@
 		<div class="tab">
 			<button class="tablinks<?php if (isset ($agent)) echo $agent == 'Ozon' ? ' active' : ''; ?>" name="Ozon" onclick="openLink(this, 'Ozon')">Озон</button>
 			<button class="tablinks<?php if (isset ($agent)) echo $agent == 'Beru' ? ' active' : ''; ?>" name="Beru" onclick="openLink(this, 'Beru')">Яндекс</button>
-			<button class="tablinks<?php if (isset ($agent)) echo $agent == 'Goods' ? ' active' : ''; ?>" name="Goods" onclick="openLink(this, 'Goods')">Сбермегамаркет</button>
 			<button class="tablinks<?php if (isset ($agent)) echo $agent == 'WB' ? ' active' : ''; ?>" name="WB" onclick="openLink(this, 'WB')">Wildberries</button>
 			<button class="tablinks<?php if (isset ($agent)) echo $agent == 'SM' ? ' active' : ''; ?>" name="SM" onclick="openLink(this, 'SM')">Спортмастер</button>
 		</div>
