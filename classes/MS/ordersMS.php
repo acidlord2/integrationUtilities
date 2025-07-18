@@ -180,6 +180,7 @@ class OrdersMS
 			return false;
 		}
 		$return = $this->apiMSClass->getRawData($url);
+		$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' return - ' . $return);
 		return $return;
 	}
 }
