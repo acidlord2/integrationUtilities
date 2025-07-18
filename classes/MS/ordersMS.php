@@ -164,8 +164,8 @@ class OrdersMS
 
 	public function getAttribute($order, $attributeId)
 	{
-		$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' order - ' . json_encode($order['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' attributeId - ' . $attributeId);
+		$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' order - ' . json_encode($order['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' attributeId - ' . $attributeId);
 		$attributes = $order['attributes'] ?? [];
 		$found = array_filter($attributes, fn($attr) => $attr['id'] === $attributeId);
 		return $found ? reset($found) : false;
@@ -173,10 +173,10 @@ class OrdersMS
 	
 	public function getAttributeFileContent($attribute)
 	{
-		$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' attribute - ' . json_encode($attribute['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' attribute - ' . json_encode($attribute['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$url = $attribute['download']['href'] ?? '';
 		if (!$url) {
-			$this->logger->write(__LINE__ . ' ' . __FUNCTION__ . ' No download URL found for attribute: ' . json_encode($attribute, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' No download URL found for attribute: ' . json_encode($attribute, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			return false;
 		}
 		$return = $this->apiMSClass->getRawData($url);

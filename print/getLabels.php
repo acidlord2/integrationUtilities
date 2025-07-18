@@ -5,10 +5,10 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/reportsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
-	
+
 	$logger = new Log ('print - getLabels.log');
 	$postingNumbers = file_get_contents('php://input');
-	$logger -> write (__LINE__ . ' postingNumbers - ' . $postingNumbers);
+	$logger->write (__LINE__ . ' postingNumbers - ' . $postingNumbers);
 	$org = $_REQUEST["org"];
 	$agent = $_REQUEST["agent"];
 	$count = $_REQUEST["count"];
