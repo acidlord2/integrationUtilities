@@ -1,3 +1,74 @@
+/* Main menu card container */
+.main-menu-card {
+	background: #fff;
+	border-radius: 18px;
+	box-shadow: 0 6px 32px rgba(0,0,0,0.10);
+	padding: 40px 32px 32px 32px;
+	max-width: 480px;
+	margin: 48px auto 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.main-title {
+	font-size: 2.3rem;
+	color: #F7971D;
+	font-weight: bold;
+	letter-spacing: 1px;
+	margin-bottom: 18px;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	text-align: center;
+}
+
+.button-wraper {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	width: 100%;
+	align-items: stretch;
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+
+.main-menu-button {
+	background: linear-gradient(90deg, #F7971D 0%, #FFD200 100%);
+	color: #fff;
+	border: none;
+	border-radius: 10px;
+	padding: 18px 0;
+	font-size: 1.15rem;
+	font-weight: 600;
+	box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+	cursor: pointer;
+	transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+	outline: none;
+	width: 100%;
+	max-width: 340px;
+	margin: 0 auto;
+	letter-spacing: 0.5px;
+}
+
+.main-menu-button:hover, .main-menu-button:focus {
+	background: linear-gradient(90deg, #FFD200 0%, #F7971D 100%);
+	color: #333;
+	transform: translateY(-2px) scale(1.03);
+	box-shadow: 0 6px 20px rgba(0,0,0,0.13);
+}
+
+@media (max-width: 600px) {
+	.main-menu-card {
+		padding: 18px 6px 18px 6px;
+		max-width: 98vw;
+	}
+	.main-title {
+		font-size: 1.3rem;
+	}
+	.main-menu-button {
+		font-size: 1rem;
+		padding: 13px 0;
+	}
+}
 body {
 	position: relative;
 	margin: 0px;

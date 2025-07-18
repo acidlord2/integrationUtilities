@@ -20,58 +20,57 @@
    </head>
    <body>
 	   <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php'); ?>
-	   <div align="center">
+	   <div class="main-menu-card">
 		   <div id="header">
 			   <div class="main-title">
 				   Главное меню
 			   </div>
 		   </div>
-		   <div class = "button-wraper">
-			   <?php 
+		   <div class="button-wraper">
+			   <?php
+			   // Collect all user role IDs
+			   $userRoleIds = array();
 			   while ($userRole = mysqli_fetch_assoc($userRoles)) {
-				   if ($userRole['role_id'] == 3) {
-					   ?>
-					   <button class="main-menu-button" onclick="window.location.href='integration/integration.php'">
-						   Интеграции
-					   </button>
-					   <?php
-				   }
-				   if ($userRole['role_id'] == 4) {
-					   ?>
-					   <button class="main-menu-button" onclick="window.location.href='priceList/priceList'">
-						   Изменение цен
-					   </button>
-					   <?php
-				   }
-				   if ($userRole['role_id'] == 5) {
-					   ?>
-					   <button class="main-menu-button" onclick="window.location.href='returns/returns.php'">
-						   Возвраты
-					   </button>
-					   <?php
-				   }
-				   if ($userRole['role_id'] == 7) {
-					   ?>
-					   <button class="main-menu-button" onclick="window.location.href='print/printList'">
-						   Печать заказов
-					   </button>
-					   <?php
-				   }
-				   if ($userRole['role_id'] == 1) {
-					   ?>
-					   <button class="main-menu-button" onclick="window.location.href='shipping2/shiplist'">
-						   Отгрузка
-					   </button>
-					   <?php
-				   }
-				   if ($userRole['role_id'] == 1 || $userRole['role_id'] == 3) {
-					   ?>
-					   <button class="main-menu-button" onclick="window.location.href='finances/finance'">
-						   Разноска финансов
-					   </button>
-					   <?php
-				   }
+				   $userRoleIds[] = $userRole['role_id'];
 			   }
+
+			   // Output buttons in strict order
+			   if (in_array(3, $userRoleIds)) {
+			   ?>
+				   <button class="main-menu-button" onclick="window.location.href='integration/integration.php'">
+					   Интеграции
+				   </button>
+			   <?php }
+			   if (in_array(4, $userRoleIds)) {
+			   ?>
+				   <button class="main-menu-button" onclick="window.location.href='priceList/priceList'">
+					   Изменение цен
+				   </button>
+			   <?php }
+			   if (in_array(5, $userRoleIds)) {
+			   ?>
+				   <button class="main-menu-button" onclick="window.location.href='returns/returns.php'">
+					   Возвраты
+				   </button>
+			   <?php }
+			   if (in_array(7, $userRoleIds)) {
+			   ?>
+				   <button class="main-menu-button" onclick="window.location.href='print/printList'">
+					   Печать заказов
+				   </button>
+			   <?php }
+			   if (in_array(1, $userRoleIds)) {
+			   ?>
+				   <button class="main-menu-button" onclick="window.location.href='shipping2/shiplist'">
+					   Отгрузка
+				   </button>
+			   <?php }
+			   if (in_array(1, $userRoleIds) || in_array(3, $userRoleIds)) {
+			   ?>
+				   <button class="main-menu-button" onclick="window.location.href='finances/finance'">
+					   Разноска финансов
+				   </button>
+			   <?php }
 			   ?>
 		   </div>
 	   </div>
