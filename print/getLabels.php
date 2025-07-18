@@ -1,9 +1,11 @@
 <?php
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/login/auth.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/reportsMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
+	
 	$logger = new Log ('print - getLabels.log');
 	$postingNumbers = file_get_contents('php://input');
 	$logger -> write (__LINE__ . ' postingNumbers - ' . $postingNumbers);
