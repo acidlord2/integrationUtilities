@@ -467,7 +467,7 @@ class APIMS
 		$response = curl_exec($curl);
 		$info = curl_getinfo($curl);			
 		curl_close($curl);
-		
+		$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' $info[http_code] - ' . $info['http_code']);
 		if ($info['http_code'] < 400)
 		{
 			return $response;

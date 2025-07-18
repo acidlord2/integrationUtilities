@@ -175,6 +175,7 @@ class OrdersMS
 	{
 		$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' attribute - ' . json_encode($attribute['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$url = $attribute['download']['href'] ?? '';
+		$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' url - ' . $url);
 		if (!$url) {
 			$this->log->write(__LINE__ . ' ' . __FUNCTION__ . ' No download URL found for attribute: ' . json_encode($attribute, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			return false;
