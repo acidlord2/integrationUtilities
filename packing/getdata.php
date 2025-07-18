@@ -53,7 +53,7 @@
 							'name' => $position['product']['productName'],
 							'code' => $position['product']['productCode'],
 							'pathName' => $position['product']['productPathName'],
-							'quantity' = $position['quantity']
+							'quantity' => $position['quantity']
 						);					
 			}
 		}

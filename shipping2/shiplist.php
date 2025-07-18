@@ -24,11 +24,6 @@
 	else
 		$agent = 'Beru';
 	
-	if(isset($_GET['curier']))
-		$curier = $_GET["curier"];
-	else
-		$curier = '2';
-
 	if(isset($_GET['org']))
 		$org = $_GET["org"];
 	else
@@ -43,7 +38,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<script>
 			if (location.search == "") {
-				location.search = "?shippingDate=<?php echo $shippingDate; ?>&agent=<?php echo $agent; ?>&curier=<?php echo $curier; ?>&org=<?php echo $org; ?>";
+				location.search = "?shippingDate=<?php echo $shippingDate; ?>&agent=<?php echo $agent; ?>&org=<?php echo $org; ?>";
 			}
 		</script>
 		<link rel = "stylesheet" type = "text/css"  href = "/css/styles.css?v=<?php echo date("Y-m-d-H-i-s", strtotime("now")); ?>" />
@@ -116,7 +111,6 @@
 						<col span="1" style="width: <?php echo $_SESSION['colWidth'][5]; ?>;">
 						<col span="1" style="width: <?php echo $_SESSION['colWidth'][6]; ?>;">
 						<col span="1" style="width: <?php echo $_SESSION['colWidth'][7]; ?>;">
-						<?php echo $agent == 'Internal' ? '<col span="1" style="width: ' . $_SESSION['colWidth'][8] . ';">' : ''; ?>
 						<col span="1" style="width: <?php echo $_SESSION['colWidth'][9]; ?>;">
 						<col span="1" style="width: <?php echo $_SESSION['colWidth'][10]; ?>;">
 						<col span="1" style="width: <?php echo $_SESSION['colWidth'][11]; ?>;">
@@ -131,7 +125,6 @@
 							<th>Сумма заказа</th>
 							<th>Контрагент</th>
 							<th>Организация</th>
-							<?php echo $agent == 'Internal' ? '<th>Курьер</th>' : ''; ?>
 							<th>Статус</th>
 							<th>Отмена маркетплейс</th>
 							<th>
@@ -151,7 +144,6 @@
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][5]; ?>;">
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][6]; ?>;">
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][7]; ?>;">
-					<?php echo $agent == 'Internal' ? '<col span="1" style="width: ' . $_SESSION['colWidth'][8] . ';">' : ''; ?>
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][9]; ?>;">
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][10]; ?>;">
 					<col span="1" style="width: <?php echo $_SESSION['colWidth'][11]; ?>;">
@@ -190,18 +182,16 @@
 			async function filterOrders() {
 				var shippingDate = document.getElementById("shippingDate").value;
 				var agent = document.getElementById("agent").value;
-				var curier = document.getElementById("curier").value;
 				var org = document.getElementById("org").value;
-				location.replace ("?shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
-				
+				location.replace ("?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
+
 			}
 
 			async function refreshOrders() {
 				var shippingDate = document.getElementById("shippingDate").value;
 				var agent = document.getElementById("agent").value;
-				var curier = document.getElementById("curier").value;
 				var org = document.getElementById("org").value;
-				location.replace ("?shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org + "&refresh=1");
+				location.replace ("?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org + "&refresh=1");
 				
 			}
 
@@ -209,7 +199,6 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 
 				showLoad('Обработка заказов... подождите пару секунд...');
@@ -230,8 +219,8 @@
 				await updateTableBody();
 				
 				deleteLoad (window);
-				location.replace ("?shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org + "&refresh=1");
-				
+				location.replace ("?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org + "&refresh=1");
+
 			}
 
 
@@ -239,7 +228,6 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 				var refresh = url.searchParams.get("refresh");
 				
@@ -247,7 +235,7 @@
 				document.getElementById("refresh_button").disabled = true;
 				//document.getElementById("refresh_Goods").disabled = true;
 				showLoad('Загрузка данных... подождите пару секунд...');
-				var resp = await fetch("getdata.php?shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org + "&refresh=" + refresh);
+				var resp = await fetch("getdata.php?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org + "&refresh=" + refresh);
 
 				if (resp.ok)
 				{
@@ -277,12 +265,11 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 				//document.getElementById("filter_button").disabled = true;
 				showLoad('Обработка данных... подождите пару секунд...');
-				
-				var resp = await fetch("createShipping.php?order=" + order + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+
+				var resp = await fetch("createShipping.php?order=" + order + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 				
 				var barcodeElement = document.getElementById("barcodePack");
 				await updateTableBody();
@@ -297,7 +284,6 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 				//document.getElementById("filter_button").disabled = true;
 				showLoad('Обработка данных... подождите пару секунд...');
@@ -308,7 +294,7 @@
 				for(var i=0;i<checkboxes.length;i++)
 				{
 					try {
-						var resp = await fetch("createShipping.php?order=" + checkboxes[i].id.substring(2) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+						var resp = await fetch("createShipping.php?order=" + checkboxes[i].id.substring(2) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 					}
 					catch (exception) {
 						console.log (exception);
@@ -329,12 +315,10 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 				//document.getElementById("filter_button").disabled = true;
 				showLoad('Обработка данных... подождите пару секунд...');
-				
-				var resp = await fetch("cancelOrder.php?order=" + order + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+				var resp = await fetch("cancelOrder.php?order=" + order + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 				
 				var barcodeElement = document.getElementById("barcodePack");
 				await updateTableBody();
@@ -347,13 +331,12 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 				//document.getElementById("filter_button").disabled = true;
 				showLoad('Обработка данных... подождите пару секунд...');
-				
-				var resp = await fetch("resetOrder.php?order=" + order + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
-				
+
+				var resp = await fetch("resetOrder.php?order=" + order + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
+
 				var barcodeElement = document.getElementById("barcodePack");
 				await updateTableBody(barcodeElement.value);
 				//document.getElementById("filter_button").disabled = false;
@@ -366,13 +349,12 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 				var agent = "<?php echo $agent; ?>";
 				if (text === "" || text == null)
-					var resp = await fetch("reneworders.php?shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+					var resp = await fetch("reneworders.php?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 				else
-					var resp = await fetch("reneworders.php?order=" + encodeURIComponent(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+					var resp = await fetch("reneworders.php?order=" + encodeURIComponent(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 				if (resp.ok)
 				{
 					var html =  await resp.text();
@@ -380,15 +362,15 @@
 				}
 				if (text != null && text !== "")
 				{
-					var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+					var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 					if (resp.ok)
 					{
 						var id = await resp.text();
 						if (id.trim() != "")
 						{
-							var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&select=mpcancelFlag" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+							var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&select=mpcancelFlag" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 							var mpcancelFlag = await resp.text();
-							var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&select=scanCount" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+							var resp = await fetch("getOrder.php?order=" + encodeURIComponent(text.trim()) + "&select=scanCount" + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 							var scanCount = await resp.text();
 							var str = document.getElementById(id.trim());
 							str.scrollIntoView(false);

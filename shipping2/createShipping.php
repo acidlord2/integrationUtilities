@@ -7,19 +7,18 @@
 	
 	$shippingDate = $_REQUEST["shippingDate"];
 	$agent = $_REQUEST["agent"];
-	$curier = $_REQUEST["curier"];
 	$org = $_REQUEST["org"];
 
 	if (isset ($_REQUEST["order"]))
 	{
-		$orderKey = array_search ($_REQUEST["order"], array_column ($_SESSION['orders'][$shippingDate . $agent . $curier . $org], 'id'));
+		$orderKey = array_search ($_REQUEST["order"], array_column ($_SESSION['orders'][$shippingDate . $agent . $org], 'id'));
 		if ($orderKey !== false)
-			$orders = array(0 => $_SESSION['orders'][$shippingDate . $agent . $curier . $org][$orderKey]);
+			$orders = array(0 => $_SESSION['orders'][$shippingDate . $agent . $org][$orderKey]);
 		else
 			$orders = array(0 => Orders::getOrder ($_REQUEST["order"]));
 	}
 	else
-		$orders = $_SESSION['orders'][$shippingDate . $agent . $curier . $org];
+		$orders = $_SESSION['orders'][$shippingDate . $agent . $org];
 	
 		$logger -> write (__LINE__ . ' orders - ' . json_encode ($orders, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	
@@ -47,11 +46,11 @@
 			$orderKey2 = $orderKey;
 		else
 			$orderKey2 = $key;
-		
-		$_SESSION['orders'][$shippingDate . $agent . $curier . $org][$orderKey2]['shipped'] = true;
-		$_SESSION['orders'][$shippingDate . $agent . $curier . $org][$orderKey2]['checked'] = false;
+
+		$_SESSION['orders'][$shippingDate . $agent . $org][$orderKey2]['shipped'] = true;
+		$_SESSION['orders'][$shippingDate . $agent . $org][$orderKey2]['checked'] = false;
 	}
-	
-	echo json_encode ($_SESSION['orders'][$shippingDate . $agent . $curier . $org], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+	echo json_encode ($_SESSION['orders'][$shippingDate . $agent . $org], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 ?>
 

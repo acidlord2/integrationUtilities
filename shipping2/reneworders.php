@@ -5,30 +5,24 @@
 
 	$shippingDate = $_REQUEST["shippingDate"];
 	$agent = $_REQUEST["agent"];
-	$curier = $_REQUEST["curier"];
 	$org = $_REQUEST["org"];
 
 	if (isset ($_REQUEST["order"]))
 	{
-		$nameKey = array_search ($_REQUEST["order"], array_column($_SESSION['orders'][$shippingDate . $agent . $curier . $org], 'name'));
-		$barcodeKey = array_search ($_REQUEST["order"], array_column($_SESSION['orders'][$shippingDate . $agent . $curier . $org], 'barcode'));
+		$nameKey = array_search ($_REQUEST["order"], array_column($_SESSION['orders'][$shippingDate . $agent . $org], 'name'));
+		$barcodeKey = array_search ($_REQUEST["order"], array_column($_SESSION['orders'][$shippingDate . $agent . $org], 'barcode'));
 		if ($nameKey !== false || $barcodeKey !== false)
 		{
 			$key = $nameKey !== false ? $nameKey : $barcodeKey;
-			
-			$_SESSION['orders'][$shippingDate . $agent . $curier . $org][$key]['checked'] = $_SESSION['orders'][$shippingDate . $agent . $curier . $org][$key]['shipped'] !== true &&$_SESSION['orders'][$shippingDate . $agent . $curier . $org][$key]['cancelled'] !== true;
-			$_SESSION['orders'][$shippingDate . $agent . $curier . $org][$key]['scanCount']++;
-			$_SESSION['currentOrder'] = $_SESSION['orders'][$shippingDate . $agent . $curier . $org][$key];
-//			$orders = array (0 => $nameKey !== false ? $_SESSION['orders'][$shippingDate . $agent . $curier . $org][$nameKey] : $_SESSION['orders'][$shippingDate . $agent . $curier . $org][$barcodeKey]);
+
+			$_SESSION['orders'][$shippingDate . $agent . $org][$key]['checked'] = $_SESSION['orders'][$shippingDate . $agent . $org][$key]['shipped'] !== true && $_SESSION['orders'][$shippingDate . $agent . $org][$key]['cancelled'] !== true;
+			$_SESSION['orders'][$shippingDate . $agent . $org][$key]['scanCount']++;
+			$_SESSION['currentOrder'] = $_SESSION['orders'][$shippingDate . $agent . $org][$key];
 		}
 		else
 			$_SESSION['currentOrder'] = null;
-//			$orders = array();
 	}
-//	else
-		$orders = $_SESSION['orders'][$shippingDate . $agent . $curier . $org];
-	//echo $_SESSION['orders'][$shippingDate . $agent . $curier . $org];
-	//foreach (Orders::getOrderList($shippingDate, $agent, $curier) as $order)
+	$orders = $_SESSION['orders'][$shippingDate . $agent . $org];
 	foreach ($orders as $order)
 	{
 ?>
@@ -56,7 +50,6 @@
 			<td style = "text-align: right"><?php echo $order['sum'] / 100; ?></td>
 			<td><?php echo $order['agent']['name']; ?></td>
 			<td> <?php echo $order['organization']['name']; ?></td>
-			<?php echo $agent == 'Internal' ? '<td>' . $order['curier'] . '</td>' : ''; ?>
 			<td><?php echo $order['state']['name']; ?></td>
 			<td style = "text-align: center"><?php echo $order['mpcancel']; ?></td>
 			<td style = "text-align: center">

@@ -77,7 +77,7 @@ class Orders
 		
 		return $orders;
  	}
-    public static function getOrderList($shipDate, $agent, $curier, $org)
+    public static function getOrderList($shipDate, $agent, $org)
     {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/msApi.php');
@@ -99,8 +99,6 @@ class Orders
 		if ($agent == 'Internal')
 			$agentFilter = 'agent%21=' . MS_GOODS_AGENT . ';agent%21=' . MS_BERU_AGENT . ';agent%21=' . MS_OZON_AGENT . ';';
 
-		$curierFilter = '';
-		
 		$orgFilter = '';
 		if ($agent == 'Beru' || $agent == 'Ozon' || $agent == 'Goods' || $agent == 'WB' || $agent == 'SM')
 		{
@@ -130,7 +128,7 @@ class Orders
 		$orders = array();
 		while (true)
 		{
-			$service_url = MS_COURL . '?filter=' . $shipDateStart . $shipDateEnd . $agentFilter . $curierFilter . $orgFilter . $state . '&limit=' . MS_LIMIT . '&offset=' . $offset;
+			$service_url = MS_COURL . '?filter=' . $shipDateStart . $shipDateEnd . $agentFilter . $orgFilter . $state . '&limit=' . MS_LIMIT . '&offset=' . $offset;
 			MSAPI::getMSData($service_url, $response_ordersJson, $response_orders);
 			if (isset ($response_orders['rows'][0])) {
 				$offset += MS_LIMIT;
