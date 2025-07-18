@@ -419,6 +419,64 @@ class APIMS
 		}
 		return $info ['redirect_url'];
 	}
+
+	public function getRawData($service_url)
+	{
+		if (!$this->client_pass || !$this->client_id)
+		{
+			// Fetch parameter ms_user
+			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
+			
+			if (mysqli_num_rows($result) > 0) {
+				$row = mysqli_fetch_assoc($result);
+				$this->client_id = $row['value'];
+			}
+			else
+				die("No settings parameter 'ms_user'");
+			
+			mysqli_free_result($result);
+
+			// Fetch parameter ms_password
+			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
+
+			if (mysqli_num_rows($result) > 0) {
+				$row = mysqli_fetch_assoc($result);
+				$this->client_pass = $row['value'];
+			}
+			else
+				die("No settings parameter 'ms_password'");
+			
+			mysqli_free_result($result);
+		}
+		
+		$client_id = $this->client_id;
+		$client_pass = $this->client_pass;
+		// REST Header
+		$curl_post_headerms = array (
+			'Content-type: application/json',
+		    'Accept-Encoding: gzip',
+			'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
+		);
+
+		//$logger->write ('getMSData.cache - ' . json_encode (self::$cache, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		
+		$curl = curl_init($service_url);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+		curl_setopt($curl, CURLOPT_ENCODING, '');
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+		$response = curl_exec($curl);
+		$info = curl_getinfo($curl);			
+		curl_close($curl);
+		
+		if ($info['http_code'] < 400)
+		{
+			return $response;
+		}
+		else
+			$logger->write (__LINE__ . ' ' . __FUNCTION__ . ' response - ' . json_encode ($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			return false;
+	}
+
     public static function getIdFromHref ($url)
 	{
 		$array = explode('/', $url);

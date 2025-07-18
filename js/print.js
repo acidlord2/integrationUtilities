@@ -5,7 +5,7 @@ async function printSticker(productClass) {
 	var url = new URL(location);
 	var agent = url.searchParams.get("agent");
 	var checkboxes = document.getElementsByName ('ozonCheckbox' + productClass);
-	if (agent == "WB") {
+	if (agent == "WB" || agent == "SM") {
 		var checkboxes2 = document.getElementsByName ('msCheckbox' + productClass);
 	} else {
 		var checkboxes2 = document.getElementsByName ('ozonCheckbox' + productClass);

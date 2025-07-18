@@ -69,6 +69,9 @@
 	elseif ($agent == 'WB' && $org == 'Ullo') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек WB ULLO');
 	}
+	elseif ($agent == 'SM' && $org == 'Ullo') {
+	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек WB ULLO');
+	}
 	elseif ($agent == 'Ali') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек ALI-AVITO-WB');
 	}
