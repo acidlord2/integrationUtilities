@@ -168,10 +168,6 @@
 			//	alert('changed');
 			//});
 			function change() {
-				if (document.getElementById("agent").value == "Internal")
-					document.getElementById("s").style.display = "inline";
-				else
-					document.getElementById("s").style.display = "none";
 				if (document.getElementById("agent").value == "Beru" || document.getElementById("agent").value == "Ozon")
 					document.getElementById("s2").style.display = "inline";
 				else
