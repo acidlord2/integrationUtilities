@@ -16,7 +16,7 @@
    <head>
 	   <title>Помощь по складу</title>
 	   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-	   <link rel = "stylesheet" type = "text/css"  href = "/css/styles.css?v=3" />
+	   <link rel = "stylesheet" type = "text/css"  href = "/css/styles.css?v=4" />
    </head>
    <body>
 	   <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/header.php'); ?>
