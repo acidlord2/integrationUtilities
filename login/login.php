@@ -34,33 +34,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Логин</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css?v=4" />
 </head>
 <body>
-<div id="page">
-    <!-- [banner] -->
-    <header id="banner">
-        <hgroup>
-            <h1>Логин</h1>
-        </hgroup>        
-    </header>
-    <!-- [content] -->
-    <section id="content">
-		<?php if (isset($_GET['mess'])) { ?>
-			<div class = "loginBlock">
-				<span><?php echo $_GET['mess']; ?></span>
-			</div>
-		<?php } ?>
-        <form id="login" method="post">
-            <label for="username">Логин:</label>
-            <input id="username" name="username" type="text" required>
-            <label for="password">Пароль:</label>
-            <input id="password" name="password" type="password" required>                    
-            <br />
-            <input type="submit" value="Login">
-        </form>
-    </section>
-    <!-- [/content] -->
+<div class="login-card">
+    <h1 style="margin-bottom: 18px; color: #F7971D; font-size: 2rem; letter-spacing: 1px;">Логин</h1>
+    <?php if (isset($_GET['mess'])) { ?>
+        <div class="loginBlock">
+            <span><?php echo $_GET['mess']; ?></span>
+        </div>
+    <?php } ?>
+    <form id="login" method="post">
+        <label for="username">Логин:</label>
+        <input id="username" name="username" type="text" required>
+        <label for="password">Пароль:</label>
+        <input id="password" name="password" type="password" required>
+        <input type="submit" value="Login">
+    </form>
 </div>
-<!-- [/page] -->
 </body>
 </html>
