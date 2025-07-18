@@ -30,14 +30,6 @@
 <?php 
 	while ($userRole =  mysqli_fetch_assoc($userRoles)) {
 ?>
-				<?php if ($userRole['role_id'] == 1) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='sklad.php'">
-					Комплектовщик
-				</button>	
-				<?php } if ($userRole['role_id'] == 2) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='curier.php'">
-					Курьер
-				</button>
 				<?php } if ($userRole['role_id'] == 3) { ?>
 				<button class = "main-menu-button" onclick = "window.location.href='integration/integration.php'">
 					Интеграции
@@ -46,33 +38,21 @@
 				<button class = "main-menu-button" onclick = "window.location.href='priceList/priceList'">
 					Изменение цен
 				</button>
-				<?php } if ($userRole['role_id'] == 5) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='returns/returns.php'">
-					Возвраты
-				</button>
-				<?php } if ($userRole['role_id'] == 6) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='marketing.php'">
-					Анализатор цен
-				</button>
-				<?php } if ($userRole['role_id'] == 1) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='feedbacks.php'">
-					Поиск отзывов
+				<?php } if ($userRole['role_id'] == 7) { ?>
+				<button class = "main-menu-button" onclick = "window.location.href='print/printList'">
+					Печать заказов
 				</button>
 				<?php } if ($userRole['role_id'] == 1) { ?>
 				<button class = "main-menu-button" onclick = "window.location.href='shipping2/shiplist'">
 					Отгрузка
 				</button>
-				<?php } if ($userRole['role_id'] == 7) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='print/printList'">
-					Печать заказов
-				</button>
 				<?php } if ($userRole['role_id'] == 1 || $userRole['role_id'] == 3) { ?>
 				<button class = "main-menu-button" onclick = "window.location.href='finances/finance'">
 					Разноска финансов
 				</button>
-				<?php } if ($userRole['role_id'] == 8) { ?>
-				<button class = "main-menu-button" onclick = "window.location.href='packings/packList'">
-					Сборочный лист
+				<?php } if ($userRole['role_id'] == 5) { ?>
+				<button class = "main-menu-button" onclick = "window.location.href='returns/returns.php'">
+					Возвраты
 				</button>
 				<?php } ?>			
 <?php } ?>			
