@@ -332,4 +332,37 @@ Class OrderTransformation
         // Placeholder for label addition logic
         return $this->sportmasterOrder['msOrder'];
     }
-}       
+    /**
+     * Returns the sportmaster order transformed to cancelled MS order.
+     * @return array The sportmaster order transformed to cancelled MS order.
+     */
+    public function transformSportmasterToMSCancelled($orderMS)
+    {
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
+        $orderMSClass = new OrdersMS();
+        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Transforming sportmaster order to cancelled MS order: ' . json_encode($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $cancelFlag = $orderMSClass->findAttributeById($orderMS, MS_CANCEL_ATTR);
+        if ($cancelFlag && $cancelFlag['value']) {
+            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Order already cancelled in MS: ' . $orderMS['name']);
+            return false; // Order already cancelled
+        }
+        if (in_array($orderMS['state']['meta']['href'], [MS_NEW_STATE, MS_MPNEW_STATE, MS_CONFIRM_STATE, MS_CONFIRMGOODS_STATE])) {
+            $orderMS['state'] = array(
+                'meta' => array(
+                    'href' => MS_CANCEL_STATE,
+                    'type' => 'state',
+                    'mediaType' => 'application/json'
+                )
+            );
+        };
+        $orderMS['attributes'][] = array(
+            'meta' => array (
+                'href' => MS_ATTR . MS_CANCEL_ATTR,
+                'type' => 'attributemetadata',
+                'mediaType' => 'application/json'
+            ),
+            'value' => true
+        );
+        return $orderMS;
+    }
+}
