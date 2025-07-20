@@ -124,12 +124,11 @@
 				var url = new URL(location);
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
-				var curier = url.searchParams.get("curier");
 				var org = url.searchParams.get("org");
 				if (text === "" || text == null)
-					var resp = await fetch("renewOrdersList.php?shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+					var resp = await fetch("renewOrdersList.php?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 				else
-					var resp = await fetch("renewOrdersList.php?order=" + encodeURI(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&curier=" + curier + "&org=" + org);
+					var resp = await fetch("renewOrdersList.php?order=" + encodeURI(text.trim()) + "&shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
 				if (resp.ok)
 				{
 					var html =  await resp.text();

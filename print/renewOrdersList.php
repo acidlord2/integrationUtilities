@@ -9,8 +9,6 @@
 
 //	else
 	$orders = $_SESSION['orders'][$shippingDate . $agent . $org];
-	//echo $_SESSION['orders'][$shippingDate . $agent . $curier . $org];
-	//foreach (Orders::getOrderList($shippingDate, $agent, $curier) as $order)
 	$orderClass = false;
 	foreach ($orders as $order)
 	{

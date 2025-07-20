@@ -124,12 +124,12 @@ async function changeStatus(productClass) {
 
 	var orders = [];
 	for (var i=0; i < checkboxesMS.length; i++) {
-		if (agent == "Ozon" || agent == "WB") {
+		if (agent == "Ozon" || agent == "WB" || agent == "SM") {
 			if (checkboxesOzon[i].checked && checkboxesMS[i].checked) {
 				orders.push (checkboxesMS[i].id.substring(2));
 			}
 		}
-		if (agent == "Beru" || agent == "Goods" || agent == "Curiers") {
+		if (agent == "Beru" || agent == "Goods") {
 			if (checkboxesMS[i].checked) {
 				orders.push (checkboxesMS[i].id.substring(2));
 			}
