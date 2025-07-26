@@ -112,8 +112,35 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updateStock', '_blank')">
 					Обновить остатки WB Kosmos
 				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updatePrices', '_blank')">
+					Обновить цены WB Kosmos
+				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/getNewOrders', '_blank')">
 					Загрузить заказы WB Kosmos
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/updateStock', '_blank')">
+					Обновить остатки WB Ullo
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/updatePrices', '_blank')">
+					Обновить цены WB Ullo
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/getNewOrders', '_blank')">
+					Загрузить заказы WB Ullo
+				</button>
+			</div>
+			<div class = "integration-block">
+				<p class = "integration-block-header">Интеграция со Спортмастер</p>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/updateStock', '_blank')">
+					Обновить остатки Спортмастер Ullo
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/updatePrices', '_blank')">
+					Обновить цены Спортмастер Ullo
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/importOrders', '_blank')">
+					Загрузить заказы Спортмастер Ullo
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/cancelOrders', '_blank')">
+					Отмененные заказы Спортмастер Ullo
 				</button>
 			</div>
 		</div>
