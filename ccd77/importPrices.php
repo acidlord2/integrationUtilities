@@ -29,8 +29,8 @@ foreach ($chunks as $chunk) {
         // fetch price data "Цена продажи" from each product
         $price = $msProductClass->getPrice($msProduct, $msPrice);
         if ($price > 0) {
-            $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET min_price = " . intval($price / 100) .
-                ", max_price = " . intval($price / 100) .
+            $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET min_price = " . intval($price) .
+                ", max_price = " . intval($price) .
             " WHERE sku = " . intval($msProduct['code']);
         }
     }
