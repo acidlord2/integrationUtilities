@@ -27,7 +27,7 @@ foreach ($chunks as $chunk) {
     foreach ($msAssortment as $msProduct) {
         $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET stock_quantity = " . intval($msProduct['quantity']) .
             ", stock_status = '" . ($msProduct['quantity'] > 0 ? 'instock' : 'outofstock') . "'" .
-            " WHERE product_id = " . intval($msProduct['product_id']);
+            " WHERE sku = " . intval($msProduct['code']);
     }
     // execute all update queries
     foreach ($updateQueries as $updateQuery) {
