@@ -399,7 +399,7 @@
 	define('DB_USERNAME', 'u1003281_default');
 	define('DB_PASSWORD', 'zU8hH8hI2quQ5vG2');
 	define('DB_DATABASE', 'u1003281_stock');
-	define('DB_DATABASE2', 'u1003281_stock');
+	define('DB_DATABASE_CCD77', 'u1003281_ccd77');
 
 	define('SPORTMASTER_ULLO_CLIENT_ID', '255300299');
 	define('SPORTMASTER_ULLO_WAREHOUSE_ID', '27398540299');

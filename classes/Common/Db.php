@@ -15,13 +15,13 @@ class Db
 	private $result;
 	private $log;
 	
-	public function __construct()
+	public function __construct($dbHostname=DB_HOSTNAME, $dbUsername=DB_USERNAME, $dbPassword=DB_PASSWORD, $dbDatabase=DB_DATABASE)
 	{
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	    $this->log = new Log ('classes - Common - Db.log');
 	    
-	    $this->connection = mysqli_connect(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+	    $this->connection = mysqli_connect($dbHostname, $dbUsername, $dbPassword, $dbDatabase);
 	    if (!$this->connection){
 	        die("Connection failed: " . mysqli_connect_error());
 	    }
