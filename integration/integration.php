@@ -130,16 +130,16 @@
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Интеграция со Спортмастер</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/updateStock', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/updateStock', '_blank')">
 					Обновить остатки Спортмастер Ullo
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/updatePrices', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/updatePrices', '_blank')">
 					Обновить цены Спортмастер Ullo
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/importOrders', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/importOrders', '_blank')">
 					Загрузить заказы Спортмастер Ullo
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/Ullo/cancelOrders', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/cancelOrders', '_blank')">
 					Отмененные заказы Спортмастер Ullo
 				</button>
 			</div>
