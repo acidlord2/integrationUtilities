@@ -15,8 +15,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function fetchCompareData(type, marketplace, organization) {
     fetch(`/compare/getCompareData.php?type=${encodeURIComponent(type)}&marketplace=${encodeURIComponent(marketplace)}&organization=${encodeURIComponent(organization)}`)
-        .then(response => response.json())
-        .then(data => buildCompareTable(data))
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(text => {
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                throw new Error('Invalid JSON');
+            }
+            buildCompareTable(data);
+        })
         .catch(err => {
             const tbody = document.querySelector('#compare-table tbody');
             tbody.innerHTML = `<tr><td colspan='3'>Ошибка загрузки данных</td></tr>`;
