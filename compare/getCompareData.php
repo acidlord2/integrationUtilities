@@ -28,7 +28,7 @@ if ($marketplace === 'ccd') {
     // MS assortment API by SKU list
     require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/AssortmentApi.php');
     $msApi = new \Classes\MS\v2\AssortmentApi();
-    $msAssortment = $msApi->getAssortmentIterator(['organization' => $organization, 'code' => $skuList]);
+    $msAssortment = $msApi->fetchAssortment($skuList);
     $msData = [];
     foreach ($msAssortment as $item) {
         $msData[] = [
