@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('compareForm');
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        enableLoading(submitBtn, 'Загрузка сравнения...');
+        submitBtn.disabled = true;
         // Get type from active tab
         const activeTab = document.querySelector('.tablinks.active');
         const type = activeTab ? activeTab.getAttribute('name') : 'prices';
@@ -28,7 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('ms-col').textContent = (type === 'prices') ? 'Цена MS' : 'Остаток MS';
         document.getElementById('mp-col').textContent = (type === 'prices') ? `Цена ${marketplaceLabel}` : `Остаток ${marketplaceLabel}`;
         document.getElementById('compare-table').style.display = '';
-        fetchCompareData(type, marketplace, organization);
+        fetchCompareData(type, marketplace, organization, function() {
+            disableLoading();
+            submitBtn.disabled = false;
+        });
     });
 });
     document.addEventListener('DOMContentLoaded', function() {
@@ -102,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.toggleShowCompareTableDifferences = toggleShowDifferences;
     });
 
-function fetchCompareData(type, marketplace, organization) {
+function fetchCompareData(type, marketplace, organization, callback) {
     fetch(`/compare/getCompareData.php?type=${encodeURIComponent(type)}&marketplace=${encodeURIComponent(marketplace)}&organization=${encodeURIComponent(organization)}`)
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
@@ -116,11 +122,33 @@ function fetchCompareData(type, marketplace, organization) {
                 throw new Error('Invalid JSON');
             }
             buildCompareTable(data);
+            if (typeof callback === 'function') callback();
         })
         .catch(err => {
             const tbody = document.querySelector('#compare-table tbody');
             tbody.innerHTML = `<tr><td colspan='3'>Ошибка загрузки данных</td></tr>`;
+            if (typeof callback === 'function') callback();
         });
+}
+// Loader functions copied from finances.js for local use
+function enableLoading(element, text) {
+    var div = document.createElement('div');
+    var loading = document.createElement('span');
+    loading.id = 'loading';
+    loading.className = 'loading';
+    var loadingText = document.createElement('span');
+    loadingText.id = 'loadingText';
+    loadingText.className = 'loadingText';
+    loadingText.innerHTML = text;
+    div.appendChild(loading);
+    div.appendChild(loadingText);
+    element.after(div);
+}
+function disableLoading() {
+    var loading = document.getElementById('loading');
+    var loadingText = document.getElementById('loadingText');
+    if (loading) loading.remove();
+    if (loadingText) loadingText.remove();
 }
 
 function buildCompareTable(data) {
