@@ -53,7 +53,7 @@ class AssortmentApi
 		$this->log->write(__LINE__ . ' fetchAssortment.codes - ' . json_encode($codes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		// Fetch assortment from API
-		$assortment = $this->api->getAssortment($codes);
+		$assortment = $this->api->getData($url);
 		if (!$assortment) {
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' error - No assortment data found');
 			return false;
