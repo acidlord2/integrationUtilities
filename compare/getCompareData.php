@@ -30,12 +30,14 @@ if ($marketplace === 'ccd') {
     $msApi = new \Classes\MS\v2\AssortmentApi();
     $msAssortment = $msApi->fetchAssortment($skuList);
     $msData = [];
-    foreach ($msAssortment as $item) {
-        $msData[] = [
-            'code' => $item->getCode(),
-            'price' => $type === 'prices' ? (method_exists($item, 'getPriceSale') ? $item->getPriceSale() : null) : null,
-            'quantity' => $type === 'prices' ? null : $item->getQuantity()
-        ];
+    if (is_iterable($msAssortment)) {
+        foreach ($msAssortment as $item) {
+            $msData[] = [
+                'code' => $item->getCode(),
+                'price' => $type === 'prices' ? (method_exists($item, 'getPriceSale') ? $item->getPriceSale() : null) : null,
+                'quantity' => $type === 'prices' ? null : $item->getQuantity()
+            ];
+        }
     }
 
     // Merge MS and CCD data by code

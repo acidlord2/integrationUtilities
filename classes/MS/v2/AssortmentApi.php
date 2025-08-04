@@ -53,8 +53,16 @@ class AssortmentApi
 				}
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' codes - ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$assortment = $this->api->getData($url);
-				if ($assortment && is_array($assortment)) {
-					$allAssortments = array_merge($allAssortments, $assortment);
+				if (is_string($assortment)) {
+					$assortment = json_decode($assortment, true);
+				}
+				if (
+					$assortment &&
+					is_array($assortment) &&
+					isset($assortment['rows']) &&
+					is_array($assortment['rows'])
+				) {
+					$allAssortments = array_merge($allAssortments, $assortment['rows']);
 				}
 			}
 		} else {
@@ -64,8 +72,16 @@ class AssortmentApi
 			}
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' codes - ' . json_encode($codes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$assortment = $this->api->getData($url);
-			if ($assortment && is_array($assortment)) {
-				$allAssortments = array_merge($allAssortments, $assortment);
+			if (is_string($assortment)) {
+				$assortment = json_decode($assortment, true);
+			}
+			if (
+				$assortment &&
+				is_array($assortment) &&
+				isset($assortment['rows']) &&
+				is_array($assortment['rows'])
+			) {
+				$allAssortments = array_merge($allAssortments, $assortment['rows']);
 			}
 		}
 		if (empty($allAssortments)) {
