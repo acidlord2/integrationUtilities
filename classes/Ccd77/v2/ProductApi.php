@@ -7,6 +7,7 @@ namespace Classes\Ccd77\v2;
  */
 class ProductApi {
     private $log;
+    private $db;
 
     /**
      * ProductApi constructor.
@@ -14,11 +15,14 @@ class ProductApi {
      */
     public function __construct() {
         require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
         require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 
         $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
         $logName .= '.log';
         $this->log = new \Classes\Common\Log($logName);
+
+        $db = new \Classes\Common\Db();
     }
 
     /**
@@ -27,47 +31,19 @@ class ProductApi {
      * @return array Array of product data
      */
     public function fetchProducts(array $filters = []) {
-        $products = [];
-        $mysqli = new \mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        if ($mysqli->connect_errno) {
-            $this->log->write(__LINE__ . ' '. __METHOD__ . ' DB connect error: ' . $mysqli->connect_error);
-            return $products;
-        }
-        $sql = "SELECT product_id, sku, virtual, downloadable, min_price, max_price, onsale, stock_quantity, stock_status, rating_count, average_rating, total_sales, tax_status, tax_class, global_unique_id FROM wp_wc_product_meta_lookup";
         $where = [];
-        $params = [];
         foreach ($filters as $column => $value) {
-            // Only allow valid columns
             if (preg_match('/^[a-zA-Z0-9_]+$/', $column)) {
-                $where[] = "$column = ?";
-                $params[] = $value;
+                // Escape value for SQL
+                $escaped = is_numeric($value) ? $value : "'" . $this->db->connection->real_escape_string($value) . "'";
+                $where[] = "$column = $escaped";
             }
         }
+        $sql = "SELECT product_id, sku, virtual, downloadable, min_price, max_price, onsale, stock_quantity, stock_status, rating_count, average_rating, total_sales, tax_status, tax_class, global_unique_id FROM wp_wc_product_meta_lookup";
         if ($where) {
             $sql .= " WHERE " . implode(" AND ", $where);
         }
-        $stmt = $mysqli->prepare($sql);
-        if ($stmt && $params) {
-            // Dynamically bind params
-            $types = str_repeat('s', count($params));
-            $stmt->bind_param($types, ...$params);
-            $stmt->execute();
-            $result = $stmt->get_result();
-        } else if ($stmt) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-        } else {
-            $result = $mysqli->query($sql);
-        }
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                $products[] = $row;
-            }
-            $result->free();
-        } else {
-            $this->log->write(__LINE__ . ' '. __METHOD__ . ' SQL error: ' . $mysqli->error);
-        }
-        $mysqli->close();
+        $products = $this->db->execQueryArray($sql);
         $this->log->write(__LINE__ . ' '. __METHOD__ . ' - fetched ' . count($products) . ' products');
         return $products;
     }
