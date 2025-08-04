@@ -28,7 +28,7 @@ foreach ($orders as $order) {
     if(count($orderMS) > 0) {
         $cancelledOrderMS = $transformationClass->transformSportmasterToMSCancelled($orderMS[0]);
     } else {
-        $log->write(__LINE__ . ' '. __FUNCTION__ . ' Order not found in MS: ' . $order['orderNumber']);
+        $log->write(__LINE__ . ' '. __METHOD__ . ' Order not found in MS: ' . $order['orderNumber']);
         continue;
     }
     $ordersMS[] = $cancelledOrderMS;
@@ -36,13 +36,13 @@ foreach ($orders as $order) {
 if (count($ordersMS) > 0) {
     $result = $orderMSClass->createCustomerorder($ordersMS);
     if ($result) {
-        $log->write(__LINE__ . ' '. __FUNCTION__ . ' Successfully cancelled ' . count($ordersMS) . ' orders in MS');
+        $log->write(__LINE__ . ' '. __METHOD__ . ' Successfully cancelled ' . count($ordersMS) . ' orders in MS');
         echo count($ordersMS) . ' orders cancelled successfully<br/>';
     } else {
-        $log->write(__LINE__ . ' '. __FUNCTION__ . ' Failed to cancel orders in MS');
+        $log->write(__LINE__ . ' '. __METHOD__ . ' Failed to cancel orders in MS');
         echo 'Failed to cancel orders<br/>';
     }
 } else {
-    $log->write(__LINE__ . ' '. __FUNCTION__ . ' No orders to process');
+    $log->write(__LINE__ . ' '. __METHOD__ . ' No orders to process');
     echo 'No orders to process<br/>';
 }

@@ -63,7 +63,7 @@
 			$fileContent = $orderMSClass->getAttributeFileContent($attribute);
 			if ($fileContent === false)
 			{
-				$logger->write (__LINE__ . ' ' . __FUNCTION__ . ' error getting file content for order id - ' . $id);
+				$logger->write (__LINE__ . ' ' . __METHOD__ . ' error getting file content for order id - ' . $id);
 				continue;
 			}
 			$file = 'files/' . $id . '.pdf';

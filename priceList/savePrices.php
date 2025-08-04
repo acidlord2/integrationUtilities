@@ -16,7 +16,7 @@
 	
 	$postData = array();
 	
-	$logger -> write (__LINE__ . ' ' . __FUNCTION__ . ' $_SESSION[productPriceTypes] - ' . json_encode ($_SESSION['productPriceTypes'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$logger -> write (__LINE__ . ' ' . __METHOD__ . ' $_SESSION[productPriceTypes] - ' . json_encode ($_SESSION['productPriceTypes'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	foreach ($data as $product => $prices)
 	{
 		$salesPrices = array();

@@ -31,7 +31,7 @@ class Product
 		$offset = 0;
 	    $products = array();
 		$url = SPORTMASTER_BASE_URL . 'v1/fbs/stocks/list';
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
 	    while (true)
 	    {
 			$post_data = array(
@@ -39,9 +39,9 @@ class Product
 				'limit' => $this->limit,
 				'offset' => $offset
 			);
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$response = $this->apiClass->postData($url, $post_data);
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if ($response && isset($response['stocks']))
 			{
 				$products = array_merge($products, $response['stocks']);
@@ -51,21 +51,21 @@ class Product
 			}
 			else
 			{
-				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching stock list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error fetching stock list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				break;
 			}
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 	    }
-	    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' total products fetched - ' . count($products));
+	    $this->log->write(__LINE__ . ' '. __METHOD__ . ' total products fetched - ' . count($products));
 	    return $products;
 	}
 
 	public function stockUpdate($warehouseId, $stocks)
 	{
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' warehouseId - ' . $warehouseId);
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' stocks - ' . json_encode($stocks, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' warehouseId - ' . $warehouseId);
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' stocks - ' . json_encode($stocks, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    $url = SPORTMASTER_BASE_URL . 'v1/fbs/stocks/create-import-task';
-	    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
+	    $this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
 		foreach(array_chunk($stocks, $this->limit) as $chunk) 
 		{
 			$post_data = array(
@@ -73,12 +73,12 @@ class Product
 				'stocks' => $chunk
 			);
 			$response = $this->apiClass->postData($url, $post_data);
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if (!$response || !isset($response['taskId'])) {
-				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error importing stocks: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error importing stocks: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				return false;
 			}
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Import task created with ID: ' . $response['taskId']);
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' Import task created with ID: ' . $response['taskId']);
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 		}
 		return true;
@@ -86,21 +86,21 @@ class Product
 
 	public function pricesUpdate($prices)
 	{
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' prices - ' . json_encode($prices, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' prices - ' . json_encode($prices, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    $url = SPORTMASTER_BASE_URL . 'v1/product/prices/create-import-task';
-	    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
+	    $this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
 		foreach(array_chunk($prices, $this->limit) as $chunk) 
 		{
 			$post_data = array(
 				'productPrices' => $chunk
 			);
 			$response = $this->apiClass->postData($url, $post_data);
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if (!$response || !isset($response['taskId'])) {
-				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error importing prices: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error importing prices: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				return false;
 			}
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Import task created with ID: ' . $response['taskId']);
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' Import task created with ID: ' . $response['taskId']);
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 		}
 		return true;

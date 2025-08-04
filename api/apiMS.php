@@ -468,13 +468,13 @@ class APIMS
 		$response = curl_exec($curl);
 		$info = curl_getinfo($curl);			
 		curl_close($curl);
-		$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' $info[http_code] - ' . $info['http_code']);
+		$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' $info[http_code] - ' . $info['http_code']);
 		if ($info['http_code'] < 400)
 		{
 			return $response;
 		}
 		else
-			$logger->write (__LINE__ . ' ' . __FUNCTION__ . ' response - ' . json_encode ($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger->write (__LINE__ . ' ' . __METHOD__ . ' response - ' . json_encode ($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			return false;
 	}
 

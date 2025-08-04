@@ -37,14 +37,14 @@ Class OrderTransformation
      */
     public function transformSportmasterToMS()
     {
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Processing order: ' . json_encode($this->sportmasterOrder, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Processing order: ' . json_encode($this->sportmasterOrder, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         $orderMS = array();
         $attributes = array();
 
         $productMSClass = new \ProductsMS();
         $positions = array();
         if (isset($this->sportmasterOrder['products']) && is_array($this->sportmasterOrder['products']) && count($this->sportmasterOrder['products']) > 0) {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Processing products: ' . json_encode($this->sportmasterOrder['products'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' Processing products: ' . json_encode($this->sportmasterOrder['products'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             foreach ($this->sportmasterOrder['products'] as &$product) {
                 $productMS = $this->getProductByOfferId($product['offerId'], $productMSClass);
                 $product['msProduct'] = $productMS; // Add the MS product to the product
@@ -52,7 +52,7 @@ Class OrderTransformation
             }
             unset($product); // Always unset reference after foreach
         } elseif (isset($this->sportmasterOrder['packages']) && is_array($this->sportmasterOrder['packages']) && count($this->sportmasterOrder['packages']) > 0) {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Processing packages: ' . json_encode($this->sportmasterOrder['packages'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' Processing packages: ' . json_encode($this->sportmasterOrder['packages'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             foreach ($this->sportmasterOrder['packages'] as $package) {
                 if (isset($package['packageProducts']) && is_array($package['packageProducts']) && count($package['packageProducts']) > 0) {
                     foreach ($package['packageProducts'] as $product) {
@@ -67,11 +67,11 @@ Class OrderTransformation
                         );
                     }
                 } else {
-                    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No products found in package ' . json_encode($package, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+                    $this->log->write(__LINE__ . ' '. __METHOD__ . ' No products found in package ' . json_encode($package, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
                 }
             }
         } else {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No products found in order');
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' No products found in order');
             return false;
         };
         $this->alignTotalAmount($positions, $this->sportmasterOrder['totalCost']['amount']);
@@ -176,7 +176,7 @@ Class OrderTransformation
         $orderMS['positions'] = $positions;
         $orderMS['attributes'] = $attributes;
 
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Transformed order: ' . json_encode($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Transformed order: ' . json_encode($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         $this->sportmasterOrder['msOrder'] = $orderMS;
         return $orderMS;
     }
@@ -194,7 +194,7 @@ Class OrderTransformation
         if (isset($productMS[0])) {
             return $productMS[0];
         } else {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Product not found for offerId: ' . $offerId);
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' Product not found for offerId: ' . $offerId);
             return $productMSClass->findProductsByCode('000-0000')[0];
         }
     }
@@ -218,7 +218,7 @@ Class OrderTransformation
                 'meta' => $product['msProduct']['meta']
             );
         } else {
-            $logger->write(__LINE__ . ' '. __FUNCTION__ . ' No MS product found for product: ' . json_encode($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            $logger->write(__LINE__ . ' '. __METHOD__ . ' No MS product found for product: ' . json_encode($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             return false;
         }
         return $position;
@@ -238,7 +238,7 @@ Class OrderTransformation
             $total += $position['price'] * $position['quantity'];
         }
         if ($total != $amount * 100) {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Total amount mismatch: expected ' . $amount . ', calculated ' . $total);
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' Total amount mismatch: expected ' . $amount . ', calculated ' . $total);
             // Adjust the last position to match the total amount
             $lastPositionIndex = count($positions) - 1;
             $positions[$lastPositionIndex]['price'] += ($amount * 100 - $total) / $positions[$lastPositionIndex]['quantity'];
@@ -252,7 +252,7 @@ Class OrderTransformation
      */
     public function transformToPackageChangeRequest()
     {
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Transforming to package change request: ' . json_encode($this->sportmasterOrder, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Transforming to package change request: ' . json_encode($this->sportmasterOrder, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         $packageChangeRequest = array();
         $productMSClass = new \ProductsMS();
         $exemplarIds = array();
@@ -279,7 +279,7 @@ Class OrderTransformation
             'exemplarIds' => $exemplarIds
         );
         $packageChangeRequest[] = $package;
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Package change request: ' . json_encode($packageChangeRequest, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Package change request: ' . json_encode($packageChangeRequest, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         return $packageChangeRequest;
     }
 
@@ -289,9 +289,9 @@ Class OrderTransformation
      */
     public function getSportmasterOrder()
     {
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Returning sportmaster order: ' . json_encode($this->sportmasterOrder['id'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Returning sportmaster order: ' . json_encode($this->sportmasterOrder['id'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         if (empty($this->sportmasterOrder)) {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No sportmaster order found');
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' No sportmaster order found');
             return false;
         }
         return $this->sportmasterOrder;
@@ -303,9 +303,9 @@ Class OrderTransformation
      */
     public function addLabelToMsOrder($label, $msOrderId, $orderSportmasterBarcode)
     {
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Adding label to ms order: ' . json_encode($label['fileName'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Adding label to ms order: ' . json_encode($label['fileName'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         if (empty($this->sportmasterOrder)) {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No sportmaster order found');
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' No sportmaster order found');
             return false;
         }
         $this->sportmasterOrder['msOrder']['id'] = $msOrderId;
@@ -328,7 +328,7 @@ Class OrderTransformation
             ),
             'value' => $orderSportmasterBarcode
         );
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Label added to ms order: ' . json_encode($this->sportmasterOrder['msOrder'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Label added to ms order: ' . json_encode($this->sportmasterOrder['msOrder'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         // Placeholder for label addition logic
         return $this->sportmasterOrder['msOrder'];
     }
@@ -340,10 +340,10 @@ Class OrderTransformation
     {
         require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
         $orderMSClass = new OrdersMS();
-        $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Transforming sportmaster order to cancelled MS order: ' . json_encode($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' Transforming sportmaster order to cancelled MS order: ' . json_encode($orderMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         $cancelFlag = $orderMSClass->findAttributeById($orderMS, MS_CANCEL_ATTR);
         if ($cancelFlag && $cancelFlag['value']) {
-            $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Order already cancelled in MS: ' . $orderMS['name']);
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' Order already cancelled in MS: ' . $orderMS['name']);
             return false; // Order already cancelled
         }
         if (in_array($orderMS['state']['meta']['href'], [MS_NEW_STATE, MS_MPNEW_STATE, MS_CONFIRM_STATE, MS_CONFIRMGOODS_STATE])) {

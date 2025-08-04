@@ -71,7 +71,7 @@ class Api
 		$jsonOut = curl_exec($curl);
 		$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		if ($httpCode >= 400) {
-			$this->logger->write(__LINE__ . " " . __FUNCTION__ . " - HTTP error: $httpCode, response: " . $jsonOut);
+			$this->logger->write(__LINE__ . " " . __METHOD__ . " - HTTP error: $httpCode, response: " . $jsonOut);
 			return false;
 		}
 		$arrayOut = json_decode ($jsonOut, true);
@@ -93,10 +93,10 @@ class Api
 		
 		if ($info['http_code'] >= 400)
 		{
-			$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' - URL: ' . $url);
-			$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
-			$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' - JSON response: ' . $jsonOut);
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - URL: ' . $url);
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);
 			return false;
 		}
 		return json_decode ($jsonOut, true);
@@ -115,11 +115,11 @@ class Api
 
 		if ($info['http_code'] >= 400)
 		{
-			$this->logger->write (__LINE__ . ' '. __FUNCTION__ . ' - URL: ' . $url);
-			$this->logger->write (__LINE__ . ' '. __FUNCTION__ . ' - postdata: ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
-			$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			$this->logger->write (__LINE__ . ' ' . __FUNCTION__ . ' - JSON response: ' . $jsonOut);
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - URL: ' . $url);
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - postdata: ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);
 			return false;
 		}
 		return json_decode ($jsonOut, true);
