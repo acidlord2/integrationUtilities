@@ -33,14 +33,11 @@
 
     <div class="compare-container">
         <div class="compare-left-panel">
-            <form id="typeForm">
-                <label for="typeSelect">Тип сравнения:</label>
-                <select id="typeSelect" name="type">
-                    <?php foreach ($types as $key => $label): ?>
-                        <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </form>
+            <div class="tab" style="margin-bottom: 18px;">
+                <?php foreach ($types as $key => $label): ?>
+                    <button class="tablinks<?php if ($key === 'prices') echo ' active'; ?>" name="<?= htmlspecialchars($key) ?>" onclick="selectCompareType(this, '<?= htmlspecialchars($key) ?>')"><?= htmlspecialchars($label) ?></button>
+                <?php endforeach; ?>
+            </div>
         </div>
         <div class="compare-form-panel">
             <form id="compareForm" method="post" action="">
@@ -78,6 +75,13 @@
             </tbody>
         </table>
     </div>
+    <script>
+        function selectCompareType(btn, type) {
+            document.querySelectorAll('.tablinks').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('typeSelect').value = type;
+        }
+    </script>
     <script src="/js/compare.js?v=1"></script>
 </body>
 </html>
