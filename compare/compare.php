@@ -39,16 +39,25 @@
                 <?php endforeach; ?>
             </div>
         </div>
-        <div class="compare-form-panel">
+        <div class="compare-form-panel" style="background: #f7f7f7; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 32px 40px; min-width: 320px; max-width: 400px; margin: 0 auto;">
             <form id="compareForm" method="post" action="">
-                <label for="marketplaceSelect">Маркетплейс:</label>
-                <select id="marketplaceSelect" name="marketplace">
-                    <?php foreach ($marketplaces as $key => $label): ?>
-                        <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
-                <!-- Type selection is now handled by tab buttons -->
-                    <?php endforeach; ?>
-                </select>
-                <button type="submit">Сравнить</button>
+                <div style="margin-bottom: 22px;">
+                    <label for="marketplaceSelect" style="font-weight: 600; margin-bottom: 8px; display: block;">Маркетплейс:</label>
+                    <select id="marketplaceSelect" name="marketplace" style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px;">
+                        <?php foreach ($marketplaces as $key => $label): ?>
+                            <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div style="margin-bottom: 22px;">
+                    <label for="organizationSelect" style="font-weight: 600; margin-bottom: 8px; display: block;">Организация:</label>
+                    <select id="organizationSelect" name="organization" style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px;">
+                        <?php foreach ($organizations as $key => $label): ?>
+                            <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <button type="submit" style="width: 100%; padding: 12px 0; background: #F7971D; color: #fff; border: none; border-radius: 6px; font-weight: 700; font-size: 17px; cursor: pointer; margin-top: 10px;">Сравнить</button>
             </form>
         </div>
     </div>
@@ -74,7 +83,7 @@
         function selectCompareType(btn, type) {
             document.querySelectorAll('.tablinks').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            document.getElementById('typeSelect').value = type;
+            // No need to set typeSelect, type is read from active tab in JS
         }
     </script>
     <script src="/js/compare.js?v=1"></script>
