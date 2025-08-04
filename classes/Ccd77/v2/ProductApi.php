@@ -22,7 +22,7 @@ class ProductApi {
         $logName .= '.log';
         $this->log = new \Classes\Common\Log($logName);
 
-        $db = new \Classes\Common\Db();
+        $this->db = new \Classes\Common\Db();
     }
 
     /**
