@@ -108,30 +108,35 @@ class Assortment {
     public function getMinPrice() { return $this->minPrice; }
     public function getSalePrices() { return $this->salePrices; }
     public function getBuyPrice() { return $this->buyPrice; }
-    public function getPriceRetail() { return $this->priceRetail; }
-    public function getPriceWholesale() { return $this->priceWholesale; }
-    public function getPriceSmallWholesale() { return $this->priceSmallWholesale; }
-    public function getPriceLargeWholesale() { return $this->priceLargeWholesale; }
-    public function getPricePurchase() { return $this->pricePurchase; }
-    public function getPriceOldRetail() { return $this->priceOldRetail; }
-    public function getPriceOldWholesale() { return $this->priceOldWholesale; }
-    public function getPriceOldSmallWholesale() { return $this->priceOldSmallWholesale; }
-    public function getPriceOldLargeWholesale() { return $this->priceOldLargeWholesale; }
-    public function getPriceOldPurchase() { return $this->priceOldPurchase; }
-    public function getPriceSale() { return $this->priceSale; }
-    public function getPricePromo() { return $this->pricePromo; }
-    public function getPriceSmmAlliance() { return $this->priceSmmAlliance; }
-    public function getPriceSmmUllo() { return $this->priceSmmUllo; }
-    public function getPrice10kidsGoods() { return $this->price10kidsGoods; }
-    public function getPricePromo10kidsGoods() { return $this->pricePromo10kidsGoods; }
-    public function getPriceBeru() { return $this->priceBeru; }
-    public function getPriceBeruUllo() { return $this->priceBeruUllo; }
-    public function getPriceOzon() { return $this->priceOzon; }
-    public function getPriceOzonKaori() { return $this->priceOzonKaori; }
-    public function getPriceSportmaster() { return $this->priceSportmaster; }
-    public function getPriceWB() { return $this->priceWB; }
-    public function getPriceWBUllo() { return $this->priceWBUllo; }
-    public function getPriceDBS10kids() { return $this->priceDBS10kids; }
+    
+    private function kopeeksToRoubles($value) {
+        return isset($value) ? $value / 100 : null;
+    }
+
+    public function getPriceRetail() { return $this->kopeeksToRoubles($this->priceRetail); }
+    public function getPriceWholesale() { return $this->kopeeksToRoubles($this->priceWholesale); }
+    public function getPriceSmallWholesale() { return $this->kopeeksToRoubles($this->priceSmallWholesale); }
+    public function getPriceLargeWholesale() { return $this->kopeeksToRoubles($this->priceLargeWholesale); }
+    public function getPricePurchase() { return $this->kopeeksToRoubles($this->pricePurchase); }
+    public function getPriceOldRetail() { return $this->kopeeksToRoubles($this->priceOldRetail); }
+    public function getPriceOldWholesale() { return $this->kopeeksToRoubles($this->priceOldWholesale); }
+    public function getPriceOldSmallWholesale() { return $this->kopeeksToRoubles($this->priceOldSmallWholesale); }
+    public function getPriceOldLargeWholesale() { return $this->kopeeksToRoubles($this->priceOldLargeWholesale); }
+    public function getPriceOldPurchase() { return $this->kopeeksToRoubles($this->priceOldPurchase); }
+    public function getPriceSale() { return $this->kopeeksToRoubles($this->priceSale); }
+    public function getPricePromo() { return $this->kopeeksToRoubles($this->pricePromo); }
+    public function getPriceSmmAlliance() { return $this->kopeeksToRoubles($this->priceSmmAlliance); }
+    public function getPriceSmmUllo() { return $this->kopeeksToRoubles($this->priceSmmUllo); }
+    public function getPrice10kidsGoods() { return $this->kopeeksToRoubles($this->price10kidsGoods); }
+    public function getPricePromo10kidsGoods() { return $this->kopeeksToRoubles($this->pricePromo10kidsGoods); }
+    public function getPriceBeru() { return $this->kopeeksToRoubles($this->priceBeru); }
+    public function getPriceBeruUllo() { return $this->kopeeksToRoubles($this->priceBeruUllo); }
+    public function getPriceOzon() { return $this->kopeeksToRoubles($this->priceOzon); }
+    public function getPriceOzonKaori() { return $this->kopeeksToRoubles($this->priceOzonKaori); }
+    public function getPriceSportmaster() { return $this->kopeeksToRoubles($this->priceSportmaster); }
+    public function getPriceWB() { return $this->kopeeksToRoubles($this->priceWB); }
+    public function getPriceWBUllo() { return $this->kopeeksToRoubles($this->priceWBUllo); }
+    public function getPriceDBS10kids() { return $this->kopeeksToRoubles($this->priceDBS10kids); }
     public function getAttrName() { return $this->attrName; }
     public function getAttrCategory1() { return $this->attrCategory1; }
     public function getAttrCategory2() { return $this->attrCategory2; }
