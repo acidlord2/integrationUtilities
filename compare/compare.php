@@ -86,6 +86,10 @@
     </div>
 </div>
 <div id="compare-block">
+    <div style="margin: 16px 0;">
+        <input type="checkbox" id="show-diff">
+        <label for="show-diff">Показать только различия</label>
+    </div>
     <table id="compare-table" class="tableBig">
         <thead>
             <tr>

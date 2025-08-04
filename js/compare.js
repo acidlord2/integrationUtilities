@@ -12,6 +12,76 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchCompareData(type, marketplace, organization);
     });
 });
+    document.addEventListener('DOMContentLoaded', function() {
+        const table = document.getElementById('compare-table');
+        if (!table) return;
+        const tbody = table.querySelector('tbody');
+
+        // Add checkbox for "Show only differences"
+        const compareBlock = document.getElementById('compare-block');
+        if (compareBlock && !document.getElementById('show-diff')) {
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.style.margin = '16px 0';
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'show-diff';
+            const label = document.createElement('label');
+            label.htmlFor = 'show-diff';
+            label.textContent = 'Показать только различия';
+            checkboxDiv.appendChild(checkbox);
+            checkboxDiv.appendChild(label);
+            compareBlock.insertBefore(checkboxDiv, table);
+        }
+
+        function getCell(row, colId) {
+            return row.querySelector(`#${colId}, .${colId}`) || row.cells[colId === 'ms-col' ? 1 : 2];
+        }
+
+        // Highlight rows with differences
+        function highlightDifferences() {
+            Array.from(tbody.rows).forEach(row => {
+                const msCell = getCell(row, 'ms-col');
+                const mpCell = getCell(row, 'mp-col');
+                if (!msCell || !mpCell) return;
+                if (msCell.textContent.trim() !== mpCell.textContent.trim()) {
+                    row.style.backgroundColor = '#fffbe6'; // light yellow
+                    row.classList.add('diff-row');
+                } else {
+                    row.style.backgroundColor = '';
+                    row.classList.remove('diff-row');
+                }
+            });
+        }
+
+        // Show only differences
+        function toggleShowDifferences() {
+            const checkbox = document.getElementById('show-diff');
+            if (!checkbox) return;
+            const showOnlyDiff = checkbox.checked;
+            Array.from(tbody.rows).forEach(row => {
+                if (showOnlyDiff) {
+                    if (!row.classList.contains('diff-row')) {
+                        row.style.display = 'none';
+                    } else {
+                        row.style.display = '';
+                    }
+                } else {
+                    row.style.display = '';
+                }
+            });
+        }
+
+        // Initial highlight and event binding
+        highlightDifferences();
+        const diffCheckbox = document.getElementById('show-diff');
+        if (diffCheckbox) {
+            diffCheckbox.addEventListener('change', toggleShowDifferences);
+        }
+
+        // If rows are dynamically inserted, re-highlight after update
+        window.highlightCompareTableDifferences = highlightDifferences;
+        window.toggleShowCompareTableDifferences = toggleShowDifferences;
+    });
 
 function fetchCompareData(type, marketplace, organization) {
     fetch(`/compare/getCompareData.php?type=${encodeURIComponent(type)}&marketplace=${encodeURIComponent(marketplace)}&organization=${encodeURIComponent(organization)}`)
@@ -54,4 +124,15 @@ function buildCompareTable(data) {
         tr.innerHTML = `<td>${row.code}</td><td>${ms}</td><td>${mp}</td>`;
         tbody.appendChild(tr);
     });
+    // Highlight differences and apply filter after table is rebuilt
+    if (window.highlightCompareTableDifferences) window.highlightCompareTableDifferences();
+    if (window.toggleShowCompareTableDifferences) window.toggleShowCompareTableDifferences();
+    // Add event listener for checkbox if not already
+    const diffCheckbox = document.getElementById('show-diff');
+    if (diffCheckbox && !diffCheckbox.hasListener) {
+        diffCheckbox.addEventListener('change', function() {
+            if (window.toggleShowCompareTableDifferences) window.toggleShowCompareTableDifferences();
+        });
+        diffCheckbox.hasListener = true;
+    }
 }
