@@ -66,7 +66,7 @@
             <input type="checkbox" id="show-diff">
             <label for="show-diff">Показать только различия</label>
         </div>
-        <table id="compare-table" class="tableBig">
+        <table id="compare-table" class="tableBig" style="display: table;">
             <thead>
                 <tr>
                     <th>Код</th>
