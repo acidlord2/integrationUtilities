@@ -39,7 +39,7 @@ class ProductApi {
                 $where[] = "$column = $escaped";
             }
         }
-        $sql = "SELECT product_id, sku, virtual, downloadable, min_price, max_price, onsale, stock_quantity, stock_status, rating_count, average_rating, total_sales, tax_status, tax_class, global_unique_id FROM wp_wc_product_meta_lookup";
+        $sql = "SELECT * FROM `wp_wc_product_meta_lookup`";
         if ($where) {
             $sql .= " WHERE " . implode(" AND ", $where);
         }
