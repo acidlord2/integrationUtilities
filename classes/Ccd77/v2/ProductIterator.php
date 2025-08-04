@@ -13,6 +13,7 @@ class ProductIterator implements \IteratorAggregate {
      * @param string|array $json JSON string or array of product objects
      */
     public function __construct($json) {
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ccd77/v2/Product.php');
         if (is_string($json)) {
             $data = json_decode($json, true);
         } else {
