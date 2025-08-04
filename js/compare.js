@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('compareForm');
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        const type = document.getElementById('typeSelect').value;
+        // Get type from active tab
+        const activeTab = document.querySelector('.tablinks.active');
+        const type = activeTab ? activeTab.getAttribute('name') : 'prices';
         const marketplace = document.getElementById('marketplaceSelect').value;
         const organization = document.getElementById('organizationSelect').value;
         const marketplaceLabel = document.getElementById('marketplaceSelect').options[document.getElementById('marketplaceSelect').selectedIndex].text;

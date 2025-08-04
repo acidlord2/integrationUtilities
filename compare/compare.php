@@ -45,12 +45,7 @@
                 <select id="marketplaceSelect" name="marketplace">
                     <?php foreach ($marketplaces as $key => $label): ?>
                         <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <label for="organizationSelect">Организация:</label>
-                <select id="organizationSelect" name="organization">
-                    <?php foreach ($organizations as $key => $label): ?>
-                        <option value="<?= htmlspecialchars($key) ?>"><?= htmlspecialchars($label) ?></option>
+                <!-- Type selection is now handled by tab buttons -->
                     <?php endforeach; ?>
                 </select>
                 <button type="submit">Сравнить</button>
