@@ -105,9 +105,9 @@ class Api
 	{
 
 	    $this->logger->write (__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
-	    $cache = $this->getCache ($url);
-		if ($cache)
-			return $cache;
+	    // $cache = $this->getCache ($url);
+		// if ($cache)
+		// 	return $cache;
 		
 		while (true)
 		{
@@ -134,7 +134,7 @@ class Api
 				continue;
 			}
 
-			$cache = $this->setCache ($url, $jsonOut);
+			//$cache = $this->setCache ($url, $jsonOut);
 			return $jsonOut;
 		}
 	}
