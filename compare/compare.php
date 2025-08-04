@@ -61,12 +61,12 @@
             </form>
         </div>
     </div>
-    <div id="compare-block">
-        <div style="margin: 16px 0;">
-            <input type="checkbox" id="show-diff">
-            <label for="show-diff">Показать только различия</label>
-        </div>
-        <table id="compare-table" class="tableBig" style="display: table;">
+    <div id="show-diff-container" style="display:none; text-align:center; margin: 16px 0;">
+        <input type="checkbox" id="show-diff">
+        <label for="show-diff">Показать только различия</label>
+    </div>
+    <div id="compare-block" style="display:none;">
+        <table id="compare-table" class="tableBig" style="display: none;">
             <thead>
                 <tr>
                     <th>Код</th>
@@ -79,13 +79,6 @@
             </tbody>
         </table>
     </div>
-    <script>
-        function selectCompareType(btn, type) {
-            document.querySelectorAll('.tablinks').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            // No need to set typeSelect, type is read from active tab in JS
-        }
-    </script>
     <script src="/js/compare.js?v=1"></script>
 </body>
 </html>

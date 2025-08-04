@@ -1,3 +1,20 @@
+// Tab selection and hide/show logic moved from compare.php
+function selectCompareType(btn, type) {
+    document.querySelectorAll('.tablinks').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    hideCompareResults();
+}
+
+function hideCompareResults() {
+    document.getElementById('compare-block').style.display = 'none';
+    document.getElementById('compare-table').style.display = 'none';
+    document.getElementById('show-diff-container').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('marketplaceSelect').addEventListener('change', hideCompareResults);
+    document.getElementById('organizationSelect').addEventListener('change', hideCompareResults);
+});
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('compareForm');
     form.addEventListener('submit', function(e) {
@@ -109,6 +126,10 @@ function fetchCompareData(type, marketplace, organization) {
 function buildCompareTable(data) {
     const tbody = document.querySelector('#compare-table tbody');
     tbody.innerHTML = '';
+    // Always show the table and checkbox when building table
+    document.getElementById('compare-block').style.display = '';
+    document.getElementById('compare-table').style.display = 'table';
+    document.getElementById('show-diff-container').style.display = '';
     if (!Array.isArray(data) || data.length === 0) {
         tbody.innerHTML = `<tr><td colspan='3'>Нет данных для отображения</td></tr>`;
         return;
