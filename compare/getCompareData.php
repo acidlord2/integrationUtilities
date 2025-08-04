@@ -1,4 +1,5 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/login/login.php');
 header('Content-Type: application/json; charset=utf-8');
 ini_set('display_errors', 0);
 error_reporting(E_ERROR | E_PARSE);
@@ -70,10 +71,5 @@ if ($marketplace === 'ccd') {
         [ 'code' => '12345', 'ms' => [ 'price' => $type === 'prices' ? 1000 : null, 'quantity' => $type === 'prices' ? null : 50 ], 'mp' => [ 'price' => $type === 'prices' ? 950 : null, 'quantity' => $type === 'prices' ? null : 45 ], 'attributes' => [] ],
         [ 'code' => '67890', 'ms' => [ 'price' => $type === 'prices' ? 2000 : null, 'quantity' => $type === 'prices' ? null : 30 ], 'mp' => [ 'price' => $type === 'prices' ? 2100 : null, 'quantity' => $type === 'prices' ? null : 28 ], 'attributes' => [] ]
     ];
-}
-if (function_exists('error_get_last') && ($err = error_get_last()) && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Internal server error']);
-    exit;
 }
 echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
