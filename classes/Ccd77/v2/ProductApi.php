@@ -43,6 +43,7 @@ class ProductApi {
         if ($where) {
             $sql .= " WHERE " . implode(" AND ", $where);
         }
+        $this->log->write(__LINE__ . ' '. __METHOD__ . ' - SQL query: ' . $sql);
         $products = $this->db->execQueryArray($sql);
         $this->log->write(__LINE__ . ' '. __METHOD__ . ' - fetched ' . count($products) . ' products');
         return $products;
