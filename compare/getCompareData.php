@@ -50,15 +50,8 @@ if ($marketplace === 'ccd') {
         $ms = $msByCode[$code] ?? ['price' => null, 'quantity' => null];
         $result[] = [
             'code' => $code,
-            'ms' => [
-                'price' => $ms['price'],
-                'quantity' => $ms['quantity']
-            ],
-            'mp' => [
-                'price' => $ccd['price'],
-                'quantity' => $ccd['quantity']
-            ],
-            'attributes' => [] // Add attributes here if needed
+            'ms' => $type === 'prices' ? $ms['price'] : $ms['quantity'],
+            'mp' => $type === 'prices' ? $ccd['price'] : $ccd['quantity']
         ];
     }
     $data = $result;
