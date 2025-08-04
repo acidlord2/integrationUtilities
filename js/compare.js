@@ -155,9 +155,12 @@ function buildCompareTable(data) {
     const tbody = document.querySelector('#compare-table tbody');
     tbody.innerHTML = '';
     // Always show the table and checkbox when building table
-    document.getElementById('compare-block').style.display = 'block';
-    document.getElementById('compare-table').style.display = 'table';
-    document.getElementById('show-diff-container').style.display = '';
+    const compareBlock = document.getElementById('compare-block');
+    const compareTable = document.getElementById('compare-table');
+    const showDiffContainer = document.getElementById('show-diff-container');
+    compareBlock.style.display = 'block';
+    compareTable.style.display = '';
+    showDiffContainer.style.display = '';
     if (!Array.isArray(data) || data.length === 0) {
         tbody.innerHTML = `<tr><td colspan='3'>Нет данных для отображения</td></tr>`;
         return;
