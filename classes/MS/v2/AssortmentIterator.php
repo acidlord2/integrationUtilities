@@ -1,9 +1,9 @@
 <?php
 namespace Classes\MS\v2;
 
-class AssortmentIterator implements \Iterator, \IteratorAggregate {
+class AssortmentIterator implements \IteratorAggregate {
     public function getIterator() {
-        return $this;
+        return new \ArrayIterator($this->assortments);
     }
     private $assortments = [];
     private $position = 0;
@@ -12,7 +12,7 @@ class AssortmentIterator implements \Iterator, \IteratorAggregate {
      * @param string|array $json JSON string or array of assortment objects
      */
     public function __construct($json) {
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/Assortment.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/Assortment.php');
 
         if (is_string($json)) {
             $data = json_decode($json, true);
@@ -28,23 +28,5 @@ class AssortmentIterator implements \Iterator, \IteratorAggregate {
         $this->position = 0;
     }
 
-    public function current() {
-        return $this->assortments[$this->position];
-    }
-
-    public function key() {
-        return $this->position;
-    }
-
-    public function next() {
-        ++$this->position;
-    }
-
-    public function rewind() {
-        $this->position = 0;
-    }
-
-    public function valid() {
-        return isset($this->assortments[$this->position]);
-    }
+    // Removed Iterator methods
 }
