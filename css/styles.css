@@ -1,8 +1,9 @@
 /* Responsive compare block and table styles */
 #compare-block {
-	width: 100%;
-	max-width: 900px;
-	margin: 0 auto;
+width: 100%;
+max-width: 900px;
+margin: 0 auto;
+overflow-x: auto;
 }
 .tableBig {
 width: 100%;
