@@ -15,6 +15,10 @@ namespace Classes\MS\v2;
  */
 class AssortmentApi
 {
+	/**
+	 * Chunk size for splitting code filters in API requests
+	 */
+	private const CHUNK_SIZE = 400;
 	private $log;
 	private $api;
 	
@@ -39,28 +43,36 @@ class AssortmentApi
 	
 	public function fetchAssortment($codes = false)
 	{
-		$url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT;
-		if ($codes !== false) {
-			$url .= '?filter=';
-			if (is_array($codes)) {
-				foreach ($codes as $code) {
+		$allAssortments = [];
+		if ($codes !== false && is_array($codes)) {
+			$chunks = array_chunk($codes, self::CHUNK_SIZE);
+			foreach ($chunks as $chunk) {
+				$url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT . '?filter=';
+				foreach ($chunk as $code) {
 					$url .= 'code=' . $code . ';';
 				}
-			} else {
-				$url .= $codes;
+				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' codes - ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$assortment = $this->api->getData($url);
+				if ($assortment && is_array($assortment)) {
+					$allAssortments = array_merge($allAssortments, $assortment);
+				}
+			}
+		} else {
+			$url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT;
+			if ($codes !== false) {
+				$url .= '?filter=' . $codes;
+			}
+			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' codes - ' . json_encode($codes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$assortment = $this->api->getData($url);
+			if ($assortment && is_array($assortment)) {
+				$allAssortments = array_merge($allAssortments, $assortment);
 			}
 		}
-		$this->log->write(__LINE__ . ' fetchAssortment.codes - ' . json_encode($codes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		
-		// Fetch assortment from API
-		$assortment = $this->api->getData($url);
-		if (!$assortment) {
+		if (empty($allAssortments)) {
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' error - No assortment data found');
 			return false;
 		}
-
-		$assortmentIterator = new \Classes\MS\v2\AssortmentIterator($assortment);
-		
+		$assortmentIterator = new \Classes\MS\v2\AssortmentIterator($allAssortments);
 		return $assortmentIterator;
 	}
 }
