@@ -127,7 +127,7 @@ function buildCompareTable(data) {
     const tbody = document.querySelector('#compare-table tbody');
     tbody.innerHTML = '';
     // Always show the table and checkbox when building table
-    document.getElementById('compare-block').style.display = '';
+    document.getElementById('compare-block').style.display = 'block';
     document.getElementById('compare-table').style.display = 'table';
     document.getElementById('show-diff-container').style.display = '';
     if (!Array.isArray(data) || data.length === 0) {
