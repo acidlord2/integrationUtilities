@@ -6,6 +6,7 @@
 	    'stock' => 'Остатки'
 	];
     $marketplaces = [
+        'ccd' => 'CCD77',
         'ozon' => 'Ozon',
         'wb' => 'Wildberries',
         'ym' => 'Яндекс.Маркет'
