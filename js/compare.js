@@ -158,7 +158,7 @@ function buildCompareTable(data) {
     const compareBlock = document.getElementById('compare-block');
     const compareTable = document.getElementById('compare-table');
     const showDiffContainer = document.getElementById('show-diff-container');
-    compareBlock.style.display = 'block';
+    compareBlock.style.display = 'table-cell';
     compareTable.style.display = '';
     showDiffContainer.style.display = '';
     if (!Array.isArray(data) || data.length === 0) {

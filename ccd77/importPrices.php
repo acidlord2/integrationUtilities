@@ -37,7 +37,8 @@ foreach ($chunks as $chunk) {
     // execute all update queries
     foreach ($updateQueries as $updateQuery) {
         try {
-            $db->execQuery($updateQuery);
+            $result = $db->execQuery($updateQuery);
+            log::write(__LINE__ . ' ' . $updateQuery . ' - ' . ($result));
             $updatedCount++;
         } catch (Exception $e) {
             $log->write(__LINE__ . ' Error executing query: ' . $updateQuery . ' - ' . $e->getMessage());
