@@ -5,7 +5,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
-	flex-direction: column;
+	flex-direction: row;
 	height: 100%;
 	overflow: auto;
 }
@@ -13,6 +13,7 @@
 .compare-table-scroll {
   width: 98%;
   overflow-x: auto;
+  max-height: 70%;
 }
 .tableBig {
 width: 98%;
