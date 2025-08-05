@@ -31,7 +31,7 @@ foreach ($chunks as $chunk) {
         if ($price > 0) {
             $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET min_price = " . intval($price) .
                 ", max_price = " . intval($price) .
-            " WHERE sku = " . intval($msProduct['code']);
+            " WHERE sku = '" . intval($msProduct['code']) . "'";
         }
     }
     // execute all update queries
