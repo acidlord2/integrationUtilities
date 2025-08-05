@@ -9,11 +9,14 @@
         'ccd' => 'CCD77',
         'ozon' => 'Ozon',
         'wb' => 'Wildberries',
-        'ym' => 'Яндекс.Маркет'
+        'ym' => 'Яндекс.Маркет',
+        'sm' => 'Спортмастер'
     ];
     $organizations = [
         'ullo' => 'Юлло',
-        'smmp' => 'СММ Альянс'
+        'sammit' => 'Альянс',
+        'kaori' => 'Каори',
+        'kosmos' => 'Космос'
     ];
 ?>
 
@@ -81,6 +84,7 @@
             </table>
         </div>
     </div>
+    <!-- Organization visibility logic moved to compare.js -->
     <script src="/js/compare.js?v=1"></script>
 </body>
 </html>

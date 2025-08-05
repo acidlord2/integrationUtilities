@@ -1,3 +1,44 @@
+// Organization visibility logic from compare.php
+document.addEventListener('DOMContentLoaded', function() {
+    const marketplaceSelect = document.getElementById('marketplaceSelect');
+    const organizationSelect = document.getElementById('organizationSelect');
+    if (!marketplaceSelect || !organizationSelect) return;
+    const orgDiv = organizationSelect.closest('div');
+    const orgOptions = Array.from(organizationSelect.options).map(opt => ({value: opt.value, text: opt.text}));
+
+    function updateOrganizationVisibility() {
+        const mp = marketplaceSelect.value;
+        let orgs = [];
+        if (mp === 'ccd') {
+            orgDiv.style.display = 'none';
+        } else {
+            orgDiv.style.display = '';
+            if (mp === 'ozon') {
+                orgs = ['ullo', 'kaori'];
+            } else if (mp === 'wb') {
+                orgs = ['ullo', 'kosmos'];
+            } else if (mp === 'ym') {
+                orgs = ['ullo', 'sammit', 'kosmos'];
+            } else if (mp === 'sm') {
+                orgs = ['ullo', 'kosmos'];
+            } else {
+                orgs = orgOptions.map(o => o.value);
+            }
+            // Update options
+            organizationSelect.innerHTML = '';
+            orgOptions.forEach(opt => {
+                if (orgs.includes(opt.value)) {
+                    const o = document.createElement('option');
+                    o.value = opt.value;
+                    o.text = opt.text;
+                    organizationSelect.appendChild(o);
+                }
+            });
+        }
+    }
+    marketplaceSelect.addEventListener('change', updateOrganizationVisibility);
+    updateOrganizationVisibility();
+});
 // Tab selection and hide/show logic moved from compare.php
 function selectCompareType(btn, type) {
     document.querySelectorAll('.tablinks').forEach(b => b.classList.remove('active'));
