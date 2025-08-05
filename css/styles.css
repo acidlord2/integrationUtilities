@@ -1,7 +1,6 @@
 /* Responsive compare block and table styles */
 #compare-block {
 width: 100%;
-max-width: 900px;
 margin: 0 auto;
 display: flex;
 justify-content: center;
@@ -10,12 +9,11 @@ flex-direction: column;
 }
 /* Dedicated scroll container for table */
 .compare-table-scroll {
-  width: 100%;
+  width: 98%;
   overflow-x: auto;
 }
 .tableBig {
-width: 100%;
-max-width: 900px;
+width: 98%;
 margin-left: auto;
 margin-right: auto;
 }
