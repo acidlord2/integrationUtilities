@@ -9,6 +9,11 @@
 	height: 100%;
 	overflow: auto;
 }
+/* Dedicated scroll container for table */
+.compare-table-scroll {
+  width: 98%;
+  overflow-x: auto;
+}
 .tableBig {
 width: 98%;
 margin-left: auto;
