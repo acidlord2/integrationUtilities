@@ -66,18 +66,20 @@
         <label for="show-diff">Показать только различия</label>
     </div>
     <div id="compare-block" style="display:none;">
-        <table id="compare-table" class="tableBig" style="display: none;">
-            <thead>
-                <tr>
-                    <th>Код</th>
-                    <th id="ms-col">MS</th>
-                    <th id="mp-col">Маркетплейс</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- rows will be dynamically inserted here -->
-            </tbody>
-        </table>
+        <div class="compare-table-scroll">
+            <table id="compare-table" class="tableBig" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Код</th>
+                        <th id="ms-col">MS</th>
+                        <th id="mp-col">Маркетплейс</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
     </div>
     <script src="/js/compare.js?v=1"></script>
 </body>
