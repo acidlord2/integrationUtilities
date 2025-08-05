@@ -1,16 +1,13 @@
 /* Responsive compare block and table styles */
 #compare-block {
-width: 100%;
-margin: 0 auto;
-display: table-cell;
-justify-content: center;
-align-items: flex-start;
-flex-direction: column;
-}
-/* Dedicated scroll container for table */
-.compare-table-scroll {
-  width: 98%;
-  overflow-x: auto;
+	width: auto;
+	margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-direction: column;
+	height: 100%;
+	overflow: auto;
 }
 .tableBig {
 width: 98%;
