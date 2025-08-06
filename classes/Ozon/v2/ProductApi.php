@@ -73,7 +73,7 @@ class ProductApi
      */
     public function fetchProducts()
     {
-        $url = $OZON_MAINURL . OZON_API_V4 . OZON_API_PRODUCT_STOCKS;
+        $url = OZON_MAINURL . OZON_API_V4 . OZON_API_PRODUCT_STOCKS;
         $stocks = [];
         $cursor = null;
         $filter = [];
@@ -99,7 +99,7 @@ class ProductApi
             }
         }
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' stocks count - ' . count($stocks));
-        $url = $OZON_MAINURL . OZON_API_V5 . OZON_API_PRODUCT_PRICES;
+        $url = OZON_MAINURL . OZON_API_V5 . OZON_API_PRODUCT_PRICES;
         $prices = [];
         $cursor = null;
         while (true) {
