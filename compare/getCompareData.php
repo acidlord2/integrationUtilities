@@ -4,6 +4,43 @@ $type = $_GET['type'] ?? '';
 $marketplace = $_GET['marketplace'] ?? '';
 $organization = $_GET['organization'] ?? '';
 
+function getAssortmentData($skuList, $type){
+    // MS assortment API by SKU list
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/AssortmentApi.php');
+    $msApi = new \Classes\MS\v2\AssortmentApi();
+    $msAssortment = $msApi->fetchAssortment($skuList);
+    $msData = [];
+    if (is_iterable($msAssortment)) {
+        foreach ($msAssortment as $item) {
+            $msData[] = [
+                'code' => $item->getCode(),
+                'price' => $type === 'prices' ? (method_exists($item, 'getPriceSale') ? $item->getPriceSale() : null) : null,
+                'quantity' => $type === 'prices' ? null : $item->getQuantity()
+            ];
+        }
+    }
+
+    return $msData;
+}
+
+function mergeArraysByCode($array1, $array2, $type) {
+    $merged = [];
+    $searchCode = [];
+    foreach ($array1 as $item1) {
+        $searchCode[$item1['code']] = $item1;
+    }
+    foreach ($array2 as $item2) {
+        $code = $item2['code'];
+        $item1 = $searchCode[$code] ?? ['price' => null, 'quantity' => null];
+        $merged[] = [
+            'code' => $code,
+            'ms' => $type === 'prices' ? (int)$item1['price'] : (int)$item1['quantity'],
+            'mp' => $type === 'prices' ? (int)$item2['price'] : (int)$item2['quantity']
+        ];
+    }
+    return $merged;
+}
+
 $data = [];
 if ($marketplace === 'ccd') {
     // CCD product API
@@ -26,37 +63,37 @@ if ($marketplace === 'ccd') {
     }
 
     // MS assortment API by SKU list
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/AssortmentApi.php');
-    $msApi = new \Classes\MS\v2\AssortmentApi();
-    $msAssortment = $msApi->fetchAssortment($skuList);
-    $msData = [];
-    if (is_iterable($msAssortment)) {
-        foreach ($msAssortment as $item) {
-            $msData[] = [
-                'code' => $item->getCode(),
-                'price' => $type === 'prices' ? (method_exists($item, 'getPriceSale') ? $item->getPriceSale() : null) : null,
-                'quantity' => $type === 'prices' ? null : $item->getQuantity()
-            ];
+    $msData = getAssortmentData($skuList);
+
+    // Merge MS and CCD data by code
+    $data = mergeArraysByCode($msData, $ccdData, $type);
+} elseif ($marketplace === 'ozon') {
+    // Ozon product API
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/v2/ProductApi.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/v2/ProductIterator.php');
+    $ozonApi = new \Classes\Ozon\v2\ProductApi($organization);
+    $ozonProducts = $ozonApi->getProductIterator();
+    $ozonData = [];
+    $skuList = [];
+    foreach ($ozonProducts as $product) {
+        $sku = $product->getSku();
+        $ozonData[] = [
+            'code' => $sku,
+            'price' => $type === 'prices' ? $product->getPrice() : null,
+            'quantity' => $type === 'prices' ? null : $product->getPresent()
+        ];
+        if ($sku) {
+            $skuList[] = $sku;
         }
     }
 
-    // Merge MS and CCD data by code
-    $result = [];
-    // Index MS data by code for fast lookup
-    $msByCode = [];
-    foreach ($msData as $ms) {
-        $msByCode[$ms['code']] = $ms;
-    }
-    foreach ($ccdData as $ccd) {
-        $code = $ccd['code'];
-        $ms = $msByCode[$code] ?? ['price' => null, 'quantity' => null];
-        $result[] = [
-            'code' => $code,
-            'ms' => $type === 'prices' ? (int)$ms['price'] : (int)$ms['quantity'],
-            'mp' => $type === 'prices' ? (int)$ccd['price'] : (int)$ccd['quantity']
-        ];
-    }
-    $data = $result;
+    // MS assortment API by SKU list
+    $msData = getAssortmentData($skuList);
+
+    // Merge MS and Ozon data by code
+    $data = mergeArraysByCode($msData, $ozonData, $type);
+
+
 } else {
     // ...existing code...
     $data = [

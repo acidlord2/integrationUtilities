@@ -305,6 +305,8 @@
 	define('OZON_API_LASTMILE_STATUS', 'fbs/posting/last-mile');
 	define('OZON_API_DELIVERED_STATUS', 'fbs/posting/delivered');
 	define('OZON_API_CANCELLED_STATUS', 'posting/fbs/cancel');
+	define('OZON_API_PRODUCT_STOCKS', 'product/info/stocks');
+	define('OZON_API_PRODUCT_PRICES', 'product/info/prices');
 	define('OZON_API_EXEMPLAR_SET', 'fbs/posting/product/exemplar/set');
 	define('OZON_API_EXEMPLAR_STATUS', 'fbs/posting/product/exemplar/status');
 	define('OZON_WEARHOUSE1_ID', 19122245607000);
