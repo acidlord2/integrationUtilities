@@ -76,7 +76,7 @@ class ProductApi
         $url = OZON_MAINURL . OZON_API_V4 . OZON_API_PRODUCT_STOCKS;
         $stocks = [];
         $cursor = null;
-        $filter = '{}';
+        $filter = array();
         while (true) {
             $postdata = array(
                 'filter' => $filter,
