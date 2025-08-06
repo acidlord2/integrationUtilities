@@ -14,7 +14,7 @@ function getAssortmentData($skuList, $type){
         foreach ($msAssortment as $item) {
             $msData[] = [
                 'code' => $item->getCode(),
-                'price' => $type === 'prices' ? (method_exists($item, 'getPriceSale') ? $item->getPriceSale() : null) : null,
+                'price' => $type === 'prices' ? $item->getPriceSale() : null,
                 'quantity' => $type === 'prices' ? null : $item->getQuantity()
             ];
         }
@@ -25,17 +25,30 @@ function getAssortmentData($skuList, $type){
 
 function mergeArraysByCode($array1, $array2, $type) {
     $merged = [];
-    $searchCode = [];
+    $msMap = [];
+    $mpMap = [];
+    // Build maps for quick lookup
     foreach ($array1 as $item1) {
-        $searchCode[$item1['code']] = $item1;
+        $msMap[$item1['code']] = $item1;
     }
     foreach ($array2 as $item2) {
-        $code = $item2['code'];
-        $item1 = $searchCode[$code] ?? ['price' => null, 'quantity' => null];
+        $mpMap[$item2['code']] = $item2;
+    }
+    // Get all unique codes
+    $allCodes = array_unique(array_merge(array_keys($msMap), array_keys($mpMap)));
+    foreach ($allCodes as $code) {
+        $item1 = $msMap[$code] ?? ['price' => null, 'quantity' => null];
+        $item2 = $mpMap[$code] ?? ['price' => null, 'quantity' => null];
+        $msValue = $type === 'prices'
+            ? (array_key_exists('price', $item1) ? $item1['price'] : null)
+            : (array_key_exists('quantity', $item1) ? $item1['quantity'] : null);
+        $mpValue = $type === 'prices'
+            ? (array_key_exists('price', $item2) ? $item2['price'] : null)
+            : (array_key_exists('quantity', $item2) ? $item2['quantity'] : null);
         $merged[] = [
             'code' => $code,
-            'ms' => $type === 'prices' ? (int)$item1['price'] : (int)$item1['quantity'],
-            'mp' => $type === 'prices' ? (int)$item2['price'] : (int)$item2['quantity']
+            'ms' => $msValue,
+            'mp' => $mpValue
         ];
     }
     return $merged;
