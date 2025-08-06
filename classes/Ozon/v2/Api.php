@@ -84,6 +84,7 @@ class Api
             if($info['http_code'] >= 400) {
                 $this->log->write(__LINE__ . ' ' . __METHOD__ . ' error code: ' . $info['http_code']);
                 $this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $jsonOut);
+				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
                 return false;
             }
 		}
