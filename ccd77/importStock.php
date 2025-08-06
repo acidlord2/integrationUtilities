@@ -13,8 +13,8 @@ $msProductClass = new ProductsMS();
 // get the list of products from ccd77
 $ccd77Products = $db->execQueryArray("select * FROM wp_wc_product_meta_lookup");
 $log->write(__LINE__ . ' ccd77Products.count - ' . count($ccd77Products));
-// let's chunk the products into 500 items per chunk
-$chunkSize = 500;
+// let's chunk the products into 200 items per chunk
+$chunkSize = 200;
 $chunks = array_chunk($ccd77Products, $chunkSize);
 $updatedCount = 0;
 foreach ($chunks as $chunk) {
@@ -25,6 +25,7 @@ foreach ($chunks as $chunk) {
     // create an update query for each product
     $updateQueries = [];
     foreach ($msAssortment as $msProduct) {
+        $log->write(__LINE__ . ' quantity for ' . $msProduct['code'] . ' - ' . $msProduct['quantity']);
         $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET stock_quantity = " . intval($msProduct['quantity']) .
             ", stock_status = '" . ($msProduct['quantity'] > 0 ? 'instock' : 'outofstock') . "'" .
             " WHERE sku = '" . $msProduct['code'] . "'";
