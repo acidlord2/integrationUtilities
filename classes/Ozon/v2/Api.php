@@ -43,12 +43,12 @@ class Api
             return false;
         }
 
-		
-		if (isset($clientId) && isset($apiKey)) {
+
+		if (isset($this->clientId) && isset($this->apiKey)) {
     		$this->header = array (
     		    'Content-type: application/json',
-    		    'Client-Id: ' . $clientId,
-    		    'Api-Key: ' . $apiKey
+    		    'Client-Id: ' . $this->clientId,
+    		    'Api-Key: ' . $this->apiKey
     		);
 		}
 		else {
