@@ -30,7 +30,7 @@ class Api
         $this->logger = new \Classes\Common\Log($logName);
 		
 		$apiKeyClass = new \Classes\Common\Settings('sportmaster_api_key_' . $clientId);
-		if ($apiKeyClass->isSettiingExists()) {
+		if ($apiKeyClass->isSettingExists()) {
 		    $this->apiKey = $apiKeyClass->getValue();
 		}
 		else {

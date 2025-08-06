@@ -63,9 +63,9 @@ class Settings
         }
     }
     
-    public function isSettiingExists()
+    public function isSettingExists()
     {
-        return $this->settiingExists;
+        return $this->settingExists;
     }
 }
 
