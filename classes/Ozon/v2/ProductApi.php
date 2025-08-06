@@ -92,7 +92,7 @@ class ProductApi
                 $stocks = array_merge($stocks, $response['items']);
             }
 
-            if (isset($response['cursor'])) {
+            if (!empty($response['cursor'])) {
                 $cursor = $response['cursor'];
             } else {
                 break;
