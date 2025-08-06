@@ -84,8 +84,6 @@ class ProductApi
                 'cursor' => $cursor
             );
             $response = $this->api->postData($url, $postdata);
-            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' stocks request - ' . json_encode($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' stocks response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             if (is_string($response)) {
                 $response = json_decode($response, true);
             }
@@ -111,8 +109,6 @@ class ProductApi
                 'cursor' => $cursor
             );
             $response = $this->api->postData($url, $postdata);
-            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' prices request - ' . json_encode($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' prices response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             if (is_string($response)) {
                 $response = json_decode($response, true);
             }

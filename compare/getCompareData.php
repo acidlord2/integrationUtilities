@@ -63,7 +63,7 @@ if ($marketplace === 'ccd') {
     }
 
     // MS assortment API by SKU list
-    $msData = getAssortmentData($skuList);
+    $msData = getAssortmentData($skuList, $type);
 
     // Merge MS and CCD data by code
     $data = mergeArraysByCode($msData, $ccdData, $type);
@@ -88,7 +88,7 @@ if ($marketplace === 'ccd') {
     }
 
     // MS assortment API by SKU list
-    $msData = getAssortmentData($skuList);
+    $msData = getAssortmentData($skuList, $type);
 
     // Merge MS and Ozon data by code
     $data = mergeArraysByCode($msData, $ozonData, $type);
