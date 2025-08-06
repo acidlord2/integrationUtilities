@@ -18,7 +18,7 @@ class AssortmentApi
 	/**
 	 * Chunk size for splitting code filters in API requests
 	 */
-	private const CHUNK_SIZE = 400;
+	private const CHUNK_SIZE = 200;
 	private $log;
 	private $api;
 	
