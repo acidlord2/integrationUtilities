@@ -31,7 +31,7 @@ class Api
 		    $this->clientId = $clientId->getValue();
 		}
 		else {
-		    $this->log->write (__LINE__ . ' '. __METHOD__ . ' token not found (ozon_client_id_' . $organization . ')');
+		    $this->log->write (__LINE__ . ' '. __METHOD__ . ' setting not found (ozon_client_id_' . $organization . ')');
             return false;
 		}
 
@@ -39,7 +39,7 @@ class Api
         if ($apiKey->isSettingExists()) {
             $this->apiKey = $apiKey->getValue();
         } else {
-            $this->log->write(__LINE__ . ' '. __METHOD__ . ' token not found (ozon_api_key_' . $organization . ')');
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' setting not found (ozon_api_key_' . $organization . ')');
             return false;
         }
 

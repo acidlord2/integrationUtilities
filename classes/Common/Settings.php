@@ -28,15 +28,15 @@ class Settings
         if (isset($settings[0])) {
             $this->code = $settings[0]['code'];
             $this->value = $settings[0]['value'];
-            $this->settiingExists = TRUE;
+            $this->settingExists = TRUE;
         }
         else
         {
             $this->code = '';
             $this->value = $code;
-            $this->settiingExists = FALSE;
+            $this->settingExists = FALSE;
         }
-        //return $this->settiingExists;
+        //return $this->settingExists;
     }
     
     public function getValue()
@@ -46,7 +46,7 @@ class Settings
     
     public function setValue($value)
     {
-        if ($this->settiingExists) {
+        if ($this->settingExists) {
             $db = new Db();
             $sql = 'update settings set value = "' . $value . '" where code = "' . $this->code . '"';
             if ($db->execQuery($sql)) {
