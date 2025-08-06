@@ -86,6 +86,7 @@ class AssortmentApi
 				$allAssortments = array_merge($allAssortments, $assortment['rows']);
 			}
 		}
+		$this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched codes - ' . json_encode(array_column($allAssortments, 'code'), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		if (empty($allAssortments)) {
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' error - No assortment data found');
 			return false;
