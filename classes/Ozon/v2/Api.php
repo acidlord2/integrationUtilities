@@ -86,6 +86,7 @@ class Api
                 $this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $jsonOut);
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' header: ' . json_encode($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' url: ' . $url);
                 return false;
             }
 		}
