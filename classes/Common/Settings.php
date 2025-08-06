@@ -11,8 +11,8 @@ class Settings
     private $log;
     private $code;
     private $value;
-    private $settiingExists;
-    
+    private $settingExists;
+
     public function __construct($code)
     {
         require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
