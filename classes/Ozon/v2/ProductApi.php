@@ -19,6 +19,7 @@ class ProductApi
 
     public function __construct($organization)
     {
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
         require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/v2/Api.php');
 
         $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
