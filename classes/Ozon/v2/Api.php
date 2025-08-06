@@ -95,6 +95,7 @@ class Api
             $this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 		    return false;
 		}
+		$this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $jsonOut);
 		return $jsonOut;
 	}
 
