@@ -51,6 +51,7 @@ class AssortmentApi
 				foreach ($chunk as $code) {
 					$url .= 'code=' . $code . ';';
 				}
+				$url .= 'stockMode=all;quantityMode=all;';
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' codes - ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$assortment = $this->api->getData($url);
 				if (is_string($assortment)) {
