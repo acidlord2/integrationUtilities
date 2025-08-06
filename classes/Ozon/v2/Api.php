@@ -62,7 +62,7 @@ class Api
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_ENCODING, ''); // Automatically handle gzip/deflate
+		//curl_setopt($curl, CURLOPT_ENCODING, ''); // Automatically handle gzip/deflate
 		return $curl;
 	}
 
