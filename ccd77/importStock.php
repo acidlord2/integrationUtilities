@@ -25,10 +25,16 @@ foreach ($chunks as $chunk) {
     // create an update query for each product
     $updateQueries = [];
     foreach ($msAssortment as $msProduct) {
-        $log->write(__LINE__ . ' quantity for ' . $msProduct['code'] . ' - ' . $msProduct['quantity']);
+        $log->write(__LINE__ . ' Updating quantity for ' . $msProduct['code'] . ' - ' . $msProduct['quantity']);
         $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET stock_quantity = " . intval($msProduct['quantity']) .
             ", stock_status = '" . ($msProduct['quantity'] > 0 ? 'instock' : 'outofstock') . "'" .
             " WHERE sku = '" . $msProduct['code'] . "'";
+        // fetch product_id from chunk
+        $productIndex = array_search($msProduct['code'], array_column($chunk, 'sku'));
+        $updateQueries[] = "UPDATE wp_postmeta SET meta_value = " . intval($msProduct['quantity']) .
+            " WHERE meta_key = '_stock' AND post_id = " . intval($chunk[$productIndex]['product_id']);
+        $updateQueries[] = "UPDATE wp_postmeta SET meta_value = '" . ($msProduct['quantity'] > 0 ? 'instock' : 'outofstock') .
+            "' WHERE meta_key = '_stock_status' AND post_id = " . intval($chunk[$productIndex]['product_id']);
     }
     // execute all update queries
     foreach ($updateQueries as $updateQuery) {

@@ -29,9 +29,16 @@ foreach ($chunks as $chunk) {
         // fetch price data "Цена продажи" from each product
         $price = $msProductClass->getPrice($msProduct, $msPrice);
         if ($price > 0) {
+            $log->write(__LINE__ . ' Updating price for ' . $msProduct['code'] . ' - ' . $price);
             $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET min_price = " . intval($price) .
                 ", max_price = " . intval($price) .
             " WHERE sku = '" . $msProduct['code'] . "'";
+            // fetch product_id from chunk
+            $productIndex = array_search($msProduct['code'], array_column($chunk, 'sku'));
+            $updateQueries[] = "UPDATE wp_postmeta SET meta_value = " . intval($price) .
+                " WHERE meta_key = '_price' AND post_id = " . intval($chunk[$productIndex]['product_id']);
+            $updateQueries[] = "UPDATE wp_postmeta SET meta_value = " . intval($price) .
+                " WHERE meta_key = '_regular_price' AND post_id = " . intval($chunk[$productIndex]['product_id']);
         }
     }
     // execute all update queries
