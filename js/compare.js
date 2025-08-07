@@ -207,14 +207,21 @@ function buildCompareTable(data) {
         return;
     }
     data.forEach(row => {
-        const ms = row.ms ? (typeof row.ms === 'object' ?
-            ((row.ms.price !== null && row.ms.price !== undefined ? 'Цена: ' + row.ms.price : '') +
-            (row.ms.quantity !== null && row.ms.quantity !== undefined ? '<br>Остаток: ' + row.ms.quantity : ''))
-            : row.ms) : '';
-        const mp = row.mp ? (typeof row.mp === 'object' ?
-            ((row.mp.price !== null && row.mp.price !== undefined ? 'Цена: ' + row.mp.price : '') +
-            (row.mp.quantity !== null && row.mp.quantity !== undefined ? '<br>Остаток: ' + row.mp.quantity : ''))
-            : row.mp) : '';
+        let ms, mp;
+        if (typeof row.ms === 'object') {
+            ms = '';
+            if (row.ms.price !== null && row.ms.price !== undefined) ms += 'Цена: ' + row.ms.price;
+            if (row.ms.quantity !== null && row.ms.quantity !== undefined) ms += '<br>Остаток: ' + row.ms.quantity;
+        } else {
+            ms = (row.ms !== null && row.ms !== undefined) ? row.ms : '';
+        }
+        if (typeof row.mp === 'object') {
+            mp = '';
+            if (row.mp.price !== null && row.mp.price !== undefined) mp += 'Цена: ' + row.mp.price;
+            if (row.mp.quantity !== null && row.mp.quantity !== undefined) mp += '<br>Остаток: ' + row.mp.quantity;
+        } else {
+            mp = (row.mp !== null && row.mp !== undefined) ? row.mp : '';
+        }
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${row.code}</td><td>${ms}</td><td>${mp}</td>`;
         tbody.appendChild(tr);
