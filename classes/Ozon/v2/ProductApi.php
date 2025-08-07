@@ -52,6 +52,7 @@ class ProductApi
         }
 
         // Merge prices and stocks by product_id into a single array
+        $mergedList = [];
         foreach ($prices as $price) {
             $productId = $price['product_id'] ?? null;
             $merged = $price;
@@ -61,8 +62,9 @@ class ProductApi
                     $merged[$key] = $value;
                 }
             }
+            $mergedList[] = $merged;
         }
-        return $merged;
+        return $mergedList;
     }
 
     /**
