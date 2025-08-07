@@ -37,14 +37,16 @@ function mergeArraysByCode($array1, $array2, $type) {
     // Get all unique codes
     $allCodes = array_unique(array_merge(array_keys($msMap), array_keys($mpMap)));
     foreach ($allCodes as $code) {
+        $letMs = isset($msMap[$code]);
+        $letMp = isset($mpMap[$code]);
         $item1 = $msMap[$code] ?? ['price' => null, 'quantity' => null];
         $item2 = $mpMap[$code] ?? ['price' => null, 'quantity' => null];
         $msValue = $type === 'prices'
-            ? (array_key_exists('price', $item1) ? (int)$item1['price'] : null)
-            : (array_key_exists('quantity', $item1) ? (int)$item1['quantity'] : null);
+            ? ($letMs ? (int)$item1['price'] : null)
+            : ($letMs ? (int)$item1['quantity'] : null);
         $mpValue = $type === 'prices'
-            ? (array_key_exists('price', $item2) ? (int)$item2['price'] : null)
-            : (array_key_exists('quantity', $item2) ? (int)$item2['quantity'] : null);
+            ? ($letMp ? (int)$item2['price'] : null)
+            : ($letMp ? (int)$item2['quantity'] : null);
         $merged[] = [
             'code' => $code,
             'ms' => $msValue,
