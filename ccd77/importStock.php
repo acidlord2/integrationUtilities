@@ -5,10 +5,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 
+$msPrice = 'Цена продажи';
 $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
 $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
 $db = new \Classes\Common\Db(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE_CCD77);
+
+
 $msProductClass = new ProductsMS();
 // get the list of products from ccd77
 $ccd77Products = $db->execQueryArray("select * FROM wp_wc_product_meta_lookup");
@@ -25,6 +28,8 @@ foreach ($chunks as $chunk) {
     // create an update query for each product
     $updateQueries = [];
     foreach ($msAssortment as $msProduct) {
+        $price = $msProductClass->getPrice($msProduct, $msPrice);
+        $quantity = $price > 0 ? $msProduct['quantity'] : 0;
         $log->write(__LINE__ . ' Updating quantity for ' . $msProduct['code'] . ' - ' . $msProduct['quantity']);
         $updateQueries[] = "UPDATE wp_wc_product_meta_lookup SET stock_quantity = " . intval($msProduct['quantity']) .
             ", stock_status = '" . ($msProduct['quantity'] > 0 ? 'instock' : 'outofstock') . "'" .
