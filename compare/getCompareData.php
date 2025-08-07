@@ -92,8 +92,15 @@ if ($marketplace === 'ccd') {
     // Ozon product API
     require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/v2/ProductApi.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/v2/ProductIterator.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
+
+    $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+    $logName .= '.log';
+    $log = new \Classes\Common\Log($logName);
+
     $ozonApi = new \Classes\Ozon\v2\ProductApi($organization);
     $ozonProducts = $ozonApi->getProductIterator();
+    $log->write(__LINE__ . ' ' . __METHOD__ . ' $ozonProducts - ' . json_encode($ozonProducts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     $ozonData = [];
     $skuList = [];
     foreach ($ozonProducts as $product) {
