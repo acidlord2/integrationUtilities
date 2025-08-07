@@ -40,11 +40,11 @@ function mergeArraysByCode($array1, $array2, $type) {
         $item1 = $msMap[$code] ?? ['price' => null, 'quantity' => null];
         $item2 = $mpMap[$code] ?? ['price' => null, 'quantity' => null];
         $msValue = $type === 'prices'
-            ? (array_key_exists('price', $item1) ? $item1['price'] : null)
-            : (array_key_exists('quantity', $item1) ? $item1['quantity'] : null);
+            ? (array_key_exists('price', $item1) ? (int)$item1['price'] : null)
+            : (array_key_exists('quantity', $item1) ? (int)$item1['quantity'] : null);
         $mpValue = $type === 'prices'
-            ? (array_key_exists('price', $item2) ? $item2['price'] : null)
-            : (array_key_exists('quantity', $item2) ? $item2['quantity'] : null);
+            ? (array_key_exists('price', $item2) ? (int)$item2['price'] : null)
+            : (array_key_exists('quantity', $item2) ? (int)$item2['quantity'] : null);
         $merged[] = [
             'code' => $code,
             'ms' => $msValue,
