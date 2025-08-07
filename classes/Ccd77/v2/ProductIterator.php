@@ -32,4 +32,8 @@ class ProductIterator implements \IteratorAggregate {
     }
 
     // Removed Iterator methods
+
+    public function jsonSerialize() {
+        return $this->products;
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Classes\MS\v2;
 
-class Assortment {
+class Assortment implements \JsonSerializable {
     private $meta;
     private $id;
     private $accountId;
@@ -380,5 +380,54 @@ class Assortment {
             $this->attrHalal = null;
             $this->originalJson = null;
         }
+    }
+
+    public function jsonSerialize() {
+        return [
+            'meta' => $this->meta,
+            'id' => $this->id,
+            'accountId' => $this->accountId,
+            'owner' => $this->owner,
+            'shared' => $this->shared,
+            'group' => $this->group,
+            'updated' => $this->updated,
+            'name' => $this->name,
+            'description' => $this->description,
+            'code' => $this->code,
+            'externalCode' => $this->externalCode,
+            'archived' => $this->archived,
+            'pathName' => $this->pathName,
+            'productFolder' => $this->productFolder,
+            'effectiveVat' => $this->effectiveVat,
+            'effectiveVatEnabled' => $this->effectiveVatEnabled,
+            'vat' => $this->vat,
+            'vatEnabled' => $this->vatEnabled,
+            'useParentVat' => $this->useParentVat,
+            'taxSystem' => $this->taxSystem,
+            'uom' => $this->uom,
+            'images' => $this->images,
+            'minPrice' => $this->minPrice,
+            'salePrices' => $this->salePrices,
+            'buyPrice' => $this->buyPrice,
+            'barcodes' => $this->barcodes,
+            'supplier' => $this->supplier,
+            'attributes' => $this->attributes,
+            'paymentItemType' => $this->paymentItemType,
+            'discountProhibited' => $this->discountProhibited,
+            'country' => $this->country,
+            'article' => $this->article,
+            'weight' => $this->weight,
+            'volume' => $this->volume,
+            'minimumBalance' => $this->minimumBalance,
+            'variantsCount' => $this->variantsCount,
+            'isSerialTrackable' => $this->isSerialTrackable,
+            'files' => $this->files,
+            'trackingType' => $this->trackingType,
+            'stock' => $this->stock,
+            'reserve' => $this->reserve,
+            'inTransit' => $this->inTransit,
+            'quantity' => $this->quantity,
+            'originalJson' => $this->originalJson
+        ];
     }
 }

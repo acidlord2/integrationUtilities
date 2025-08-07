@@ -125,6 +125,7 @@ class ProductApi
         }
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' prices count - ' . count($prices));
         $mergedData = $this->mergePricesAndStocks($prices, $stocks);
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' mergedData count - ' . count($mergedData));
         if (empty($mergedData)) {
             $this->log->write(__LINE__ . ' ' . __METHOD__ . ' error - No products found');
             return false;

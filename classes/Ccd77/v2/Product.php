@@ -5,7 +5,7 @@ namespace Classes\Ccd77\v2;
  * Class Product
  * Represents a product for CCD77 with fields matching wp_wc_product_meta_lookup table.
  */
-class Product {
+class Product implements \JsonSerializable {
     // Getters
     private $product_id;
     private $sku;
@@ -58,6 +58,25 @@ class Product {
      * Product constructor.
      * @param array $data Associative array with product fields
      */
+    public function jsonSerialize() {
+        return [
+            'product_id' => $this->product_id,
+            'sku' => $this->sku,
+            'virtual' => $this->virtual,
+            'downloadable' => $this->downloadable,
+            'min_price' => $this->min_price,
+            'max_price' => $this->max_price,
+            'onsale' => $this->onsale,
+            'stock_quantity' => $this->stock_quantity,
+            'stock_status' => $this->stock_status,
+            'rating_count' => $this->rating_count,
+            'average_rating' => $this->average_rating,
+            'total_sales' => $this->total_sales,
+            'tax_status' => $this->tax_status,
+            'tax_class' => $this->tax_class,
+            'global_unique_id' => $this->global_unique_id
+        ];
+    }
     public function __construct(array $data = []) {
         $this->product_id = $data['product_id'] ?? null;
         $this->sku = $data['sku'] ?? null;

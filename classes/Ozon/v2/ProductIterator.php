@@ -15,12 +15,16 @@ class ProductIterator implements \IteratorAggregate {
             $this->products[] = new Product($product);
         }
     }
-    
+
     /**
      * Fetches products from Ozon API and returns an iterator
      * @return ProductIterator
      */
     public function getIterator() {
         return new \ArrayIterator($this->products);
+    }
+
+    public function jsonSerialize() {
+        return $this->products;
     }
 }

@@ -8,7 +8,7 @@
 namespace Classes\Ozon\v2;
 
 
-class Product
+class Product implements \JsonSerializable
 {
     private $product_id;
     private $offer_id;
@@ -62,4 +62,18 @@ class Product
 
     public function getPrice() { return $this->price; }
     public function setPrice($v) { $this->price = $v; }
+
+    public function jsonSerialize() {
+        return [
+            'product_id' => $this->product_id,
+            'offer_id' => $this->offer_id,
+            'sku' => $this->sku,
+            'warehouse_ids' => $this->warehouse_ids,
+            'present' => $this->present,
+            'reserved' => $this->reserved,
+            'volume_weight' => $this->volume_weight,
+            'old_price' => $this->old_price,
+            'price' => $this->price
+        ];
+    }
 }
