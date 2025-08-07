@@ -71,7 +71,7 @@ foreach ($newOrders as $newOrder)
 	$position ['reserve'] = 1;
 	//$currentcyRate = $newOrder['convertedPrice'] / $newOrder['price'];
 	//$position ['price'] = (int)((isset($newOrder['salePrice']) && $newOrder['salePrice'] != null ? $newOrder['salePrice'] : $newOrder['price']) * $currentcyRate);
-	$position ['price'] = (int)($newOrder['convertedPrice']);
+	$position ['price'] = (int)($newOrder['salePrice'] ?? $newOrder['convertedPrice']);
 	$position ['assortment'] = array(
 		'meta' => $productMS[0]['meta']
 	);
