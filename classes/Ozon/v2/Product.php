@@ -28,7 +28,14 @@ class Product implements \JsonSerializable
             $this->volume_weight = $product['volume_weight'] ?? null;
             $this->old_price = isset($product['price']) && isset($product['price']['old_price']) ? $product['price']['old_price'] : null;
             $this->price = isset($product['price']) && isset($product['price']['price']) ? $product['price']['price'] : null;
-            $stock = (isset($product['stocks']) && is_array($product['stocks']) && count($product['stocks']) > 0) ? $product['stocks'][0] : null;
+            if (isset($product['stocks']) && is_array($product['stocks']) && count($product['stocks']) > 0) {
+                $fbs = array_search('fbs', array_column($product['stocks'], 'type'));
+                if ($fbs !== false) {
+                    $stock = $product['stocks'][$fbs];
+                } else {
+                    $stock = null;
+                }
+            }
             $this->sku = $stock['sku'] ?? null;
             $this->warehouse_ids = $stock['warehouse_ids'] ?? [];
             $this->present = $stock['present'] ?? null;
