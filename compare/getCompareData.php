@@ -104,14 +104,14 @@ if ($marketplace === 'ccd') {
     $ozonData = [];
     $skuList = [];
     foreach ($ozonProducts as $product) {
-        $sku = $product->getSku();
+        $offerId = $product->getOfferId();
         $ozonData[] = [
-            'code' => $sku,
+            'code' => $offerId,
             'price' => $type === 'prices' ? $product->getPrice() : null,
             'quantity' => $type === 'prices' ? null : $product->getPresent()
         ];
-        if ($sku) {
-            $skuList[] = $sku;
+        if ($offerId) {
+            $skuList[] = $offerId;
         }
     }
 
