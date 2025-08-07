@@ -85,7 +85,7 @@ if ($marketplace === 'ccd') {
 
     // MS assortment API by SKU list
     $msData = getAssortmentData($skuList, $type);
-    $log->write(__LINE__ . ' ' . __METHOD__ . ' $msData - ' . json_encode($msData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    
     // Merge MS and CCD data by code
     $data = mergeArraysByCode($msData, $ccdData, $type);
 } elseif ($marketplace === 'ozon') {
