@@ -59,7 +59,7 @@ if ($marketplace === 'ccd') {
     // CCD product API
     require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ccd77/v2/ProductApi.php');
     require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ccd77/v2/ProductIterator.php');
-    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/common/Log.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
     
     $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
     $logName .= '.log';
