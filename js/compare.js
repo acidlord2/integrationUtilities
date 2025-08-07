@@ -207,21 +207,8 @@ function buildCompareTable(data) {
         return;
     }
     data.forEach(row => {
-        let ms, mp;
-        if (typeof row.ms === 'object') {
-            ms = '';
-            if (row.ms.price !== null && row.ms.price !== undefined) ms += 'Цена: ' + row.ms.price;
-            if (row.ms.quantity !== null && row.ms.quantity !== undefined) ms += '<br>Остаток: ' + row.ms.quantity;
-        } else {
-            ms = (row.ms !== null && row.ms !== undefined) ? row.ms : '';
-        }
-        if (typeof row.mp === 'object') {
-            mp = '';
-            if (row.mp.price !== null && row.mp.price !== undefined) mp += 'Цена: ' + row.mp.price;
-            if (row.mp.quantity !== null && row.mp.quantity !== undefined) mp += '<br>Остаток: ' + row.mp.quantity;
-        } else {
-            mp = (row.mp !== null && row.mp !== undefined) ? row.mp : '';
-        }
+        const ms = (row.ms !== null && row.ms !== undefined) ? row.ms : '';
+        const mp = (row.mp !== null && row.mp !== undefined) ? row.mp : '';
         const tr = document.createElement('tr');
         tr.innerHTML = `<td>${row.code}</td><td>${ms}</td><td>${mp}</td>`;
         tbody.appendChild(tr);
