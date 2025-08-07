@@ -53,4 +53,4 @@ foreach ($chunks as $chunk) {
         $db->execQuery($updateQuery);
     }
 }
-echo "Price update completed successfully. Updated " . $updatedCount . " products.";
+echo "Price update completed successfully. Updated " . $updatedCount / 3 . " products.";

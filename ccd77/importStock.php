@@ -48,4 +48,4 @@ foreach ($chunks as $chunk) {
         $db->execQuery($updateQuery);
     }
 }
-echo "Stock update completed successfully. Updated " . $updatedCount . " products.";
+echo "Stock update completed successfully. Updated " . $updatedCount / 3 . " products.";
