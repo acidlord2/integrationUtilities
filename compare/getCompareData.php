@@ -4,7 +4,7 @@ $type = $_GET['type'] ?? '';
 $marketplace = $_GET['marketplace'] ?? '';
 $organization = $_GET['organization'] ?? '';
 
-function getAssortmentData($skuList, $type){
+function getAssortmentData($skuList, $type, $getter){
     // MS assortment API by SKU list
     require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/AssortmentApi.php');
     $msApi = new \Classes\MS\v2\AssortmentApi();
@@ -14,8 +14,8 @@ function getAssortmentData($skuList, $type){
         foreach ($msAssortment as $item) {
             $msData[] = [
                 'code' => $item->getCode(),
-                'price' => $type === 'prices' ? $item->getPriceSale() : null,
-                'quantity' => $type === 'prices' ? null : $item->getQuantity()
+                'price' => $type === 'prices' ? $item->$getter() : null,
+                'quantity' => $type === 'prices' ? null : ($item->$getter() > 0 ? $item->getQuantity() : 0)
             ];
         }
     }
@@ -84,7 +84,7 @@ if ($marketplace === 'ccd') {
     }
 
     // MS assortment API by SKU list
-    $msData = getAssortmentData($skuList, $type);
+    $msData = getAssortmentData($skuList, $type, 'getPriceSale');
     
     // Merge MS and CCD data by code
     $data = mergeArraysByCode($msData, $ccdData, $type);
@@ -116,7 +116,7 @@ if ($marketplace === 'ccd') {
     }
 
     // MS assortment API by SKU list
-    $msData = getAssortmentData($skuList, $type);
+    $msData = getAssortmentData($skuList, $type, $organization === 'ullo' ? 'getPriceOzon' : 'getPriceOzonKaori');
 
     // Merge MS and Ozon data by code
     $data = mergeArraysByCode($msData, $ozonData, $type);
