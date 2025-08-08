@@ -13,6 +13,7 @@ class Api
     private $shop = NULL;
     private $header = NULL;
 	private $log;
+	private $sleepTime = 200000; // microseconds
     
 	public function __construct($shop)
 	{
@@ -73,7 +74,7 @@ class Api
             $this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 		    return false;
 		}
-		usleep(100000);
+		usleep($this->sleepTime);
 		return $jsonOut;
 	}
 	
@@ -103,7 +104,7 @@ class Api
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 			return false;
 		}
-		usleep(100000);
+		usleep($this->sleepTime);
 		return $jsonOut;
 	}
     public function putData($url, $data)
@@ -135,7 +136,7 @@ class Api
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 			return false;
 		}
-		usleep(100000);
+		usleep($this->sleepTime);
 		return $jsonOut;
 	}
 	public function patchData($url, $data)
@@ -167,7 +168,7 @@ class Api
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 			return false;
 		}
-		usleep(100000);
+		usleep($this->sleepTime);
 		return $jsonOut;
 	}
 }

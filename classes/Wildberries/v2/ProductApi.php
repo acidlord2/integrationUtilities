@@ -153,6 +153,12 @@ class ProductApi
             $missingSkus = array_diff($chunk, $returnedSkus);
             if (!empty($missingSkus)) {
                 $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Missing SKUs: ' . implode(",", $missingSkus));
+                foreach ($missingSkus as $missingSku) {
+                    $stockData[] = array(
+                        'sku' => $missingSku,
+                        'amount' => 0
+                    );
+                }
             }
 
             $stockData = array_merge($stockData, $stockDataArray['stocks']);
