@@ -56,6 +56,7 @@ class ProductApi
                 $productMap[$item['vendorCode']] = $item;
             }
         }
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' product map count - ' . count($productMap));
 
         $priceMap = [];
         foreach ($priceData as $item) {
@@ -66,6 +67,8 @@ class ProductApi
             }
             $priceMap[$merged['sku']] = $merged;
         }
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' price map count - ' . count($priceMap));
+
         $mergedList = [];
         foreach ($stockData as $item) {
             $sku = $item['sku'] ?? null;
@@ -128,7 +131,7 @@ class ProductApi
             $priceData = array_merge($priceData, $priceDataArray['data']['listGoods']);
             $offset += $this->limit;
         }
-        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched products count - ' . count($priceData));
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched prices count - ' . count($priceData));
 
         $stockData = [];
         $offset = 0;
@@ -142,9 +145,15 @@ class ProductApi
         foreach ($chunks as $chunk) {
             $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . $warehouse;
             $response = $this->api->postData($url, array('skus' => $chunk));
-            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $response);
 
             $stockDataArray = json_decode($response, true);
+
+            // Log SKUs in chunk that are missing from stockDataArray['stocks']
+            $returnedSkus = array_column($stockDataArray['stocks'] ?? [], 'sku');
+            $missingSkus = array_diff($chunk, $returnedSkus);
+            if (!empty($missingSkus)) {
+                $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Missing SKUs: ' . implode(",", $missingSkus));
+            }
 
             $stockData = array_merge($stockData, $stockDataArray['stocks']);
         }
