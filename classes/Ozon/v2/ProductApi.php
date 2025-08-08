@@ -145,6 +145,6 @@ class ProductApi
     public function getProductIterator()
     {
         $products = $this->fetchProducts();
-        return new \Classes\Ozon\v2\ProductIterator($products);
+        return new ProductIterator($products);
     }
 }

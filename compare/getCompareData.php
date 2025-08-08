@@ -121,6 +121,38 @@ if ($marketplace === 'ccd') {
     // Merge MS and Ozon data by code
     $data = mergeArraysByCode($msData, $ozonData, $type);
 
+} elseif ($marketplace === 'wb') {
+    // Wildberries product API
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/v2/ProductApi.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/v2/ProductIterator.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
+
+    $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+    $logName .= '.log';
+    $log = new \Classes\Common\Log($logName);
+
+    $wbApi = new \Classes\Wildberries\v2\ProductApi();
+    $wbProducts = $wbApi->getProductIterator();
+    $log->write(__LINE__ . ' ' . __METHOD__ . ' $wbProducts - ' . json_encode($wbProducts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    $wbData = [];
+    $skuList = [];
+    foreach ($wbProducts as $product) {
+        $sku = $product->getVendorCode();
+        $wbData[] = [
+            'code' => $sku,
+            'price' => $type === 'prices' ? $product->getPrice() : null,
+            'quantity' => $type === 'prices' ? null : $product->getAmount()
+        ];
+        if ($sku) {
+            $skuList[] = $sku;
+        }
+    }
+
+    // MS assortment API by SKU list
+    $msData = getAssortmentData($skuList, $type, $organization === 'ullo' ? 'getPriceWbUllo' : 'getPriceWb');
+
+    // Merge MS and Wildberries data by code
+    $data = mergeArraysByCode($msData, $wbData, $type);
 
 } else {
     // ...existing code...
