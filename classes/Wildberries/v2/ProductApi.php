@@ -16,6 +16,7 @@ class ProductApi
     private $api;
     private $limit = 500; // Default limit for API requests
     private $chunkSize = 500;
+    private $productLimit = 100;
     private $organization;
 
     public function __construct($organization)
@@ -33,24 +34,37 @@ class ProductApi
 
     /**
      * Merges two arrays of product data by nmID (Wildberries product ID)
-     * @param array $priceData Main product data (e.g., prices)
-     * @param array $stockData Extra product data (e.g., stocks)
+     * @param array $products Main product data (e.g., prices)
+     * @param array $priceData Extra product data (e.g., stocks)
+     * @param array $stockData
      * @return array Merged product data
      */
-    private function mergeProductData($priceData, $stockData)
+    private function mergeProductData($products, $priceData, $stockData)
     {
+        if (is_string($products)) {
+            $products = json_decode($products, true);
+        }
         if (is_string($priceData)) {
             $priceData = json_decode($priceData, true);
         }
         if (is_string($stockData)) {
             $stockData = json_decode($stockData, true);
         }
+        $productMap = [];
+        foreach ($products as $item) {
+            if (isset($item['vendorCode'])) {
+                $productMap[$item['vendorCode']] = $item;
+            }
+        }
 
         $priceMap = [];
         foreach ($priceData as $item) {
-            if (isset($item['vendorCode'])) {
-                $priceMap[$item['vendorCode']] = $item;
+            $vendorCode = $item['vendorCode'] ?? null;
+            $merged = $item;
+            if($vendorCode && isset($priceMap[$vendorCode])) {
+                $merged['sku'] = $productMap[$vendorCode]['sku'] ?? null;
             }
+            $priceMap[$merged['sku']] = $merged;
         }
         $mergedList = [];
         foreach ($stockData as $item) {
@@ -72,6 +86,33 @@ class ProductApi
      */
     public function fetchProducts(): array
     {
+        $products = array();
+	    $postData = array(
+			'settings' => array(
+				'cursor' => array(
+					'limit' => 100
+				),
+				'filter' => array(
+					'withPhoto' => -1
+	            )
+	        )
+	    );
+        $url = WB_API_CONTENT_API . WB_API_CARDS_LIST;
+        while (true) {
+            $response = $this->api->postData($url, $postData);
+			if (!isset($response['cards']) || !count($response['cards']))
+				break;
+			$products = array_merge($products, $response['cards']);
+			if ($response['cursor']['total'] < 100)
+				break;
+			$postData['settings']['cursor']['nmID'] = $response['cursor']['nmID'];
+			$postData['settings']['cursor']['updatedAt'] = $response['cursor']['updatedAt'];
+        }
+        foreach ($products as &$product) {
+            $product['sku'] = $product['sizes'][0]['skus'][0] ?? null;
+        }
+        unset($product); // break the reference
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched products count - ' . count($products));
 
         $offset = 0;
         $priceData = [];
@@ -91,7 +132,7 @@ class ProductApi
 
         $stockData = [];
         $offset = 0;
-        $chunks = array_chunk(array_column($priceData, 'vendorCode'), $this->chunkSize);
+        $chunks = array_chunk(array_column($products, 'sku'), $this->chunkSize);
         $warehouseConst = 'WB_WAREHOUSE_' . strtoupper($this->organization);
         if (!defined($warehouseConst)) {
             $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Warning: Warehouse constant ' . $warehouseConst . ' is not defined');
@@ -109,7 +150,7 @@ class ProductApi
         }
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched stocks count - ' . count($stockData));
 
-        $mergedData = $this->mergeProductData($priceData, $stockData);
+        $mergedData = $this->mergeProductData($products, $priceData, $stockData);
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' merged products count - ' . count($mergedData));
         return $mergedData;
     }
