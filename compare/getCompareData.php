@@ -100,7 +100,6 @@ if ($marketplace === 'ccd') {
 
     $ozonApi = new \Classes\Ozon\v2\ProductApi($organization);
     $ozonProducts = $ozonApi->getProductIterator();
-    $log->write(__LINE__ . ' ' . __METHOD__ . ' $ozonProducts - ' . json_encode($ozonProducts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     $ozonData = [];
     $skuList = [];
     foreach ($ozonProducts as $product) {

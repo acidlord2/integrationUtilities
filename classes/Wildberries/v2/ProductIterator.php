@@ -34,8 +34,7 @@ class ProductIterator implements \IteratorAggregate, \JsonSerializable
      * Specify data for JSON serialization
      * @return array
      */
-    public function jsonSerialize(): mixed
-    {
+    public function jsonSerialize() {
         return $this->products;
     }
 }
