@@ -149,6 +149,9 @@ if ($marketplace === 'ccd') {
 
     // MS assortment API by SKU list
     $msData = getAssortmentData($skuList, $type, $organization === 'ullo' ? 'getPriceWbUllo' : 'getPriceWb');
+    foreach ($msData as &$item) {
+        $item['quantity'] = $item['quantity'] > 2 ? $item['quantity'] - 2 : 0;
+    }
 
     // Merge MS and Wildberries data by code
     $data = mergeArraysByCode($msData, $wbData, $type);
