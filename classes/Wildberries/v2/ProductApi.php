@@ -90,7 +90,7 @@ class ProductApi
 	    $postData = array(
 			'settings' => array(
 				'cursor' => array(
-					'limit' => 100
+					'limit' => $this->productLimit
 				),
 				'filter' => array(
 					'withPhoto' => -1
@@ -100,10 +100,11 @@ class ProductApi
         $url = WB_API_CONTENT_API . WB_API_CARDS_LIST;
         while (true) {
             $response = $this->api->postData($url, $postData);
+            $response = json_decode($response, true);
 			if (!isset($response['cards']) || !count($response['cards']))
 				break;
 			$products = array_merge($products, $response['cards']);
-			if ($response['cursor']['total'] < 100)
+			if ($response['cursor']['total'] < $this->productLimit)
 				break;
 			$postData['settings']['cursor']['nmID'] = $response['cursor']['nmID'];
 			$postData['settings']['cursor']['updatedAt'] = $response['cursor']['updatedAt'];
@@ -119,7 +120,6 @@ class ProductApi
         while (true) {
             $url = WB_API_PRICES_API . WB_API_LIST_GOODS . '?limit=' . $this->limit . '&offset=' . $offset;
             $response = $this->api->getData($url);
-            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $response);
             $priceDataArray = json_decode($response, true);
             
             if (empty($priceDataArray['data']['listGoods'])) {
