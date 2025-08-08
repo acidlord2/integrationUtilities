@@ -73,9 +73,8 @@ class Api
             $this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 		    return false;
 		}
+		sleep(1);
 		return $jsonOut;
-
-		
 	}
 	
     public function getData($url)
@@ -98,14 +97,14 @@ class Api
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' url: ' . $url);
 				return false;
 			}
-
-			return $jsonOut;
 		}
 		catch (Exception $e)
 		{
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 			return false;
 		}
+		sleep(1);
+		return $jsonOut;
 	}
     public function putData($url, $data)
 	{
@@ -130,14 +129,14 @@ class Api
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' url: ' . $url);
 				return false;
 			}
-
-			return $jsonOut;
 		}
 		catch (Exception $e)
 		{
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 			return false;
 		}
+		sleep(1);
+		return $jsonOut;
 	}
 	public function patchData($url, $data)
 	{
@@ -162,14 +161,14 @@ class Api
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' url: ' . $url);
 				return false;
 			}
-
-			return $jsonOut;
 		}
 		catch (Exception $e)
 		{
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' exception: ' . $e->getMessage());
 			return false;
 		}
+		sleep(1);
+		return $jsonOut;
 	}
 }
 
