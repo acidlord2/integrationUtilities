@@ -68,8 +68,7 @@ class Product implements \JsonSerializable
      * Specify data for JSON serialization
      * @return array
      */
-    public function jsonSerialize(): mixed
-    {
+    public function jsonSerialize() {
         return [
             'nmID' => $this->nmID,
             'vendorCode' => $this->vendorCode,
