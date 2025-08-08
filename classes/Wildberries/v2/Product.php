@@ -19,6 +19,7 @@ class Product implements \JsonSerializable
     private int $clubDiscount;
     private bool $editableSizePrice;
     private int $amount;
+    private string $sku;
 
     /**
      * Product constructor.
@@ -39,6 +40,7 @@ class Product implements \JsonSerializable
         $this->clubDiscount = $productData['clubDiscount'] ?? 0;
         $this->editableSizePrice = $productData['editableSizePrice'] ?? false;
         $this->amount = $productData['amount'] ?? 0;
+        $this->sku = $productData['sku'] ?? null;
     }
 
     // Getters
@@ -52,6 +54,7 @@ class Product implements \JsonSerializable
     public function getClubDiscount(): int { return $this->clubDiscount; }
     public function getEditableSizePrice(): bool { return $this->editableSizePrice; }
     public function getAmount(): int { return $this->amount; }
+    public function getSku(): string { return $this->sku; }
 
     // Setters
     public function setVendorCode(string $vendorCode): void { $this->vendorCode = $vendorCode; }
@@ -63,6 +66,7 @@ class Product implements \JsonSerializable
     public function setClubDiscount(int $clubDiscount): void { $this->clubDiscount = $clubDiscount; }
     public function setEditableSizePrice(bool $editable): void { $this->editableSizePrice = $editable; }
     public function setAmount(int $amount): void { $this->amount = $amount; }
+    public function setSku(string $sku): void { $this->sku = $sku; }
 
     /**
      * Specify data for JSON serialization
@@ -80,6 +84,7 @@ class Product implements \JsonSerializable
             'clubDiscount' => $this->clubDiscount,
             'editableSizePrice' => $this->editableSizePrice,
             'amount' => $this->amount,
+            'sku' => $this->sku,
         ];
     }
 }
