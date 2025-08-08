@@ -99,6 +99,7 @@ class ProductApi
         $warehouse = constant($warehouseConst);
         foreach ($chunks as $chunk) {
             $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . $warehouse;
+            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode(array('skus' => $chunk), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $response = $this->api->postData($url, array('skus' => $chunk));
 
             $stockDataArray = json_decode($response, true);
