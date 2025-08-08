@@ -87,6 +87,7 @@ class ProductApi
             $priceData = array_merge($priceData, $priceDataArray['data']['listGoods']);
             $offset += $this->limit;
         }
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched products count - ' . count($priceData));
 
         $stockData = [];
         $offset = 0;
@@ -106,8 +107,10 @@ class ProductApi
 
             $stockData = array_merge($stockData, $stockDataArray['stocks']);
         }
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched stocks count - ' . count($stockData));
 
         $mergedData = $this->mergeProductData($priceData, $stockData);
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' merged products count - ' . count($mergedData));
         return $mergedData;
     }
 
