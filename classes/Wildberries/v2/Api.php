@@ -43,7 +43,7 @@ class Api
 		return $curl;
 	}
 
-    public function postData($url, $postdata)
+    public function postData($url, $data)
 	{
 		
 	    if (!$this->header) {
@@ -107,7 +107,7 @@ class Api
 			return false;
 		}
 	}
-    public function putData($url, $postdata)
+    public function putData($url, $data)
 	{
 		if (!$this->header) {
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' header not set');
@@ -117,7 +117,7 @@ class Api
 		try {
 			$curl = $this->initCurl($url);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
 			$jsonOut = curl_exec($curl);
 			$info = curl_getinfo($curl);
 			curl_close($curl);
@@ -125,7 +125,7 @@ class Api
 			if($info['http_code'] >= 400) {
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' error code: ' . $info['http_code']);
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $jsonOut);
-				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' header: ' . json_encode($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' url: ' . $url);
 				return false;
@@ -139,7 +139,7 @@ class Api
 			return false;
 		}
 	}
-	public function patchData($url, $postdata)
+	public function patchData($url, $data)
 	{
 		if (!$this->header) {
 			$this->log->write(__LINE__ . ' ' . __METHOD__ . ' header not set');
@@ -149,7 +149,7 @@ class Api
 		try {
 			$curl = $this->initCurl($url);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
-			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
 			$jsonOut = curl_exec($curl);
 			$info = curl_getinfo($curl);
 			curl_close($curl);
@@ -157,7 +157,7 @@ class Api
 			if($info['http_code'] >= 400) {
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' error code: ' . $info['http_code']);
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $jsonOut);
-				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' header: ' . json_encode($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$this->log->write(__LINE__ . ' ' . __METHOD__ . ' url: ' . $url);
 				return false;
