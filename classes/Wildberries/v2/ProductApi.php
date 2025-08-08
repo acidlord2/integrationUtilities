@@ -62,10 +62,10 @@ class ProductApi
         foreach ($priceData as $item) {
             $vendorCode = $item['vendorCode'] ?? null;
             $merged = $item;
-            if($vendorCode && isset($priceMap[$vendorCode])) {
+            if($vendorCode && isset($productMap[$vendorCode])) {
                 $merged['sku'] = $productMap[$vendorCode]['sku'] ?? null;
+                $priceMap[$merged['sku']] = $merged;
             }
-            $priceMap[$merged['sku']] = $merged;
         }
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' price map count - ' . count($priceMap));
 
@@ -115,7 +115,6 @@ class ProductApi
         foreach ($products as &$product) {
             $product['sku'] = $product['sizes'][0]['skus'][0] ?? null;
         }
-        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched products - ' . json_encode($products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         unset($product); // break the reference
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched products count - ' . count($products));
 
