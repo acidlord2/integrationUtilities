@@ -115,6 +115,7 @@ class ProductApi
         foreach ($products as &$product) {
             $product['sku'] = $product['sizes'][0]['skus'][0] ?? null;
         }
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched products - ' . json_encode($products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         unset($product); // break the reference
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' fetched products count - ' . count($products));
 
