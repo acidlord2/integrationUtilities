@@ -78,9 +78,9 @@ class ProductApi
         while (true) {
             $url = WB_API_PRICES_API . WB_API_LIST_GOODS . '?limit=' . $this->limit . '&offset=' . $offset;
             $response = $this->api->getData($url);
-
+            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $response);
             $priceDataArray = json_decode($response, true);
-
+            
             if (empty($priceDataArray['data']['listGoods'])) {
                 break;
             }
@@ -100,8 +100,8 @@ class ProductApi
         $warehouse = constant($warehouseConst);
         foreach ($chunks as $chunk) {
             $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . $warehouse;
-            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' request: ' . json_encode(array('skus' => $chunk), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $response = $this->api->postData($url, array('skus' => $chunk));
+            $this->log->write(__LINE__ . ' ' . __METHOD__ . ' response: ' . $response);
 
             $stockDataArray = json_decode($response, true);
 
