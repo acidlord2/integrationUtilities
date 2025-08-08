@@ -363,7 +363,7 @@
 	define('WB_API_CARDS_LIST', 'content/v2/get/cards/list');
 	define('WB_API_PRICES', 'api/v2/upload/task');
 	define('WB_API_STOCKS', 'api/v3/stocks');
-	define('WB_API_LIST_GOODS', 'api/v2/list/goods/');
+	define('WB_API_LIST_GOODS', 'api/v2/list/goods/filter');
 	define('WB_API_DISCOUNTS', 'public/api/v1/updateDiscounts');
 	define('WB_API_ORDERS', 'api/v3/orders');
 	define('WB_API_STICKERS', 'stickers?type=png&width=58&height=40');

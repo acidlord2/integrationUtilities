@@ -25,8 +25,7 @@ class ProductIterator implements \IteratorAggregate, \JsonSerializable
      * Returns an iterator for the products collection
      * @return \ArrayIterator
      */
-    public function getIterator()
-    {
+    public function getIterator() {
         return new \ArrayIterator($this->products);
     }
 
