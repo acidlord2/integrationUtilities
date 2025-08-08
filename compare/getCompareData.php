@@ -131,7 +131,7 @@ if ($marketplace === 'ccd') {
     $logName .= '.log';
     $log = new \Classes\Common\Log($logName);
 
-    $wbApi = new \Classes\Wildberries\v2\ProductApi();
+    $wbApi = new \Classes\Wildberries\v2\ProductApi($organization);
     $wbProducts = $wbApi->getProductIterator();
     $log->write(__LINE__ . ' ' . __METHOD__ . ' $wbProducts - ' . json_encode($wbProducts, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     $wbData = [];
