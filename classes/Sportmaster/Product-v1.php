@@ -25,6 +25,37 @@ class Product
         $this->log = new \Classes\Common\Log($logName);
 		$this->apiClass = new \Classes\Sportmaster\v1\Api($cliendtId);
 	}	
+	public function pricesList()
+	{
+		$offset = 0;
+	    $products = array();
+		$url = SPORTMASTER_BASE_URL . 'v1/product/prices/list';
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
+	    while (true)
+	    {
+			$post_data = array(
+				'limit' => $this->limit,
+				'offset' => $offset
+			);
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$response = $this->apiClass->postData($url, $post_data);
+			if ($response && isset($response['products']))
+			{
+				$products = array_merge($products, $response['products']);
+				$offset += $this->limit;
+				if ($offset >= $response['pagination']['total'])
+					break;
+			}
+			else
+			{
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error fetching product prices: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				break;
+			}
+			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
+	    }
+	    $this->log->write(__LINE__ . ' '. __METHOD__ . ' total products fetched - ' . count($products));
+	    return $products;
+	}
 
 	public function stockList($warehouseId)
 	{

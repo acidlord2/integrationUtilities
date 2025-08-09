@@ -10,16 +10,15 @@ $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
 
 $clientId = SPORTMASTER_ULLO_CLIENT_ID;
-$warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
 $productClass = new \Classes\Sportmaster\v1\Product($clientId);
-$stocks = $productClass->stockList($warehouseId);
+$prices = $productClass->pricesList();
 // If you want to use MS Products class, uncomment the following lines
 $msProductClass = new ProductsMS();
-$assortment = $msProductClass->getAssortment(array_column($stocks, 'offerId'));
+$assortment = $msProductClass->getAssortment(array_column($prices, 'offerId'));
 $postPrices = array();
-foreach ($stocks as $stock) {
-    $matched = array_values(array_filter($assortment, function($item) use ($stock) {
-        return isset($item['code']) && $item['code'] === $stock['offerId'];
+foreach ($prices as $price) {
+    $matched = array_values(array_filter($assortment, function($item) use ($price) {
+        return isset($item['code']) && $item['code'] === $price['offerId'];
     }));
     if (!empty($matched)) {
         $product = $matched[0];
@@ -31,11 +30,11 @@ foreach ($stocks as $stock) {
             );
         }
     } else {
-        $log->write(__LINE__ . ' No matching product found for offerId: ' . $stock['offerId']);
+        $log->write(__LINE__ . ' No matching product found for offerId: ' . $price['offerId']);
     }
 }
 if ($productClass->pricesUpdate($postPrices)) {
-    echo count($postPrices) . ' prices of ' . count($stocks) . ' updated successfully';
+    echo count($postPrices) . ' prices of ' . count($prices) . ' updated successfully';
 } else {
     echo 'Failed to update prices';
 }

@@ -186,7 +186,37 @@ if ($marketplace === 'ccd') {
 
     // Merge MS and Yandex Market data by code
     $data = mergeArraysByCode($msData, $ymData, $type);
+} elseif ($marketplace === 'sm') {
+    // Sportmaster product API
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/v2/ProductApi.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/v2/ProductIterator.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 
+    $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+    $logName .= '.log';
+    $log = new \Classes\Common\Log($logName);
+
+    $smApi = new \Classes\Sportmaster\v2\ProductApi($organization);
+    $smProducts = $smApi->getProductIterator();
+    $smData = [];
+    $skuList = [];
+    foreach ($smProducts as $product) {
+        $offerId = $product->getOfferId();
+        $smData[] = [
+            'code' => $offerId,
+            'price' => $type === 'prices' ? ($product->getRetailPrice() ?? $product->getPrice()) : null,
+            'quantity' => $type === 'prices' ? null : $product->getWarehouseStock()
+        ];
+        if ($offerId) {
+            $skuList[] = $offerId;
+        }
+    }
+
+    // MS assortment API by SKU list
+    $msData = getAssortmentData($skuList, $type, $organization === 'ullo' ? 'getPriceSportmaster' : null);
+
+    // Merge MS and Sportmaster data by code
+    $data = mergeArraysByCode($msData, $smData, $type);
 } else {
     // ...existing code...
     $data = [
