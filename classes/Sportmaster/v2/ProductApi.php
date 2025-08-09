@@ -60,8 +60,6 @@ class ProductApi
                 $priceMap[$price['offerId']] = $price;
             }
         }
-        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Price map ' . json_encode($priceMap, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Stocks data ' . json_encode($stocks, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         // Merge stocks and prices by offerId into a single array
         $mergedList = [];
@@ -114,7 +112,7 @@ class ProductApi
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
         } while (isset($response['pagination']['total']) && $postData['offset'] < $response['pagination']['total']);
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Fetched ' . count($products) . ' stocks');
-        return ['stocks' => $products];
+        return $products;
     }
 
     /**
@@ -148,7 +146,7 @@ class ProductApi
         } while ($postData['offset'] < $response['pagination']['total']);
 
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Fetched ' . count($products) . ' prices');
-        return ['products' => $products];
+        return $products;
     }
 
     /**
