@@ -14,7 +14,7 @@
     ];
     $organizations = [
         'ullo' => 'Юлло',
-        'sammit' => 'Альянс',
+        'summit' => 'Альянс',
         'kaori' => 'Каори',
         'kosmos' => 'Космос'
     ];
