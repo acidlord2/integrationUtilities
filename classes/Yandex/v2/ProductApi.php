@@ -84,7 +84,7 @@ class ProductApi
      */
     private function fetchPrices()
     {
-        $baseUrl = BERU_API_BASE_URL . BERU_API_CAMPAIGNS . '/' . $this->campaignId . '/' . BERU_API_OFFERS;
+        $baseUrl = BERU_API_BASE_URL . BERU_API_CAMPAIGNS . $this->campaignId . '/' . BERU_API_OFFERS;
 
         $allPrices = [];
         $nextPageToken = null;
@@ -118,7 +118,7 @@ class ProductApi
      */
     private function fetchStocks()
     {
-        $baseUrl = BERU_API_BASE_URL . BERU_API_CAMPAIGNS . '/' . $this->campaignId . '/' . BERU_API_STOCKS;
+        $baseUrl = BERU_API_BASE_URL . BERU_API_CAMPAIGNS . $this->campaignId . '/' . BERU_API_STOCKS;
         $allStocks = [];
         $nextPageToken = null;
         
