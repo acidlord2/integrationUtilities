@@ -55,7 +55,7 @@ class ProductApi
 
         // Build a lookup for prices by offerId
         $priceMap = [];
-        foreach ($pricesData as $price) {
+        foreach ($prices as $price) {
             if (isset($price['offerId'])) {
                 $priceMap[$price['offerId']] = $price;
             }
@@ -63,7 +63,7 @@ class ProductApi
 
         // Merge stocks and prices by offerId into a single array
         $mergedList = [];
-        foreach ($stocksData as $stock) {
+        foreach ($stocks as $stock) {
             $offerId = $stock['offerId'] ?? null;
             $merged = $stock;
             
@@ -130,7 +130,6 @@ class ProductApi
         );
         $products = [];
         do {
-            $postData['offset'] = $offset;
             $response = $this->api->postData($url, $postData);
             $response = json_decode($response, true);
             if ($response && isset($response['productPrices']))
