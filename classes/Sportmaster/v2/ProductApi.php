@@ -55,7 +55,7 @@ class ProductApi
 
         // Build a lookup for prices by offerId
         $priceMap = [];
-        foreach ($prices as $price) {
+        foreach ($pricesData as $price) {
             if (isset($price['offerId'])) {
                 $priceMap[$price['offerId']] = $price;
             }
@@ -63,7 +63,7 @@ class ProductApi
 
         // Merge stocks and prices by offerId into a single array
         $mergedList = [];
-        foreach ($stocks as $stock) {
+        foreach ($stocksData as $stock) {
             $offerId = $stock['offerId'] ?? null;
             $merged = $stock;
             
@@ -95,6 +95,7 @@ class ProductApi
             'limit' => $this->limit,
             'offset' => 0
         );
+        $products = []; // Initialize products array
         do {
             $response = $this->api->postData($url, $postData);
             $response = json_decode($response, true);
@@ -105,13 +106,13 @@ class ProductApi
 			}
 			else
 			{
-				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error fetching product prices: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error fetching product stocks: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				return false;
 			}
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
-        } while ($postData['offset'] < $response['pagination']['total']);
-        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Fetched ' . count($response['result']) . ' stocks');
-        return $response;
+        } while (isset($response['pagination']['total']) && $postData['offset'] < $response['pagination']['total']);
+        $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Fetched ' . count($products) . ' stocks');
+        return ['stocks' => $products];
     }
 
     /**
