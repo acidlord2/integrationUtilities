@@ -28,7 +28,7 @@ class Product
 	public function pricesList()
 	{
 		$offset = 0;
-	    $products = array();
+	    $prices = array();
 		$url = SPORTMASTER_BASE_URL . 'v1/product/prices/list';
 		$this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
 	    while (true)
@@ -39,9 +39,9 @@ class Product
 			);
 			$this->log->write(__LINE__ . ' '. __METHOD__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$response = $this->apiClass->postData($url, $post_data);
-			if ($response && isset($response['products']))
+			if ($response && isset($response['productPrices']))
 			{
-				$products = array_merge($products, $response['products']);
+				$prices = array_merge($prices, $response['productPrices']);
 				$offset += $this->limit;
 				if ($offset >= $response['pagination']['total'])
 					break;
@@ -53,8 +53,8 @@ class Product
 			}
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 	    }
-	    $this->log->write(__LINE__ . ' '. __METHOD__ . ' total products fetched - ' . count($products));
-	    return $products;
+	    $this->log->write(__LINE__ . ' '. __METHOD__ . ' total product prices fetched - ' . count($prices));
+	    return $prices;
 	}
 
 	public function stockList($warehouseId)
