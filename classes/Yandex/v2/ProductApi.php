@@ -88,6 +88,7 @@ class ProductApi
 
         $allPrices = [];
         $nextPageToken = null;
+        $postData = new stdClass();
         
         do {
             $url = $baseUrl;
@@ -95,7 +96,7 @@ class ProductApi
                 $url .= '?page_token=' . $nextPageToken;
             }
             
-            $response = $this->api->getData($url);
+            $response = $this->api->postData($url, $postData);
             if (is_string($response)) {
                 $response = json_decode($response, true);
             }
@@ -121,14 +122,15 @@ class ProductApi
         $baseUrl = BERU_API_BASE_URL . BERU_API_CAMPAIGNS . $this->campaignId . '/' . BERU_API_STOCKS;
         $allStocks = [];
         $nextPageToken = null;
-        
+        $postData = new stdClass();
+
         do {
             $url = $baseUrl;
             if ($nextPageToken) {
                 $url .= '?page_token=' . urlencode($nextPageToken);
             }
-            
-            $response = $this->api->getData($url);
+
+            $response = $this->api->postData($url, $postData);
             if (is_string($response)) {
                 $response = json_decode($response, true);
             }
