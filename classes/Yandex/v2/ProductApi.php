@@ -88,7 +88,7 @@ class ProductApi
 
         $allPrices = [];
         $nextPageToken = null;
-        $postData = new stdClass();
+        $postData = new \stdClass();
         
         do {
             $url = $baseUrl;
@@ -122,7 +122,7 @@ class ProductApi
         $baseUrl = BERU_API_BASE_URL . BERU_API_CAMPAIGNS . $this->campaignId . '/' . BERU_API_STOCKS;
         $allStocks = [];
         $nextPageToken = null;
-        $postData = new stdClass();
+        $postData = new \stdClass();
 
         do {
             $url = $baseUrl;
