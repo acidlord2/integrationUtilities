@@ -34,7 +34,7 @@ class ProductApi
         $this->clientId = constant($clientName);
         $this->api = new \Classes\Sportmaster\v2\Api($this->clientId);
 
-        $warehouseName = 'SPORTMASTER_' . strtoupper($organization) . '_WAREHOUSE';
+        $warehouseName = 'SPORTMASTER_' . strtoupper($organization) . '_WAREHOUSE_ID';
         $this->warehouseId = constant($warehouseName);
     }
 

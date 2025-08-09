@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (mp === 'ym') {
                 orgs = ['ullo', 'sammit', 'kosmos'];
             } else if (mp === 'sm') {
-                orgs = ['ullo', 'kosmos'];
+                orgs = ['ullo'];
             } else {
                 orgs = orgOptions.map(o => o.value);
             }
