@@ -155,6 +155,37 @@ if ($marketplace === 'ccd') {
 
     // Merge MS and Wildberries data by code
     $data = mergeArraysByCode($msData, $wbData, $type);
+} elseif ($marketplace === 'ym') {
+    // Yandex Market product API
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/v2/ProductApi.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/v2/ProductIterator.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
+
+    $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+    $logName .= '.log';
+    $log = new \Classes\Common\Log($logName);
+
+    $ymApi = new \Classes\Yandex\v2\ProductApi($organization);
+    $ymProducts = $ymApi->getProductIterator();
+    $ymData = [];
+    $skuList = [];
+    foreach ($ymProducts as $product) {
+        $offerId = $product->getOfferId();
+        $ymData[] = [
+            'code' => $offerId,
+            'price' => $type === 'prices' ? $product->getBasicPriceValue() : null,
+            'quantity' => $type === 'prices' ? null : $product->getQuantity()
+        ];
+        if ($offerId) {
+            $skuList[] = $offerId;
+        }
+    }
+
+    // MS assortment API by SKU list
+    $msData = getAssortmentData($skuList, $type, $organization === 'ullo' ? 'getPriceBeruUllo' : ($organization === 'summit' ? 'getPriceBeru' : 'getpriceDBS10kids'));
+
+    // Merge MS and Yandex Market data by code
+    $data = mergeArraysByCode($msData, $ymData, $type);
 
 } else {
     // ...existing code...
