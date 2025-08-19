@@ -20,13 +20,14 @@ foreach ($skus as $key => $sku)
         $data['skus'] = array();
         foreach ($assortments as $assortment)
         {
+            $price = $productsClass->getPrice($assortment, 'Цена Беру.ру');
             $data['skus'][] = array(
                 'sku' => $assortment['code'],
                 'warehouseId' => BERU_API_SUMMIT_WAREHOUSE,
                 'items' => array(
                     0 => array(
                         'type' => 'FIT',
-                        'count' => $assortment['quantity'] < 0 ? 0 : $assortment['quantity'],
+                        'count' => $assortment['quantity'] < 0 ? 0 : ($price == 0 ? 0 : $assortment['quantity']),
                         'updatedAt' => date('Y-m-d\TH:i:sP')
                     )
                 )
