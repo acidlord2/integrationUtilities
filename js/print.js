@@ -1,3 +1,4 @@
+const reportsCount = 10;
 async function printSticker(productClass) {
 	showLoad('Загрузка данных... подождите пару секунд...');
 	var postData = [];
@@ -12,7 +13,7 @@ async function printSticker(productClass) {
 	}
 	var t = 0;
 	var orderclass = 0;
-	for (var i=0; i < checkboxes.length && t < 20; i++) {
+	for (var i=0; i < checkboxes.length && t < reportsCount; i++) {
 		if (!checkboxes[i].checked) {
 			if (orderclass == 0)
 				orderclass = checkboxes[i].getAttribute ('orderclass');
@@ -68,7 +69,7 @@ async function printInvoice(productClass) {
 	var agent = url.searchParams.get("agent");
 	var t = 0;
 	var orderclass = 0;
-	for (var i=0; i < checkboxes.length && t < 20; i++) {
+	for (var i=0; i < checkboxes.length && t < reportsCount; i++) {
 		if (!checkboxes[i].checked) {
 			if (orderclass == 0)
 				orderclass = checkboxes[i].getAttribute ('orderclass');
