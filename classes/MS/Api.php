@@ -24,7 +24,7 @@ class Api
 		$this->logger = new \Classes\Common\Log('classes - MS - Api.log');
 		
 		$tokenClass = new \Classes\Common\Settings('ms_token');
-		if ($tokenClass->isSettiingExists()) {
+		if ($tokenClass->isSettingExists()) {
 		    $this->token = $tokenClass->getValue();
 		}
 		else {

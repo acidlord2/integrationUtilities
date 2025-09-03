@@ -71,6 +71,12 @@
 					   Разноска финансов
 				   </button>
 			   <?php }
+			   if (in_array(3, $userRoleIds)) {
+			   ?>
+				   <button class="main-menu-button" onclick="window.location.href='compare/compare.php'">
+					   Сравнение данных
+				   </button>
+			   <?php }
 			   ?>
 		   </div>
 	   </div>

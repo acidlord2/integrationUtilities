@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Yandex/skuYandex2.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 
-$skuYandexClass = new SkuYandex2(BERU_API_SUMMIT_CAMPAIGN, BERU_API_SUMMIT_BUSINESS_ID);
+$skuYandexClass = new SkuYandex2(BERU_API_KOSMOS_CAMPAIGN, BERU_API_KOSMOS_BUSINESS);
 $productsClass = new ProductsMS();
 
 $skus = $skuYandexClass->offerMappings();
@@ -20,13 +20,14 @@ foreach ($skus as $key => $sku)
         $data['skus'] = array();
         foreach ($assortments as $assortment)
         {
+            $price = $productsClass->getPrice($assortment, 'Цена DBS - I0kids');
             $data['skus'][] = array(
                 'sku' => $assortment['code'],
-                'warehouseId' => BERU_API_SUMMIT_WAREHOUSE,
+                'warehouseId' => BERU_API_KOSMOS_WAREHOUSE,
                 'items' => array(
                     0 => array(
                         'type' => 'FIT',
-                        'count' => $assortment['quantity'] < 0 ? 0 : $assortment['quantity'],
+                        'count' => $assortment['quantity'] < 0 ? 0 : ($price == 0 ? 0 : $assortment['quantity']),
                         'updatedAt' => date('Y-m-d\TH:i:sP')
                     )
                 )

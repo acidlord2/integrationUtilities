@@ -305,6 +305,8 @@
 	define('OZON_API_LASTMILE_STATUS', 'fbs/posting/last-mile');
 	define('OZON_API_DELIVERED_STATUS', 'fbs/posting/delivered');
 	define('OZON_API_CANCELLED_STATUS', 'posting/fbs/cancel');
+	define('OZON_API_PRODUCT_STOCKS', 'product/info/stocks');
+	define('OZON_API_PRODUCT_PRICES', 'product/info/prices');
 	define('OZON_API_EXEMPLAR_SET', 'fbs/posting/product/exemplar/set');
 	define('OZON_API_EXEMPLAR_STATUS', 'fbs/posting/product/exemplar/status');
 	define('OZON_WEARHOUSE1_ID', 19122245607000);
@@ -318,17 +320,16 @@
 	define('BERU_API_BUSINESSES', 'businesses/');
 	define('BERU_API_ULLOZZA_CAMPAIGN', '21632670');
 	define('BERU_API_ULLOZZA_BUSINESS_ID', '922744');
+	define('BERU_API_ULLO_CAMPAIGN', BERU_API_ULLOZZA_CAMPAIGN);
+	define('BERU_API_ULLO_BUSINESS_ID', BERU_API_ULLOZZA_BUSINESS_ID);
 	define('BERU_API_SUMMIT_CAMPAIGN', '93179396');
 	define('BERU_API_SUMMIT_BUSINESS_ID', '119901806');
 	define('BERU_API_VYSOTA_CAMPAIGN', '105464368');
 	define('BERU_API_VYSOTA_BUSINESS_ID', '139441748');
-	define('BERU_API_ABCASIA_CAMPAIGN', '21587057');
-	define('BERU_API_ARUBA_CAMPAIGN', '21994237');
-	define('BERU_API_10KIDS_CAMPAIGN', '22064982');
-	define('BERU_API_MARKET4CLEANING_CAMPAIGN', '22113023');
 	define('BERU_API_ALIANS_CAMPAIGN', '59391139');
 	define('BERU_API_KOSMOS_CAMPAIGN', '126833621');
 	define('BERU_API_KOSMOS_BUSINESS', '168153950');
+	define('BERU_API_KOSMOS_BUSINESS_ID', BERU_API_KOSMOS_BUSINESS);
 	define('BERU_API_KOSMOS_WAREHOUSE', '1544731');
 	define('BERU_API_ULLOZZA_WAREHOUSE', '49602');
 	define('BERU_API_SUMMIT_WAREHOUSE', 1383506);
@@ -342,6 +343,7 @@
 	define('BERU_API_LABELS', 'delivery/labels/data');
 	define('BERU_API_LABELS2', 'delivery/labels');
 	define('BERU_API_STOCKS', 'offers/stocks');
+	define('BERU_API_OFFERS', 'offers');
 	define('BERU_API_PRICES', 'offer-prices/updates');
 	
 	define('BERU_10KIDS_OUTLET', '315186571');
@@ -361,6 +363,7 @@
 	define('WB_API_CARDS_LIST', 'content/v2/get/cards/list');
 	define('WB_API_PRICES', 'api/v2/upload/task');
 	define('WB_API_STOCKS', 'api/v3/stocks');
+	define('WB_API_LIST_GOODS', 'api/v2/list/goods/filter');
 	define('WB_API_DISCOUNTS', 'public/api/v1/updateDiscounts');
 	define('WB_API_ORDERS', 'api/v3/orders');
 	define('WB_API_STICKERS', 'stickers?type=png&width=58&height=40');
@@ -404,3 +407,5 @@
 	define('SPORTMASTER_ULLO_CLIENT_ID', '255300299');
 	define('SPORTMASTER_ULLO_WAREHOUSE_ID', '27398540299');
 	define('SPORTMASTER_BASE_URL', 'https://api-seller.sportmaster.ru/api/');
+	define('SPORTMASTER_API_STOCKS_LIST', 'v1/fbs/stocks/list');
+	define('SPORTMASTER_API_PRICES_LIST', 'v1/product/prices/list');

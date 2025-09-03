@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes\Sportmaster\v1;
+namespace Classes\Sportmaster\v2;
 /**
  *
  * @class Sportmaster Api
@@ -11,6 +11,7 @@ class Api
 {
 	private $log;
 	
+	private $clientId;
 	private $apiKey;
 	private $header;
 	private $token;
@@ -49,12 +50,16 @@ class Api
 		    $this->logger->write (__LINE__ . ' Failed to get token');
 		    return false;
 		}
-		
-		$this->dbClass = new \Classes\Common\Db();
-		$this->logger->write (__LINE__ . ' token - ' . $this->token);
-		$this->logger->write (__LINE__ . ' header - ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-	}	
-	
+	}
+
+	private function init_curl($url)
+	{
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
+		return $curl;
+	}
+
 	private function getToken()
 	{
 		$url = SPORTMASTER_BASE_URL . 'v1/auth/token';
@@ -71,6 +76,7 @@ class Api
 		$jsonOut = curl_exec($curl);
 		$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		if ($httpCode >= 400) {
+			$this->logger->write(__LINE__ . " " . __METHOD__ . " - URL: $url");
 			$this->logger->write(__LINE__ . " " . __METHOD__ . " - HTTP error: $httpCode, response: " . $jsonOut);
 			return false;
 		}
@@ -83,10 +89,7 @@ class Api
 
     public function getData($url)
 	{
-		$curl = curl_init($url);
-		//$this->logger->write (__LINE__ . ' header - ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+		$curl = $this->init_curl($url);
 		$jsonOut = curl_exec($curl);
 		$info = curl_getinfo($curl);			
 		curl_close($curl);
@@ -99,15 +102,13 @@ class Api
 			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);
 			return false;
 		}
-		return json_decode ($jsonOut, true);
+		return $jsonOut;
 	}
 	
     public function postData($url, $postdata)
 	{
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
+		$curl = $this->init_curl($url);
 		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 		$jsonOut = curl_exec($curl);
 		$info = curl_getinfo($curl);			
@@ -122,6 +123,6 @@ class Api
 			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);
 			return false;
 		}
-		return json_decode ($jsonOut, true);
+		return $jsonOut;
 	}
 }

@@ -34,7 +34,7 @@ class Order
 		$offset = 0;
 	    $orders = array();
 		$url = SPORTMASTER_BASE_URL . 'v1/fbs/shipments/list';
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
 	    while (true)
 	    {
 			$post_data = array(
@@ -43,9 +43,9 @@ class Order
 				'limit' => $this->limit,
 				'offset' => $offset
 			);
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$response = $this->apiClass->postData($url, $post_data);
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			if ($response && isset($response['shipments']))
 			{
 				$orders = array_merge($orders, $response['shipments']);
@@ -55,28 +55,28 @@ class Order
 			}
 			else
 			{
-				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching shipments list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error fetching shipments list: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				return false;
 			}
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 	    }
-	    $this->log->write(__LINE__ . ' '. __FUNCTION__ . ' total orders fetched - ' . count($orders));
+	    $this->log->write(__LINE__ . ' '. __METHOD__ . ' total orders fetched - ' . count($orders));
 	    return $orders;
 	}
 
 	public function shipmentGet($shipmentId)
 	{
 		$url = SPORTMASTER_BASE_URL . 'v1/fbs/shipments/' . $shipmentId;
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
 		$response = $this->apiClass->getData($url);
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		if ($response)
 		{
 			return $response;
 		}
 		else
 		{
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error fetching shipment: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error fetching shipment: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			return false;
 		}
 		sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
@@ -85,13 +85,13 @@ class Order
 	public function shipmentChangePackages($shipmentId, $packages)
 	{
 		$url = SPORTMASTER_BASE_URL . 'v1/fbs/shipments/' . $shipmentId . '/change-packages';
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
 		$post_data = array(
 			'packages' => $packages
 		);
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' post_data - ' . json_encode($post_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		$response = $this->apiClass->postData($url, $post_data);
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' response - ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		if ($response == null)
 		{
@@ -99,7 +99,7 @@ class Order
 		}
 		else
 		{
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Error changing packages: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' Error changing packages: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			return false;
 		}
 		sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
@@ -108,14 +108,14 @@ class Order
 	public function shipmentGetLabel($shipmentIds)
 	{
 		$url = SPORTMASTER_BASE_URL . 'v1/fbs/shipments/get-package-labels';
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' url - ' . $url);
-		$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' shipmentIds - ' . json_encode($shipmentIds, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
+		$this->log->write(__LINE__ . ' '. __METHOD__ . ' shipmentIds - ' . json_encode($shipmentIds, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		if (!is_array($shipmentIds)) {
 			$shipmentIds = array($shipmentIds);
 		}
 		$labels = array();
 		foreach(array_chunk($shipmentIds, $this->labelLimit) as $chunk) {
-			$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' processing chunk - ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->log->write(__LINE__ . ' '. __METHOD__ . ' processing chunk - ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$post_data = array(
 				'shipmentIds' => $chunk
 			);
@@ -123,8 +123,8 @@ class Order
 			if (isset($response['fileName']) && $response['fileName'] != null) {
 				$labels = array_merge($labels, $response);
 			} else {
-				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' No fileName in response: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-				$this->log->write(__LINE__ . ' '. __FUNCTION__ . ' Skipping chunk: ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' No fileName in response: ' . json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->log->write(__LINE__ . ' '. __METHOD__ . ' Skipping chunk: ' . json_encode($chunk, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
 			sleep($this->sleepTime); // Sleep to avoid hitting API rate limits
 		}
