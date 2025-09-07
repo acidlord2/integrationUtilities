@@ -16,7 +16,7 @@ $filter = 'organization=' . MS_KOSMOS . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR 
 
 $ordersMSClass = new OrdersMS();
 $ordersMS = $ordersMSClass->findOrders($filter);
-array_splice($ordersMS, 100);
+array_splice($ordersMS, 200);
 // check if supply exists
 $supplyOpen = null;
 $supplies = $suppliesWBClass->getSupplies();
