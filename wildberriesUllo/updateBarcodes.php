@@ -43,7 +43,7 @@ $logger->write(__LINE__ . ' stickers ' . json_encode($stickers, JSON_UNESCAPED_U
 $msOrdersPostData = array();
 foreach ($ordersMS as &$orderMS)
 {
-	if(in_array(int($orderMS['externalCode']), $stickerIds)) {
+	if(in_array((int)$orderMS['externalCode'], $stickerIds)) {
 		$orderMS["attributes"][] = array(
 			'meta' => array (
 				'href' => MS_ATTR . MS_BARCODE_ATTR_ID,
