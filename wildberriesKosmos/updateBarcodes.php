@@ -40,7 +40,6 @@ foreach (array_chunk($ordersMSIDs, 100) as $chunk){
 	$stickers = array_merge($stickers, $stickersTmp['stickers']);
 }
 $stickerIds = array_column ($stickers, 'orderId');
-$logger->write(__LINE__ . ' stickers ' . json_encode($stickers, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
 $msOrdersPostData = array();
 foreach ($ordersMS as &$orderMS)
