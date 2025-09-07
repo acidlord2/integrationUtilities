@@ -30,7 +30,11 @@ if ($supplyOpen === null)
 	$supplyOpen = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
 
 $ordersMSIDs = array_column ($ordersMS, 'externalCode');
+$logger->write(__LINE__ . ' ordersMSIDs ' . json_encode($ordersMSIDs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
 $stickers = $ordersWBClass->getStickers(ordersMSIDs);
+
+return;
 $stickerIds = array_column ($stickers['stickers'], 'orderId');
 
 $msOrdersPostData = array();
@@ -66,7 +70,6 @@ foreach ($ordersMS as &$orderMS)
 		);
 		$msOrdersPostData[] = $orderMS;
 	}
-	$logger->write(__LINE__ . ' post data ' . json_encode($msOrdersPostData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 //	if (count ($msOrdersPostData))
 //		$ordersMSClass->createCustomerorder($msOrdersPostData);
 	echo 'Updated ' . count ($msOrdersPostData) . ', of ' . count ($ordersMS);
