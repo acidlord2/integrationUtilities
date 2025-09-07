@@ -29,7 +29,7 @@ foreach ($supplies as $supply)
 if ($supplyOpen === null)
 	$supplyOpen = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
 
-$ordersMSIDs = array_column ($ordersMS, 'externalCode');
+$ordersMSIDs = array_map('intval', array_column($ordersMS, 'externalCode'));
 $logger->write(__LINE__ . ' ordersMSIDs ' . json_encode($ordersMSIDs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
 $stickers = $ordersWBClass->getStickers($ordersMSIDs);
