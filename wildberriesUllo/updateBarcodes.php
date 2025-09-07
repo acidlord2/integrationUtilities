@@ -32,9 +32,7 @@ if ($supplyOpen === null)
 $ordersMSIDs = array_column ($ordersMS, 'externalCode');
 $logger->write(__LINE__ . ' ordersMSIDs ' . json_encode($ordersMSIDs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-$stickers = $ordersWBClass->getStickers(ordersMSIDs);
-
-return;
+$stickers = $ordersWBClass->getStickers($ordersMSIDs);
 $stickerIds = array_column ($stickers['stickers'], 'orderId');
 
 $msOrdersPostData = array();
