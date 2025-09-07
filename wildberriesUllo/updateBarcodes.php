@@ -43,14 +43,15 @@ $logger->write(__LINE__ . ' stickers ' . json_encode($stickers, JSON_UNESCAPED_U
 $msOrdersPostData = array();
 foreach ($ordersMS as &$orderMS)
 {
-	if(in_array((int)$orderMS['externalCode'], $stickerIds)) {
+	$index = array_search((int)$orderMS['externalCode'], $stickerIds);
+	if($index !== false) {
 		$orderMS["attributes"][] = array(
 			'meta' => array (
 				'href' => MS_ATTR . MS_BARCODE_ATTR_ID,
 				'type' => 'attributemetadata',
 				'mediaType' => 'application/json'
 			),
-			'value' => (string)$stickers['stickers'][0]['barcode']
+			'value' => (string)$stickers[$index]['barcode']
 		);
 		$orderMS["attributes"][] = array(
 			'meta' => array (
@@ -58,7 +59,7 @@ foreach ($ordersMS as &$orderMS)
 				'type' => 'attributemetadata',
 				'mediaType' => 'application/json'
 			),
-			'value' => $stickers['stickers'][0]['partA'] . '-' . $stickers['stickers'][0]['partB']
+			'value' => $stickers[$index]['partA'] . '-' . $stickers[$index]['partB']
 		);
 		$orderMS["attributes"][] = array(
 			'meta' => array (
@@ -67,8 +68,8 @@ foreach ($ordersMS as &$orderMS)
 				'mediaType' => 'application/json'
 			),
 			'file' => array(
-				'filename' => $stickers['stickers'][0]['orderId'] . '.png',
-				'content' => $stickers['stickers'][0]['file']
+				'filename' => $stickers[$index]['orderId'] . '.png',
+				'content' => $stickers[$index]['file']
 			)
 		);
 		$msOrdersPostData[] = $orderMS;
