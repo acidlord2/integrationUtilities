@@ -18,7 +18,8 @@ foreach ($ordersIDs as $ordersID){
 
 $ordersMSClass = new OrdersMS();
 $ordersMS = $ordersMSClass->findOrders($filter);
-
+$logger->write(__LINE__ . ' ordersMS ' . json_encode($ordersMS, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+return;
 // check if supply exists
 $supplyOpen = null;
 $supplies = $suppliesWBClass->getSupplies();
