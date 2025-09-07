@@ -12,6 +12,7 @@ $logger = new \Classes\Common\Log('wildberriesUllo - updateBarcode.log');
 $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
 $suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Ullo');
 
+$filter = '';
 foreach ($ordersIDs as $ordersID){
 	$filter .= 'organization=' . MS_ULLO . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;&limit=10';
 }
