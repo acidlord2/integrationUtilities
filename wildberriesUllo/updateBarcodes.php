@@ -12,15 +12,10 @@ $logger = new \Classes\Common\Log('wildberriesUllo - updateBarcode.log');
 $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
 $suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Ullo');
 
-$filter = '';
-foreach ($ordersIDs as $ordersID){
-	$filter .= 'organization=' . MS_ULLO . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;&limit=10';
-}
+$filter = 'organization=' . MS_ULLO . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;';
 
 $ordersMSClass = new OrdersMS();
 $ordersMS = $ordersMSClass->findOrders($filter);
-$logger->write(__LINE__ . ' ordersMS ' . json_encode($ordersMS, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-return;
 // check if supply exists
 $supplyOpen = null;
 $supplies = $suppliesWBClass->getSupplies();
