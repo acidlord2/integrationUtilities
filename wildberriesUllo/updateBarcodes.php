@@ -34,10 +34,10 @@ $logger->write(__LINE__ . ' ordersMSIDs ' . json_encode($ordersMSIDs, JSON_UNESC
 
 $stickers = array();
 foreach (array_chunk($ordersMSIDs, 100) as $chunk){
-	$stickersTmp = $ordersWBClass->getStickers($ordersMSIDs);
+	$stickersTmp = $ordersWBClass->getStickers($chunk);
 	$stickers = array_merge($stickers, $stickersTmp['stickers']);
 }
-$stickerIds = array_column ($stickers['stickers'], 'orderId');
+$stickerIds = array_column ($stickers, 'orderId');
 $logger->write(__LINE__ . ' stickers ' . json_encode($stickers, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
 return;
