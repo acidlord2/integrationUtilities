@@ -67,6 +67,7 @@ class Orders
 	    $postData = array(
 	        'orders' => $ordersID
 	    );
+	    $this->log->write(__LINE__ . ' getStickers.postData - ' . json_encode($postData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		$response = $this->apiWBClass->postData($url, $postData);
 	    $this->log->write(__LINE__ . ' getStickers.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	    return $response;
