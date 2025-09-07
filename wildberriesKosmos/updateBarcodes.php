@@ -12,7 +12,7 @@ $logger = new \Classes\Common\Log('wildberriesKosmos - updateBarcode.log');
 $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kosmos');
 $suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Kosmos');
 
-$filter = 'organization=' . MS_KOSMOS . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;name~=WB;';
+$filter = 'organization=' . MS_KOSMOS . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;state!=' . MS_SHIPPED_MP_STATE . ';state!=' . MS_CANCEL_STATE . ';';
 
 $ordersMSClass = new OrdersMS();
 $ordersMS = $ordersMSClass->findOrders($filter);

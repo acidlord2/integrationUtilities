@@ -12,7 +12,7 @@ $logger = new \Classes\Common\Log('wildberriesUllo - updateBarcode.log');
 $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
 $suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Ullo');
 
-$filter = 'organization=' . MS_ULLO . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;';
+$filter = 'organization=' . MS_ULLO . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;state!=' . MS_SHIPPED_MP_STATE . ';state!=' . MS_CANCEL_STATE . ';';
 
 $ordersMSClass = new OrdersMS();
 $ordersMS = $ordersMSClass->findOrders($filter);
