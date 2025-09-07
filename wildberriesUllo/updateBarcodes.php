@@ -7,11 +7,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Supplies.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 
-$logger = new \Classes\Common\Log('wildberriesUllo - getNewOrders.log');
-
-$startDate = date('Y-m-d', strtotime('-2 days')) . 'T00:00:00.000+03:00';
-$endDate = NULL;
-$status = 0;
+$logger = new \Classes\Common\Log('wildberriesUllo - updateBarcode.log');
 
 $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
 $suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Ullo');
@@ -73,8 +69,8 @@ foreach ($ordersMS as &$orderMS)
 		);
 		$msOrdersPostData[] = $orderMS;
 	}
-	
-	if (count ($msOrdersPostData))
-		$ordersMSClass->createCustomerorder($msOrdersPostData);
+	$logger->write(__LINE__ . ' post data ' . json_encode($msOrdersPostData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+//	if (count ($msOrdersPostData))
+//		$ordersMSClass->createCustomerorder($msOrdersPostData);
 	echo 'Updated ' . count ($msOrdersPostData) . ', of ' . count ($ordersMS);
 }
