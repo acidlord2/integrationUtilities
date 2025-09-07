@@ -12,7 +12,7 @@ $logger = new \Classes\Common\Log('wildberriesUllo - updateBarcode.log');
 $ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
 $suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Ullo');
 
-$filter = 'organization=' . MS_ULLO . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;&limit=100';
+$filter = 'organization=' . MS_ULLO . ';agent=' . MS_WB_AGENT . ';' . MS_ATTR . MS_BARCODE_ATTR_ID . '=;';
 
 $ordersMSClass = new OrdersMS();
 $ordersMS = $ordersMSClass->findOrders($filter);
@@ -32,7 +32,11 @@ if ($supplyOpen === null)
 $ordersMSIDs = array_map('intval', array_column($ordersMS, 'externalCode'));
 $logger->write(__LINE__ . ' ordersMSIDs ' . json_encode($ordersMSIDs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-$stickers = $ordersWBClass->getStickers($ordersMSIDs);
+$stickers = array();
+foreach (array_chunk($ordersMSIDs, 100) as $chunk){
+	$stickersTmp = $ordersWBClass->getStickers($ordersMSIDs);
+	$stickers = array_merge($stickers, $stickersTmp['stickers']);
+}
 $stickerIds = array_column ($stickers['stickers'], 'orderId');
 $logger->write(__LINE__ . ' stickers ' . json_encode($stickers, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
