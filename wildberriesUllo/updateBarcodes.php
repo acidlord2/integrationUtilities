@@ -73,7 +73,8 @@ foreach ($ordersMS as &$orderMS)
 		);
 		$msOrdersPostData[] = $orderMS;
 	}
-//	if (count ($msOrdersPostData))
-//		$ordersMSClass->createCustomerorder($msOrdersPostData);
-	echo 'Updated ' . count ($msOrdersPostData) . ', of ' . count ($ordersMS);
 }
+$logger->write(__LINE__ . ' msOrdersPostData ' . json_encode($msOrdersPostData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+if (count ($msOrdersPostData))
+	$ordersMSClass->createCustomerorder($msOrdersPostData);
+echo 'Updated ' . count ($msOrdersPostData) . ', of ' . count ($ordersMS);
