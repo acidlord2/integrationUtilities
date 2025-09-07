@@ -34,7 +34,9 @@ $logger->write(__LINE__ . ' ordersMSIDs ' . json_encode($ordersMSIDs, JSON_UNESC
 
 $stickers = $ordersWBClass->getStickers($ordersMSIDs);
 $stickerIds = array_column ($stickers['stickers'], 'orderId');
+$logger->write(__LINE__ . ' stickers ' . json_encode($stickers, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
+return;
 $msOrdersPostData = array();
 foreach ($ordersMS as &$orderMS)
 {
