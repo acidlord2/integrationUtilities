@@ -76,4 +76,4 @@ foreach ($ordersMS as &$orderMS)
 }
 if (count ($msOrdersPostData))
 	$ordersMSClass->createCustomerorder($msOrdersPostData);
-echo 'Updated ' . count ($msOrdersPostData) . ', of ' . count ($ordersMS);
+echo 'Updated ' . count ($msOrdersPostData) . ' of ' . count ($ordersMS);
