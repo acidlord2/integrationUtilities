@@ -66,8 +66,8 @@ foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
             //$log->write (__LINE__ . ' product - ' . json_encode ($product, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $data[] = array (
                 'sku' => $productCodes[$product['code']],
-                //'amount' => $product['quantity'] - 2 < 0 ? 0 : ($price === 0 ? 0 : $product['quantity'] - 2)
-                'amount' => 0
+                'amount' => $product['quantity'] - 2 < 0 ? 0 : ($price === 0 ? 0 : $product['quantity'] - 2)
+                //'amount' => 0
             );
             $log->write (__LINE__ . ' data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         }
