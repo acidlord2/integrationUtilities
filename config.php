@@ -244,8 +244,8 @@
 	define('MS_PROJECT_MSKOREA', 'https://api.moysklad.ru/api/remap/1.2/entity/project/c336f827-4569-11eb-0a80-011800275208');
 	define('MS_PROJECT_MSKOREA_ID', 'c336f827-4569-11eb-0a80-011800275208');
 	define('MS_PROJECT_AVITO', 	'https://api.moysklad.ru/api/remap/1.2/entity/project/89e20949-d1d7-11ea-0a80-04a5000136db');
-	define('MS_PROJECT_WB', 'https://api.moysklad.ru/api/remap/1.2/entity/project/336bfbae-6be6-11eb-0a80-06e50012e0e8');
-	define('MS_PROJECT_WB_ID', '336bfbae-6be6-11eb-0a80-06e50012e0e8');
+	define('MS_PROJECT_WB_KOSMOS', 'https://api.moysklad.ru/api/remap/1.2/entity/project/336bfbae-6be6-11eb-0a80-06e50012e0e8');
+	define('MS_PROJECT_WB_KOSMOS_ID', '336bfbae-6be6-11eb-0a80-06e50012e0e8');
 	define('MS_PROJECT_2HRS', 'https://api.moysklad.ru/api/remap/1.2/entity/project/daacfa18-8296-11eb-0a80-04700000b57e');
 	define('MS_PROJECT_2HRS_ID', 'daacfa18-8296-11eb-0a80-04700000b57e');
 	define('MS_PROJECT_YANDEX_DBS', 'https://api.moysklad.ru/api/remap/1.2/entity/project/4cdd140b-c4a0-11eb-0a80-03a300010ea3');

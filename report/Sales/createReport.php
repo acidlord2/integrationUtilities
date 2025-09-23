@@ -60,7 +60,10 @@ function getData ($data)
             case MS_PROJECT_OZON_ULLO_DBS_ID:
                 $projectKey = 'ozon';
                 break;
-            case MS_PROJECT_WB_ID:
+            case MS_PROJECT_WB_KOSMOS_ID:
+                $projectKey = 'wb';
+                break;
+            case MS_PROJECT_WB_ULLO_ID:
                 $projectKey = 'wb';
                 break;
             case MS_PROJECT_4CLEANING_ID:

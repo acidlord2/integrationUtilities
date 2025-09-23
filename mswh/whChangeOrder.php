@@ -270,9 +270,9 @@
 			//     }
 			// }
 			//wildberries
-			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ID : false)
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_KOSMOS_ID : false)
 			{
-			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kaori');
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kosmos');
 			    
 			    $data = array(
 			        'orderId' => substr($orderData['name'], 2),
@@ -378,9 +378,9 @@
 			//     }
 			// }
 			//wildberries
-			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ID : false)
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_KOSMOS_ID : false)
 			{
-			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kaori');
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kosmos');
 			    
 			    $data = array(
 			        'orderId' => substr($orderData['name'], 2),
@@ -673,9 +673,9 @@
 			//     $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			// }
 			//wildberries
-			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ID : false)
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_KOSMOS_ID : false)
 			{
-			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kaori');
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kosmos');
 			    
 			    $data = array(
 			        'orderId' => substr($orderData['name'], 2),
@@ -766,9 +766,9 @@
 
 			// }
 			//wildberries
-			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_ID : false)
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_KOSMOS_ID : false)
 			{
-			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kaori');
+			    $ordersWBClass = new \Classes\Wildberries\v1\Orders('Kosmos');
 			    
 			    $data = array(
 			        'orderId' => substr($orderData['name'], 2),

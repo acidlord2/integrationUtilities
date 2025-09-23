@@ -103,7 +103,7 @@ foreach ($newOrders as $newOrder)
 		),
 		'project' => array(
 			'meta' => array(
-				'href' => MS_PROJECT_WB,
+				'href' => MS_PROJECT_WB_KOSMOS,
 				'type' => 'project',
 				'mediaType' => 'application/json'
 			)
