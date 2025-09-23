@@ -70,7 +70,7 @@ foreach ($newOrders as &$newOrder)
 	$newOrder['productMS'] = $productMS;
 
 	$orderTransformer = new \Wildberries\Order\OrderTransformation('Ullo', $newOrder);
-	$newOrdersMS[] = $orderTransformer->transformMSToWildberries();
+	$newOrdersMS[] = $orderTransformer->transformWildberriesToMS();
 }
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);

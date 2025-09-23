@@ -71,7 +71,7 @@ foreach ($newOrders as &$newOrder)
 	$newOrder['productMS'] = $productMS;
 
 	$orderTransformer = new \Wildberries\Order\OrderTransformation('Kosmos', $newOrder);
-	$newOrdersMS[] = $orderTransformer->transformMSToWildberries();
+	$newOrdersMS[] = $orderTransformer->transformWildberriesToMS();
 }
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
