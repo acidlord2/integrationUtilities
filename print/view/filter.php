@@ -43,7 +43,7 @@
 				<?php } ?>
 			</span>
 			<?php if ($agent == 'WB') { ?>
-				Отгрузка: <input type="text" id="shipment" value="<?php echo isset($_GET['shipment']) ? $_GET['shipment'] : ''; ?>" style="width: 80px;">
+				Отгрузка: <input type="text" id="shipment" value="<?php echo isset($_GET['shipment']) ? htmlspecialchars(urldecode($_GET['shipment'])) : ''; ?>" style="width: 80px;">
 			<?php } ?>				
 			<button type="button" id = "refresh_button" onclick="refreshOrders()">Обновить данные</button>			
 		</div>

@@ -92,7 +92,7 @@
 				var shipment = shipmentElement ? shipmentElement.value : "";
 				var url = "?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org;
 				if (shipment) {
-					url += "&shipment=" + shipment;
+					url += "&shipment=" + encodeURIComponent(shipment);
 				}
 				location.replace(url);
 			}
@@ -112,7 +112,7 @@
 				showLoad('Загрузка данных... подождите пару секунд...');
 				var url = "getData.php?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org;
 				if (shipment) {
-					url += "&shipment=" + shipment;
+					url += "&shipment=" + encodeURIComponent(shipment);
 				}
 				var resp = await fetch(url);
 
