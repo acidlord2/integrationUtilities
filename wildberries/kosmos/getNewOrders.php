@@ -58,7 +58,7 @@ foreach ($newOrders as &$newOrder)
 {
 	if (array_search('WB' . $newOrder['id'], $ordersMSIDs) !== false)
 	{
-		$logger->write ('Already loaded - ' . $newOrder['id']);
+		$log->write ('Already loaded - ' . $newOrder['id']);
 		continue;
 	}
 		
@@ -68,7 +68,7 @@ foreach ($newOrders as &$newOrder)
 	$productMS = isset($productMS[0]) ? $productMS : $productMS0;
 	$newOrder['productMS'] = $productMS;
 
-	$orderTransformer = new \wildberries\Order('Kosmos', $newOrder);
+	$orderTransformer = new \wildberries\Order\OrderTransformation('Kosmos', $newOrder);
 	$newOrdersMS[] = $orderTransformer->transformMSToWildberries();
 }
 if (count($newOrdersMS) > 0){
@@ -97,7 +97,7 @@ foreach ($newOrders as $newOrder){
 	$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
 	if (isset($stickers['stickers'][0]))
 	{
-		$orderTransformer = new \wildberries\Order('Kosmos', $stickers['stickers'][0]);
+		$orderTransformer = new \Wildberries\Order\OrderTransformation('Kosmos', $stickers['stickers'][0]);
 		$updateOrdersMS[] = $orderTransformer->transformWildberriesStickerToMS($order, $supplyOpen);
 	}
 }
