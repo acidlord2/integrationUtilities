@@ -115,7 +115,7 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updatePrices', '_blank')">
 					Обновить цены WB Kosmos
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/getNewOrders', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/kosmos/getNewOrders', '_blank')">
 					Загрузить заказы WB Kosmos
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updateBarcodes', '_blank')">
@@ -127,7 +127,7 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/updatePrices', '_blank')">
 					Обновить цены WB Ullo
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/getNewOrders', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/ullo/getNewOrders', '_blank')">
 					Загрузить заказы WB Ullo
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/updateBarcodes', '_blank')">
