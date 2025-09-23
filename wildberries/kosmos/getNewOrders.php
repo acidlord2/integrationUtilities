@@ -3,6 +3,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Orders.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Supplies.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wildberries/order.php');
+
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
