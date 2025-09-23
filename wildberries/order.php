@@ -48,7 +48,8 @@ Class OrderTransformation
 
         $positions[] = $position;
 	
-        $date = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->orderWB['createdAt']);
+        $date = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->orderWB['createdAt'], new \DateTimeZone('UTC'));
+        $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
         $attributes = array(
             // тип оплаты
             array(

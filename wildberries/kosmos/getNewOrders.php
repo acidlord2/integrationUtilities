@@ -75,9 +75,10 @@ foreach ($newOrders as &$newOrder)
 }
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
-	$ordersMS = array_merge($ordersMS, $result);
-	$ordersMSIDs = array_column ($ordersMS, 'name');
 }
+$ordersMS = array_merge($ordersMS, $result);
+$ordersMSIDs = array_column ($ordersMS, 'name');
+
 
 $updateOrdersMS = array();
 foreach ($newOrders as $newOrder){
