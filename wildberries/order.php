@@ -43,12 +43,12 @@ Class OrderTransformation
         $position ['reserve'] = 1;
         $position ['price'] = (int)($this->orderWB['salePrice'] ?? $this->orderWB['convertedPrice']);
         $position ['assortment'] = array(
-            'meta' => $productMS[0]['meta']
+            'meta' => $this->orderWB['productMS'][0]['meta']
         );
 
         $positions[] = $position;
 	
-        $date = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->orderWB['createdAt']);
+        $date = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $this->orderWB['createdAt']);
         $attributes = array(
             // тип оплаты
             array(
