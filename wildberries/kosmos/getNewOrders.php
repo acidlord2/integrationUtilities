@@ -93,7 +93,7 @@ foreach ($newOrders as $newOrder){
 		if (!isset($item['externalCode']))
 			return false;
 		return $item['externalCode'] == $newOrder['id'];
-		usleep(100000);
+		usleep(200000);
 	});
 	
 	$order = reset($order);
