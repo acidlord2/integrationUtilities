@@ -68,7 +68,7 @@ foreach ($newOrders as &$newOrder)
 	$productMS = isset($productMS[0]) ? $productMS : $productMS0;
 	$newOrder['productMS'] = $productMS;
 
-	$orderTransformer = new \wildberries\Order\OrderTransformation('Kosmos', $newOrder);
+	$orderTransformer = new \Wildberries\Order\OrderTransformation('Kosmos', $newOrder);
 	$newOrdersMS[] = $orderTransformer->transformMSToWildberries();
 }
 if (count($newOrdersMS) > 0){
