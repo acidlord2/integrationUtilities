@@ -72,11 +72,13 @@ foreach ($newOrders as &$newOrder)
 	$orderTransformer = new \Wildberries\Order\OrderTransformation('Ullo', $newOrder);
 	$newOrdersMS[] = $orderTransformer->transformWildberriesToMS();
 }
+$result = array();
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
-	$ordersMS = array_merge($ordersMS, $result);
-	$ordersMSIDs = array_column ($ordersMS, 'name');
 }
+$ordersMS = array_merge($ordersMS, $result);
+$ordersMSIDs = array_column ($ordersMS, 'name');
+$log->write (__LINE__ . ' ordersMSIDs - ' . json_encode ($ordersMSIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 $updateOrdersMS = array();
 foreach ($newOrders as $newOrder){

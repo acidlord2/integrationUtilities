@@ -5,7 +5,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Orders.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Supplies.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/wildberries/order.php');
 
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
@@ -73,6 +72,7 @@ foreach ($newOrders as &$newOrder)
 	$orderTransformer = new \Wildberries\Order\OrderTransformation('Kosmos', $newOrder);
 	$newOrdersMS[] = $orderTransformer->transformWildberriesToMS();
 }
+$result = array();
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
 }
