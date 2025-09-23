@@ -79,6 +79,7 @@ if (count($newOrdersMS) > 0){
 $ordersMS = array_merge($ordersMS, $result);
 $ordersMSIDs = array_column ($ordersMS, 'name');
 $log->write (__LINE__ . ' ordersMSIDs - ' . json_encode ($ordersMSIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+
 $updateOrdersMS = array();
 foreach ($newOrders as $newOrder){
 	if (!in_array('WB' . $newOrder['id'], $ordersMSIDs))
@@ -92,6 +93,7 @@ foreach ($newOrders as $newOrder){
 		if (!isset($item['externalCode']))
 			return false;
 		return $item['externalCode'] == $newOrder['id'];
+		usleep(100000);
 	});
 	
 	$order = reset($order);

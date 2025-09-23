@@ -94,7 +94,7 @@ foreach ($newOrders as $newOrder){
 			return false;
 		return $item['externalCode'] == $newOrder['id'];
 	});
-	
+	$log->write (__LINE__ . ' order - ' . json_encode ($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	$order = reset($order);
 	// get sticker
 	$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
