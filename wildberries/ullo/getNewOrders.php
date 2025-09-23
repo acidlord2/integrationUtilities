@@ -80,7 +80,7 @@ if (count($newOrdersMS) > 0){
 
 $updateOrdersMS = array();
 foreach ($newOrders as $newOrder){
-	if (array_search('WB' . $newOrder['id'], $ordersMSIDs) !== false)
+	if (!in_array('WB' . $newOrder['id'], $ordersMSIDs))
 	{
 		continue;
 	}

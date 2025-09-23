@@ -81,7 +81,7 @@ $ordersMSIDs = array_column ($ordersMS, 'name');
 $log->write (__LINE__ . ' ordersMSIDs - ' . json_encode ($ordersMSIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 $updateOrdersMS = array();
 foreach ($newOrders as $newOrder){
-	if (array_search('WB' . $newOrder['id'], $ordersMSIDs) !== false)
+	if (!in_array('WB' . $newOrder['id'], $ordersMSIDs))
 	{
 		continue;
 	}
