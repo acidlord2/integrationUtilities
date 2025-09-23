@@ -111,4 +111,3 @@ if (count($updateOrdersMS) > 0){
 
 echo 'Processed ' . count ($newOrders) . ', created ' . count ($newOrdersMS), ', stickers updated ' . count ($updateOrdersMS);
 ?>
-

@@ -88,7 +88,13 @@
 				var shippingDate = document.getElementById("shippingDate").value;
 				var agent = url.searchParams.get("agent");
 				var org = document.getElementById("org").value;
-				location.replace ("?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
+				var shipmentElement = document.getElementById("shipment");
+				var shipment = shipmentElement ? shipmentElement.value : "";
+				var url = "?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org;
+				if (shipment) {
+					url += "&shipment=" + shipment;
+				}
+				location.replace(url);
 			}
 
 			window.onload = async function() {
@@ -97,13 +103,18 @@
 				var shippingDate = url.searchParams.get("shippingDate");
 				var agent = url.searchParams.get("agent");
 				var org = url.searchParams.get("org");
+				var shipment = url.searchParams.get("shipment") || "";
 				
 				if (org == null || shippingDate == null || agent == null)
 					return;
 				//document.getElementById("filter_button").disabled = true;
 				document.getElementById("refresh_button").disabled = true;
 				showLoad('Загрузка данных... подождите пару секунд...');
-				var resp = await fetch("getData.php?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org);
+				var url = "getData.php?shippingDate=" + shippingDate + "&agent=" + agent + "&org=" + org;
+				if (shipment) {
+					url += "&shipment=" + shipment;
+				}
+				var resp = await fetch(url);
 
 				if (resp.ok)
 				{

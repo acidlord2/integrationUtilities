@@ -8,6 +8,7 @@
 	$shippingDate = $_REQUEST["shippingDate"];
 	$agent = $_REQUEST["agent"];
 	$org = $_REQUEST["org"];
+	$shipment = $_REQUEST["shipment"] ?? '';
 
 	$index = $shippingDate . $agent . $org;
 	$_SESSION['products'][$index] = array();
@@ -27,6 +28,7 @@
 			$filter .= 'agent=' . MS_SPORTMASTER_AGENT . ';';
 		if ($agent == 'WB')
 			$filter .= 'agent=' . MS_WB_AGENT . ';';
+		    $filter .= MS_ATTR . MS_DELIVERYSERVICE_ATTR . '=' . $shipment . ';';
 		if ($org == 'Ullo')
 			$filter .= 'organization=' . MS_ULLO . ';';
 		if ($org == '4cleaning')

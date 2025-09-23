@@ -42,6 +42,9 @@
 					</select>
 				<?php } ?>
 			</span>
+			<?php if ($agent == 'WB') { ?>
+				Отгрузка: <input type="text" id="shipment" style="width: 80px;">
+			<?php } ?>				
 			<button type="button" id = "refresh_button" onclick="refreshOrders()">Обновить данные</button>			
 		</div>
 		<div style="margin-bottom: 5px; margin-top: 5px;"> 
