@@ -28,7 +28,8 @@
 			$filter .= 'agent=' . MS_SPORTMASTER_AGENT . ';';
 		if ($agent == 'WB') {
 			$filter .= 'agent=' . MS_WB_AGENT . ';';
-			$filter .= MS_ATTR . MS_DELIVERYSERVICE_ATTR . '=' . urlencode($shipment) . ';';
+			if ($shipment != '')
+				$filter .= MS_ATTR . MS_DELIVERYSERVICE_ATTR . '=' . urlencode($shipment) . ';';
 		}
 		if ($org == 'Ullo')
 			$filter .= 'organization=' . MS_ULLO . ';';
