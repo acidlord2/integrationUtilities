@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Product-v1.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-$hiddenProducts = ['2152401118', '2152401117', '2152401533', '2152401532'];
+$hiddenProducts = [];
 
 $clientId = SPORTMASTER_ULLO_CLIENT_ID;
 $warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
@@ -20,9 +20,10 @@ foreach ($stocks as $stock) {
     }));
     if (!empty($matched)) {
         $product = $matched[0];
-        $price = $msProductClass->getPrice($product, MS_PRICE_SPORTMASTER);
         if (in_array($product['code'], $hiddenProducts)) {
             $price = 0;
+        } else {
+            $price = $msProductClass->getPrice($product, MS_PRICE_SPORTMASTER);
         }
         $postStock[] = array(
             'offerId' => $product['code'],
