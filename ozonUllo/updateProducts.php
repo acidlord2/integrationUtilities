@@ -3,6 +3,8 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/productsOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	
+	$barcodes = [];//["005-1118","005-1336","005-1119","120922005","005-1112","005-1114","005-1110","120921718","005-1111","120921791","005-1113","005-1518","005-1519","002-105","002-106","005-1520","002-103","002-100","002-098","002-099","002-101","002-102","005-1358","005-1359","005-1357"];
+
 	$logger = new Log ('ozonUllo - updateProducts.log');
 	$productsOzon = ProductsOzon::getOzonProducts(false);
 	if (count ($productsOzon) > 0) {
