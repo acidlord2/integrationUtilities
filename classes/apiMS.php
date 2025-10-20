@@ -74,8 +74,9 @@ class APIMS
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_ENCODING, '');
+			// Automatically handle gzip/unzip for the response
+			curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
 			$gzipped = curl_exec($curl);
-			//$jsonOut = gzdecode($gzipped);
 			$jsonOut = $gzipped;
 			$arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl);			
