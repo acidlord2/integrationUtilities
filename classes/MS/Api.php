@@ -17,11 +17,14 @@ class Api
 
 	public function __construct()
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Settings.php');
+		$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 2);
+		require_once($docroot . '/config.php');
+		require_once($docroot . '/classes/Common/Log.php');
+		require_once($docroot . '/classes/Common/Settings.php');
 		
-		$this->logger = new \Classes\Common\Log('classes - MS - Api.log');
+		$logFileName = str_replace(['/', '\\'], ' - ', str_replace($docroot, '', __FILE__));
+		$logFileName = ltrim($logFileName, " -") . '.log';
+		$this->logger = new \Classes\Common\Log($logFileName);
 		
 		$tokenClass = new \Classes\Common\Settings('ms_token');
 		if ($tokenClass->isSettingExists()) {

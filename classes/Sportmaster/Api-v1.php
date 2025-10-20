@@ -19,13 +19,14 @@ class Api
 	
 	public function __construct($clientId)
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Settings.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
-		
+		$docRoot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 2);
+		require_once($docRoot . '/docker-config.php');
+		require_once($docRoot . '/classes/Common/Log.php');
+		require_once($docRoot . '/classes/Common/Settings.php');
+		require_once($docRoot . '/classes/Common/Db.php');
+
 		$this->clientId = $clientId;
-        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($docRoot, '', __FILE__)), " -");
         $logName .= '.log';
         $this->logger = new \Classes\Common\Log($logName);
 		

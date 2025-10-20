@@ -16,7 +16,8 @@ class ProductIterator implements \IteratorAggregate, \JsonSerializable
      */
     public function __construct($products = [])
     {
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/v2/Product.php');
+        $docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 3);
+        require_once($docroot . '/classes/Sportmaster/v2/Product.php');
 
         if (is_string($products)) {
             $products = json_decode($products, true);

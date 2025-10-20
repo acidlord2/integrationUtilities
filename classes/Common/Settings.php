@@ -15,10 +15,11 @@ class Settings
 
     public function __construct($code)
     {
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php';
-        
+        $docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 2);
+        require_once($docroot . '/docker-config.php');
+        require_once($docroot . '/classes/Common/Db.php');
+        require_once($docroot . '/classes/Common/Log.php');
+
         $this->log = new \Classes\Common\Log('classes - Common - Settings.log');
         $dbClass = new \Classes\Common\Db();
         $sql = 'select * from settings where code = "' . $code . '"';

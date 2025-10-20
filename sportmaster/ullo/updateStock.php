@@ -1,9 +1,14 @@
 <?php
+$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 2);
+require_once($docroot . '/docker-config.php');
+require_once($docroot . '/classes/Sportmaster/Product-v1.php');
+require_once($docroot . '/classes/Common/Log.php');
+require_once($docroot . '/classes/MS/productsMS.php');
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Product-v1.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
+// Generate unique transaction ID for this script execution
+$scriptTransactionId = 'stock_update_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4));
+putenv('SCRIPT_TRANSACTION_ID=' . $scriptTransactionId);
+
 $hiddenProducts = [];
 
 $clientId = SPORTMASTER_ULLO_CLIENT_ID;

@@ -7,9 +7,10 @@
  */
 namespace Classes\Sportmaster\v2;
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/v2/ProductIterator.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/v2/Product.php');
+$docRoot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 3);
+require_once($docRoot . '/config.php');
+require_once($docRoot . '/classes/Sportmaster/v2/ProductIterator.php');
+require_once($docRoot . '/classes/Sportmaster/v2/Product.php');
 
 class ProductApi
 {
@@ -211,9 +212,9 @@ class ProductApi
     public function updateStocks($stockUpdates)
     {
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Updating stocks');
-        
-        $url = SPORTMASTER_BASE_URL . 'v1/stocks';
-        
+
+        $url = SPORTMASTER_BASE_URL . SPORTMASTER_API_UPDATE_STOCKS;
+
         $response = $this->api->postData($url, $stockUpdates);
         if (is_string($response)) {
             $response = json_decode($response, true);
@@ -231,9 +232,9 @@ class ProductApi
     public function updatePrices($priceUpdates)
     {
         $this->log->write(__LINE__ . ' ' . __METHOD__ . ' Updating prices');
-        
-        $url = SPORTMASTER_BASE_URL . 'v1/prices';
-        
+
+        $url = SPORTMASTER_BASE_URL . SPORTMASTER_API_UPDATE_PRICES;
+
         $response = $this->api->postData($url, $priceUpdates);
         if (is_string($response)) {
             $response = json_decode($response, true);

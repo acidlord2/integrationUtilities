@@ -1,11 +1,11 @@
 <?php
+$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 2);
+require_once($docroot . '/docker-config.php');
+require_once($docroot . '/classes/Sportmaster/Product-v1.php');
+require_once($docroot . '/classes/Common/Log.php');
+require_once($docroot . '/classes/MS/productsMS.php');
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Product-v1.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-
-$logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+$logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($docroot, '', __FILE__)), " -");
 $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
 

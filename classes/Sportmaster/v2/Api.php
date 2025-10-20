@@ -20,13 +20,14 @@ class Api
 	
 	public function __construct($clientId)
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Settings.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
-		
+		$docRoot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 3);
+		require_once($docRoot . '/config.php');
+		require_once($docRoot . '/classes/Common/Log.php');
+		require_once($docRoot . '/classes/Common/Settings.php');
+		require_once($docRoot . '/classes/Common/Db.php');
+
 		$this->clientId = $clientId;
-        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($docRoot, '', __FILE__)), " -");
         $logName .= '.log';
         $this->logger = new \Classes\Common\Log($logName);
 		
@@ -118,6 +119,67 @@ class Api
 		{
 			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - URL: ' . $url);
 			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - postdata: ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);
+			return false;
+		}
+		return $jsonOut;
+	}
+	
+    public function putData($url, $data)
+	{
+		$curl = $this->init_curl($url);
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($curl, CURLOPT_POSTFIELDS, is_array($data) ? json_encode($data) : $data);
+		$jsonOut = curl_exec($curl);
+		$info = curl_getinfo($curl);			
+		curl_close($curl);
+
+		if ($info['http_code'] >= 400)
+		{
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - URL: ' . $url);
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - data: ' . (is_array($data) ? json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $data));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);
+			return false;
+		}
+		return $jsonOut;
+	}
+	
+    public function patchData($url, $data)
+	{
+		$curl = $this->init_curl($url);
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+		curl_setopt($curl, CURLOPT_POSTFIELDS, is_array($data) ? json_encode($data) : $data);
+		$jsonOut = curl_exec($curl);
+		$info = curl_getinfo($curl);			
+		curl_close($curl);
+
+		if ($info['http_code'] >= 400)
+		{
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - URL: ' . $url);
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - data: ' . (is_array($data) ? json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $data));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);
+			return false;
+		}
+		return $jsonOut;
+	}
+	
+    public function deleteData($url)
+	{
+		$curl = $this->init_curl($url);
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+		$jsonOut = curl_exec($curl);
+		$info = curl_getinfo($curl);			
+		curl_close($curl);
+
+		if ($info['http_code'] >= 400)
+		{
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' - URL: ' . $url);
 			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - HTTP error: ' . $info['http_code'] . ', response: ' . $jsonOut);
 			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - Header: ' . json_encode ($this->header, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' - JSON response: ' . $jsonOut);

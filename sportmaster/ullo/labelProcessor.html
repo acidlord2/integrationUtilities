@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportmaster Label Processing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status-processing {
+            border-left: 5px solid #ffc107;
+            background: #fff3cd;
+        }
+        .status-completed {
+            border-left: 5px solid #28a745;
+            background: #d4edda;
+        }
+        .status-error {
+            border-left: 5px solid #dc3545;
+            background: #f8d7da;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .info-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 12px;
+        }
+        .info-value {
+            font-size: 16px;
+            color: #333;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid #eee;
+        }
+        #results {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏷️ Sportmaster Label Processing</h1>
+        
+        <div id="initialSection">
+            <p>This tool processes Sportmaster orders that don't have labels yet:</p>
+            <ol>
+                <li>Finds MoySklad orders from Sportmaster/Ullo without labels</li>
+                <li>Changes packages in Sportmaster</li>
+                <li>Fetches labels from Sportmaster</li>
+                <li>Updates MoySklad orders with label information</li>
+            </ol>
+            
+            <button id="startProcessBtn">Start Label Processing</button>
+        </div>
+
+        <div id="results">
+            <div id="statusCard" class="status">
+                <h3 id="statusTitle">Processing...</h3>
+                <div id="statusMessage">Processing labels for Sportmaster orders...</div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Total Orders Found</div>
+                    <div id="totalOrders" class="info-value">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Orders Without Labels</div>
+                    <div id="ordersWithoutLabels" class="info-value">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Successfully Processed</div>
+                    <div id="processedCount" class="info-value">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Errors</div>
+                    <div id="errorCount" class="info-value">-</div>
+                </div>
+            </div>
+
+            <button id="processAgainBtn" style="display: none;">Process Again</button>
+        </div>
+
+        <div id="logSection">
+            <h4>Activity Log</h4>
+            <div id="logContainer" class="log"></div>
+        </div>
+    </div>
+
+    <script>
+        class LabelProcessor {
+            constructor() {
+                this.initializeElements();
+                this.bindEvents();
+            }
+
+            initializeElements() {
+                this.elements = {
+                    startProcessBtn: document.getElementById('startProcessBtn'),
+                    processAgainBtn: document.getElementById('processAgainBtn'),
+                    initialSection: document.getElementById('initialSection'),
+                    results: document.getElementById('results'),
+                    statusCard: document.getElementById('statusCard'),
+                    statusTitle: document.getElementById('statusTitle'),
+                    statusMessage: document.getElementById('statusMessage'),
+                    totalOrders: document.getElementById('totalOrders'),
+                    ordersWithoutLabels: document.getElementById('ordersWithoutLabels'),
+                    processedCount: document.getElementById('processedCount'),
+                    errorCount: document.getElementById('errorCount'),
+                    logContainer: document.getElementById('logContainer')
+                };
+            }
+
+            bindEvents() {
+                this.elements.startProcessBtn.addEventListener('click', () => this.startProcessing());
+                this.elements.processAgainBtn.addEventListener('click', () => this.restart());
+            }
+
+            log(message, type = 'info') {
+                const now = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.className = 'log-entry';
+                entry.innerHTML = `<strong>[${now}]</strong> ${message}`;
+                this.elements.logContainer.appendChild(entry);
+                this.elements.logContainer.scrollTop = this.elements.logContainer.scrollHeight;
+            }
+
+            async startProcessing() {
+                this.log('🚀 Starting label processing...');
+                this.elements.startProcessBtn.disabled = true;
+                
+                // Show results section
+                this.elements.initialSection.style.display = 'none';
+                this.elements.results.style.display = 'block';
+                
+                try {
+                    const response = await fetch('./processLabels.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.status === 'completed') {
+                        this.log(`✅ Label processing completed!`);
+                        this.log(`📊 Total orders found: ${result.totalOrdersFound || 0}`);
+                        this.log(`🏷️ Orders without labels: ${result.ordersWithoutLabels || 0}`);
+                        this.log(`✅ Successfully processed: ${result.processedCount || 0}`);
+                        this.log(`❌ Errors: ${result.errorCount || 0}`);
+                        
+                        // Update status card
+                        this.elements.statusCard.className = 'status status-completed';
+                        this.elements.statusTitle.textContent = 'Processing Completed';
+                        this.elements.statusMessage.textContent = result.message;
+                        
+                        // Update info grid
+                        this.elements.totalOrders.textContent = result.totalOrdersFound || '0';
+                        this.elements.ordersWithoutLabels.textContent = result.ordersWithoutLabels || '0';
+                        this.elements.processedCount.textContent = result.processedCount || '0';
+                        this.elements.errorCount.textContent = result.errorCount || '0';
+                        
+                        // Show process again button
+                        this.elements.processAgainBtn.style.display = 'block';
+                        
+                    } else if (result.status === 'no_orders') {
+                        this.log('ℹ️ ' + result.message);
+                        
+                        this.elements.statusCard.className = 'status status-processing';
+                        this.elements.statusTitle.textContent = 'No Orders to Process';
+                        this.elements.statusMessage.textContent = result.message;
+                        
+                        this.elements.processAgainBtn.style.display = 'block';
+                        
+                    } else {
+                        this.log('❌ Error: ' + result.message);
+                        
+                        this.elements.statusCard.className = 'status status-error';
+                        this.elements.statusTitle.textContent = 'Processing Error';
+                        this.elements.statusMessage.textContent = result.message;
+                        
+                        this.elements.processAgainBtn.style.display = 'block';
+                    }
+                    
+                } catch (error) {
+                    this.log('❌ Error processing labels: ' + error.message);
+                    
+                    this.elements.statusCard.className = 'status status-error';
+                    this.elements.statusTitle.textContent = 'Processing Error';
+                    this.elements.statusMessage.textContent = 'Failed to communicate with server';
+                    
+                    this.elements.processAgainBtn.style.display = 'block';
+                }
+            }
+
+            restart() {
+                this.elements.initialSection.style.display = 'block';
+                this.elements.results.style.display = 'none';
+                this.elements.startProcessBtn.disabled = false;
+                this.elements.processAgainBtn.style.display = 'none';
+                this.elements.logContainer.innerHTML = '';
+            }
+        }
+
+        // Initialize the label processor when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new LabelProcessor();
+        });
+    </script>
+</body>
+</html>

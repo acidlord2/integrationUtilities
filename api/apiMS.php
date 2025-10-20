@@ -11,16 +11,36 @@ class APIMS
 	
 	private $client_id = false;
 	private $client_pass = false;
-	
+	private $token;
+	private $header;
+
 	private $cache = array ();
 
 	public function __construct()
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
+		$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 1);
+		require_once($docroot . '/config.php');
+		require_once($docroot . '/classes/Common/Log.php');
+		require_once($docroot . '/classes/Common/Settings.php');
 
-		$this->logger = new Log('api - apiMS.log');
+        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($docroot, '', __FILE__)), " -");
+        $logName .= '.log';
+        $this->logger = new \Classes\Common\Log($logName);
+
+		$tokenClass = new \Classes\Common\Settings('ms_token');
+		if ($tokenClass->isSettingExists()) {
+		    $this->token = $tokenClass->getValue();
+		}
+		else {
+		    $this->logger->write (__LINE__ . ' '. __METHOD__ . ' token not found (ms_token)');
+		}
+		
+		// REST Header
+		$this->header = array (
+		    'Content-type: application/json',
+		    'Accept-Encoding: gzip',
+		    'Authorization: Bearer ' . $this->token
+		);
 	}	
 	
 	private function getCache ($item)
@@ -47,44 +67,6 @@ class APIMS
 	
     public function getData($service_url)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json',
-		    'Accept-Encoding: gzip',
-			'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
-
-		//$logger->write ('getMSData.cache - ' . json_encode (self::$cache, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		
 		$cache = $this->getCache ($service_url);
 		
 		if ($cache)
@@ -93,7 +75,7 @@ class APIMS
 		while (true)
 		{
 			$curl = curl_init($service_url);
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			$jsonOut = curl_exec($curl);
@@ -132,46 +114,10 @@ class APIMS
 	
     public function postData($service_url, $postdata)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
-
 		while (true)
 		{
 			$curl = curl_init($service_url);
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_ENCODING, '');
@@ -206,46 +152,10 @@ class APIMS
 
     public function putData($service_url, $postdata)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
-
 		while (true)
 		{
 			$curl = curl_init($service_url);
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
@@ -278,46 +188,10 @@ class APIMS
 	
 	public function deleteData($service_url)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
-
 		while (true)
 		{
 			$curl = curl_init($service_url);
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
@@ -349,46 +223,10 @@ class APIMS
 	
     public function postBlobData($service_url, $postdata)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
-
 		while (true)
 		{
 		    $curl = curl_init($service_url);
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
@@ -422,46 +260,8 @@ class APIMS
 
 	public function getRawData($service_url)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json',
-		    'Accept-Encoding: gzip',
-			'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
-
-		//$logger->write ('getMSData.cache - ' . json_encode (self::$cache, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		
 		$curl = curl_init($service_url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 		curl_setopt($curl, CURLOPT_ENCODING, '');
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Follow redirects (302)

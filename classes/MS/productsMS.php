@@ -12,12 +12,16 @@ class ProductsMS
 	
 	public function __construct()
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
+		$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 2);
+		require_once($docroot . '/config.php');
+		require_once($docroot . '/api/apiMS.php');
+		require_once($docroot . '/classes/Common/Log.php');
 
-		$this->logger = new Log('classes - MS - productsMS.log');
-		$this->apiMSClass = new APIMS();
+		$logFileName = str_replace(['/', '\\'], ' - ', str_replace($docroot, '', __FILE__));
+		$logFileName = ltrim($logFileName, " -") . '.log';
+		$this->logger = new \Classes\Common\Log($logFileName);
+
+		$this->apiMSClass = new \APIMS();
 	}	
 
 	public function getAssortment ($codes = false)

@@ -1,0 +1,58 @@
+services:
+  # PHP Application
+  php-app:
+    build: .
+    container_name: integration-helper-app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./logs:/var/www/html/logs
+      - ./uploads:/var/www/html/uploads
+    environment:
+      - DB_HOSTNAME=mysql
+      - DB_USERNAME=integration_user
+      - DB_PASSWORD=integration_pass
+      - DB_DATABASE=integration_db
+    depends_on:
+      - mysql
+    networks:
+      - integration-network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: integration-helper-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: integration_db
+      MYSQL_USER: integration_user
+      MYSQL_PASSWORD: integration_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - integration-network
+
+  # phpMyAdmin for database management
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: integration-helper-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: integration_user
+      PMA_PASSWORD: integration_pass
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - integration-network
+
+volumes:
+  mysql_data:
+
+networks:
+  integration-network:
+    driver: bridge

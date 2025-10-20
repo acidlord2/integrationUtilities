@@ -3,9 +3,16 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Order-v1.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/CustomerorderApi.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/CustomerorderIterator.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/Customerorder.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Queue/Queue.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sportmaster/order.php');
+
+use MS\v2\CustomerorderApi;
+use MS\v2\CustomerorderIterator;
+use MS\v2\Customerorder;
+use Queue\Queue;
 
 define('ORDER_STATUSES', ['FOR_PICKING']);
 
@@ -17,9 +24,15 @@ $clientId = SPORTMASTER_ULLO_CLIENT_ID;
 $warehouseId = SPORTMASTER_ULLO_WAREHOUSE_ID;
 $orderSportmasterClass = new \Classes\Sportmaster\v1\Order($clientId, $warehouseId);
 $orders = $orderSportmasterClass->shipmentsList(ORDER_STATUSES);
+
+// Generate transaction ID for queue tracking
+$transactionId = 'sportmaster_import_' . uniqid() . '_' . time();
+$log->write(__LINE__ . ' '. __METHOD__ . ' Starting import with transaction ID: ' . $transactionId);
+
 $ordersMS = array();
 $transformationClasses = array();
-// If you want to use MS Products class, uncomment the following lines
+
+// Transform Sportmaster orders to MS format
 foreach ($orders as $order) {
     $transformationClass = new \Sportmaster\Order\OrderTransformation($order);
     $transformationClasses[] = $transformationClass;
@@ -28,23 +41,49 @@ foreach ($orders as $order) {
         $log->write(__LINE__ . ' '. __METHOD__ . ' Failed to transform order: ' . json_encode($order, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         continue;
     }
-    $ordersMS[] = $orderMS;
+    
+    // Convert to Customerorder object
+    $customerOrder = new Customerorder($orderMS);
+    $ordersMS[] = $customerOrder;
 }
+
 if (count($ordersMS) > 0) {
-    $orderMSClass = new OrdersMS();
-    $result = $orderMSClass->createCustomerorder($ordersMS);
-    if ($result) {
-        $log->write(__LINE__ . ' '. __METHOD__ . ' Successfully created ' . count($ordersMS) . ' orders in MS');
-        echo count($ordersMS) . ' orders created successfully<br/>';
+    // Use new queue-based CustomerorderApi
+    $orderIterator = new CustomerorderIterator($ordersMS);
+    $customerorderApi = new CustomerorderApi(true, $transactionId); // Enable queue with transaction ID
+    
+    $result = $customerorderApi->createupdate($orderIterator);
+    
+    if ($result !== false) {
+        $log->write(__LINE__ . ' '. __METHOD__ . ' Successfully queued ' . count($ordersMS) . ' orders for processing');
+        
+        // Return immediate response with transaction ID for JavaScript polling
+        echo json_encode([
+            'status' => 'queued',
+            'transactionId' => $transactionId,
+            'ordersCount' => count($ordersMS),
+            'message' => count($ordersMS) . ' orders queued for processing',
+            'timestamp' => date('Y-m-d H:i:s')
+        ]);
+        
     } else {
-        $log->write(__LINE__ . ' '. __METHOD__ . ' Failed to create orders in MS');
-        echo 'Failed to create orders<br/>';
+        $log->write(__LINE__ . ' '. __METHOD__ . ' Failed to queue orders');
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Failed to queue orders for processing'
+        ]);
     }
 } else {
     $log->write(__LINE__ . ' '. __METHOD__ . ' No orders to process');
-    echo 'No orders to process<br/>';
+    echo json_encode([
+        'status' => 'no_orders',
+        'message' => 'No orders to process'
+    ]);
 }
 
+// TODO: Second part (package changes and labels) should be handled separately
+// This part will be processed after the initial orders are created via queue
+/*
 $ordersMS = array();
 $packages = array();
 foreach($transformationClasses as $transformationClass) {
@@ -82,3 +121,4 @@ if (count($ordersMS) > 0) {
 } else {
     $log->write(__LINE__ . ' '. __METHOD__ . ' No orders to update');
 }
+*/

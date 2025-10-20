@@ -1,5 +1,5 @@
 <?php
-namespace Classes\MS\v2;
+namespace MS\v2;
 /**
  *
  * @class MS Api
@@ -17,12 +17,13 @@ class Api
 	
 	public function __construct()
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Settings.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
-		
-        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+		$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 3);
+		require_once($docroot . '/config.php');
+		require_once($docroot . '/classes/Common/Log.php');
+		require_once($docroot . '/classes/Common/Settings.php');
+		require_once($docroot . '/classes/Common/Db.php');
+
+        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($docroot, '', __FILE__)), " -");
         $logName .= '.log';
         $this->logger = new \Classes\Common\Log($logName);
 		
@@ -119,19 +120,9 @@ class Api
 			if ($info['http_code'] >= 400)
 			{
 				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' info - ' . json_encode ($info, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' url - ' . $url);
+				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' jsonOut - ' . $jsonOut);
 				return false;
-			}
-
-			$check = $this->check_for_errors($jsonOut);
-			if ($check === 'error')
-			{
-				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' Error in response: ' . $jsonOut);
-				return false;
-			}
-			else if ($check === 'retry')
-			{
-				usleep(100000);
-				continue;
 			}
 
 			//$cache = $this->setCache ($url, $jsonOut);
@@ -155,19 +146,8 @@ class Api
 			{
 				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' info - ' . json_encode ($info, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' jsonOut - ' . $jsonOut);
 				return false;
-			}
-
-			$check = $this->check_for_errors($jsonOut);
-			if ($check === 'error')
-			{
-				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' Error in response: ' . $jsonOut);
-				return false;
-			}
-			else if ($check === 'retry')
-			{
-				usleep(100000);
-				continue;
 			}
 
 			return $jsonOut;
@@ -197,6 +177,40 @@ class Api
 			if ($check === 'error')
 			{
 				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' Error in response: ' . $jsonOut);
+				return false;
+			}
+			else if ($check === 'retry')
+			{
+				usleep(100000);
+				continue;
+			}
+
+			return $jsonOut;
+		}						
+	}
+	
+	public function patchData($url, $data)
+	{
+		$this->logger->write (__LINE__ . ' '. __METHOD__ . ' url - ' . $url . ', data - ' . $data);
+		while (true)
+		{
+			$curl = $this->initCurl($url);
+			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+			$jsonOut = curl_exec($curl);
+			$info = curl_getinfo($curl);
+			$this->logger->write (__LINE__ . ' '. __METHOD__ . ' info - ' . json_encode($info));
+			curl_close($curl);
+			
+			if ($jsonOut === false) 
+			{
+				$this->logger->write (__LINE__ . ' '. __METHOD__ . ' False json out');
+				return false;
+			}
+
+			$check = $this->checkErrors($info, $jsonOut);
+			if ($check === false)
+			{
 				return false;
 			}
 			else if ($check === 'retry')

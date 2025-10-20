@@ -187,6 +187,11 @@
 	define('MS_API_STORE', '/entity/store');
 	define('MS_API_GROUP', '/entity/group');
 
+	define('MS_API_BASE_URL_V2', 'https://api.moysklad.ru/api/remap/');
+	define('MS_API_VERSION_1_2_V2', '1.2/');
+	define('MS_API_CUSTOMERORDER_V2', MS_API_BASE_URL_V2 . MS_API_VERSION_1_2_V2 . 'entity/customerorder/');
+	define('MS_API_CUSTOMERORDER_POSITIONS_V2', MS_API_BASE_URL_V2 . MS_API_VERSION_1_2_V2 . 'entity/customerorder/{id}/positions/');
+
 	define('MS_API_ATTRIBUTE_CURIER', '1a048b1f-d61f-11e8-9109-f8fc0021c485');
 	define('MS_API_ATTRIBUTE_DELIVERYTIME', 'e7a5f365-d62d-11e8-9107-50480021c6c8');
 	define('MS_API_ATTRIBUTE_PAYMENTTYPE', 'e0430541-d622-11e8-9109-f8fc00212299');
@@ -409,3 +414,5 @@
 	define('SPORTMASTER_BASE_URL', 'https://api-seller.sportmaster.ru/api/');
 	define('SPORTMASTER_API_STOCKS_LIST', 'v1/fbs/stocks/list');
 	define('SPORTMASTER_API_PRICES_LIST', 'v1/product/prices/list');
+	define('SPORTMASTER_API_UPDATE_STOCKS', 'v1/fbs/stocks/create-import-task');
+	define('SPORTMASTER_API_UPDATE_PRICES', 'v1/product/prices/create-import-task');

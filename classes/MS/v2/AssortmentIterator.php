@@ -11,7 +11,8 @@ class AssortmentIterator implements \IteratorAggregate {
      * @param string|array $json JSON string or array of assortment objects
      */
     public function __construct($assortments) {
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/Assortment.php');
+        $docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 3);
+        require_once($docroot . '/classes/MS/v2/Assortment.php');
 
         $items = [];
         if (is_string($assortments)) {

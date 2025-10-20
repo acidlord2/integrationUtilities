@@ -28,17 +28,18 @@ class AssortmentApi
 	 */
 	public function __construct()
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/Api.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/v2/AssortmentIterator.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
+		$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 3);
+		require_once($docroot . '/config.php');
+		require_once($docroot . '/classes/MS/v2/Api.php');
+		require_once($docroot . '/classes/MS/v2/AssortmentIterator.php');
+		require_once($docroot . '/classes/Common/Log.php');
 
-		$logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+		$logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($docroot, '', __FILE__)), " -");
 		$logName .= '.log';
 		$this->log = new \Classes\Common\Log($logName);
 		
 		// Initialize API client
-		$this->api = new \Classes\MS\v2\Api();
+		$this->api = new \MS\v2\Api();
 	}
 	
 	public function fetchAssortment($codes = false)

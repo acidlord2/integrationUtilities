@@ -16,16 +16,17 @@ class Order
 	private $sleepTime = 2; // seconds
 	private $warehouseId;
 	
-	public function __construct($cliendtId, $warehouseId)
+	public function __construct($clientId, $warehouseId)
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Api-v1.php');
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-		
-        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
+		$docroot = $_SERVER['DOCUMENT_ROOT'] ?: dirname(__DIR__, 2);
+		require_once($docroot . '/config.php');
+		require_once($docroot . '/classes/Sportmaster/Api-v1.php');
+		require_once($docroot . '/classes/Common/Log.php');
+
+        $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($docroot, '', __FILE__)), " -");
         $logName .= '.log';
         $this->log = new \Classes\Common\Log($logName);
-		$this->apiClass = new \Classes\Sportmaster\v1\Api($cliendtId);
+		$this->apiClass = new \Classes\Sportmaster\v1\Api($clientId);
 		$this->warehouseId = $warehouseId;
 	}	
 
