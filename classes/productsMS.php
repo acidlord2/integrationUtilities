@@ -22,7 +22,7 @@ class ProductsMS
 			$service_url = MS_API_BASE_URL . MS_API_VERSION_1_2 . MS_API_ASSORTMENT . '?filter='. ($filter !== false ? $filter : '') .'stockMode=all;quantityMode=all;&offset=' . $offset;
 			APIMS::getMSData($service_url, $product_msJson, $product_ms);
 			$logger -> write (__LINE__ . ' getAssortment.service_url - ' . json_encode ($service_url, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			//$logger -> write (__LINE__ . ' getAssortment.product_ms - ' . json_encode ($product_ms, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger -> write (__LINE__ . ' getAssortment.product_ms(count) - ' . count($product_ms['rows']));
 			$products = array_merge($products, $product_ms['rows']);
 			$offset += $product_ms['meta']['limit'];
 			
