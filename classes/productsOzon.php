@@ -30,7 +30,6 @@ class ProductsOzon
 			}
 			$products_ozon = array_merge($products_ozon, $return['result']['items']);
 			$postdata['last_id'] = $return ['result']['last_id'];
-			break; // temp break to avoid too many requests
 		}
 		return $products_ozon;
 	}
