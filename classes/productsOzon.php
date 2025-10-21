@@ -17,7 +17,7 @@ class ProductsOzon
 		$logger = new Log (self::$logFilename);
 		
 		$products_ozon = array();
-		$postdata = array ('limit' => 1000, 'last_id' => '', 'filter' => (object) []);
+		$postdata = array ('limit' => 10, 'last_id' => '', 'filter' => (object) []);
 		
 		while (true)
 		{
@@ -30,6 +30,7 @@ class ProductsOzon
 			}
 			$products_ozon = array_merge($products_ozon, $return['result']['items']);
 			$postdata['last_id'] = $return ['result']['last_id'];
+			break; // temp break to avoid too many requests
 		}
 		return $products_ozon;
 	}

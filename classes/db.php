@@ -11,7 +11,7 @@ class Db
 	
 	public static function get_connection()
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		// if connection exists
 		if (self::$db != null)
 			return self::$db;

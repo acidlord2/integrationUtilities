@@ -75,14 +75,14 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			// Automatically handle gzip/unzip for the response
 			curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
-			$gzipped = curl_exec($curl);
-			$jsonOut = $gzipped;
+			$jsonOut = curl_exec($curl);
 			$arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl);			
 			curl_close($curl);
 			
-			//$logger->write ('getMSData.arrayOut - ' . json_encode ($arrayOut, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			//$logger->write ('getMSData.info - ' . json_encode ($info, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger->write ('getMSData.jsonOut - ' . $jsonOut);
+			$logger->write ('getMSData.arrayOut - ' . json_encode ($arrayOut, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$logger->write ('getMSData.info - ' . json_encode ($info, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 			if (isset($arrayOut['errors']))
 				$logger->write ('getMSData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

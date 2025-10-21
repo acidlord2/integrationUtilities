@@ -1,0 +1,74 @@
+# Docker ignore file for PHP application
+# Excludes files that shouldn't be copied into the Docker image
+
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Docker files
+Dockerfile
+docker-compose.yml
+docker-compose.*.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Node modules (if any)
+node_modules/
+npm-debug.log
+
+# Composer (if using)
+vendor/
+composer.lock
+
+# Environment files (should be handled by docker-compose)
+.env
+.env.local
+.env.*.local
+
+# Cache and temporary directories
+cache/
+tmp/
+temp/
+
+# Logs (will be mounted as volumes)
+logs/
+
+# Uploads (will be mounted as volumes)  
+uploads/*
+
+# Database dumps
+*.sql
+*.dump
+
+# Backup files
+*.bak
+*.backup
+
+# Large media files that shouldn't be in the container
+*.mp3
+*.mp4
+*.avi
+*.mov
+*.pdf
+*.zip
+*.tar.gz
