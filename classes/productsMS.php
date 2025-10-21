@@ -11,7 +11,7 @@ class ProductsMS
 	public static function getAssortment ($filter = false)
 	{
 		// get ms products
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiMS.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
@@ -34,7 +34,7 @@ class ProductsMS
 	
 	public static function findProductsByCode ($codes)
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiMS.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		

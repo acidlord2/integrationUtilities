@@ -15,7 +15,7 @@
 		$products = array();
 		foreach ($productsOzon as $key => $productOzon)
 		{
-			$filter .= 'code=' . $productOzon['offer_id'] . ';';
+			$filter .= 'code=' . urlencode($productOzon['offer_id']) . ';';
 			$products[$productOzon['offer_id']] = $productOzon;
 			if (($key + 1) % 200 == 0 || $key + 1 == count ($productsOzon))
 			{

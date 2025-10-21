@@ -11,13 +11,13 @@ class ProductsOzon
 	public static function getOzonProducts ($kaori = false)
 	{
 		// get ozon products
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiOzon.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
 		
 		$products_ozon = array();
-		$postdata = array ('limit' => 10, 'last_id' => '', 'filter' => (object) []);
+		$postdata = array ('limit' => 1000, 'last_id' => '', 'filter' => (object) []);
 		
 		while (true)
 		{
@@ -37,7 +37,7 @@ class ProductsOzon
 	public static function updateOzonProduct ($productData, $kaori = false)
 	{
 		// update ozon products
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiOzon.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
@@ -50,7 +50,7 @@ class ProductsOzon
 	public static function updatePrices ($pricesData, $kaori = false)
 	{
 		// update ozon products
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiOzon.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);
@@ -63,7 +63,7 @@ class ProductsOzon
 	public static function updateStock ($stockData, $kaori = false)
 	{
 		// update ozon products
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiOzon.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log (self::$logFilename);

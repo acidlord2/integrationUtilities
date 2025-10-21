@@ -13,7 +13,7 @@ class APIMS
 
     public static function getMSData($service_url, &$jsonOut, &$arrayOut)
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log('classes - apiMS.log');
