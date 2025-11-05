@@ -60,8 +60,8 @@
 
 			$price = $priceKaori == 0 ? $price : $priceKaori;
 			
-			if ($productMS['pathName'] && stripos($productMS['pathName'], 'Kabrita') === false)
-				array_push ($prices['prices'], array ('offer_id' => $productMS['code'], 'price' => (string)$price, 'old_price' => (string)(int)($price * 1.2)));
+			//if ($productMS['pathName'] && stripos($productMS['pathName'], 'Kabrita') === false)
+			array_push ($prices['prices'], array ('offer_id' => $productMS['code'], 'price' => (string)$price, 'old_price' => (string)(int)($price * 1.2)));
 			
 			array_push (
 				$stocks['stocks'],
