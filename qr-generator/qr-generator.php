@@ -1,6 +1,6 @@
 <?php
-require_once('tcpdf/tcpdf.php');
-require_once('tcpdf/tcpdf_barcodes_2d.php');
+require_once('tcpdf.php');
+require_once('tcpdf_barcodes_2d.php');
 
 $barcodeobj = new TCPDF2DBarcode('Hello World', 'DATAMATRIX');
 $barcodeobj->getBarcodePNG(4, 4, array(0,0,0)); // Returns PNG image data as string
