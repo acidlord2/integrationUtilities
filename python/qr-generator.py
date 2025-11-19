@@ -166,7 +166,7 @@ def read_xlsx_with_gtin(file_path, target_gtin):
         print(f"Error reading Excel file: {e}")
         return []
 
-def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(200,200), overwrite=False):
+def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(50,50), overwrite=False):
     """Generate DataMatrix barcodes for each matched row.
 
     Files will be saved under output_dir named: dm_<gtin>_<index>.png
@@ -198,7 +198,7 @@ def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(
     print(f"Generated {len(generated)} barcode files in '{output_dir}'")
     return generated
 
-def append_codes_to_template(template_path, matched_rows, pcs_in_carton, gtin, barcodes_dir="barcodes", result_dir="result"):
+def append_codes_to_template(template_path_list, matched_rows, pcs_in_carton_list, gtin_list, barcodes_dir="barcodes", result_dir="result"):
     """Create a multi-page DOCX document where each page contains one batch of codes.
 
     Each batch consists of up to pcs_in_carton items from matched_rows. A page break is
@@ -206,44 +206,63 @@ def append_codes_to_template(template_path, matched_rows, pcs_in_carton, gtin, b
     rendered underneath (embedded in the PNG), so we only place the images.
 
     Args:
-        template_path (str): Path to the input template DOCX (may or may not exist).
+        template_path_list (list): List of Paths to the input template DOCX files (may or may not exist).
         matched_rows (list): List of dicts with 'code' and 'filename'.
-        pcs_in_carton (int): Number of codes per batch/page.
-        gtin (str): GTIN used for naming output file.
+        pcs_in_carton_list (list): List of number of codes per batch/page.
+        gtin_list (list): List of GTINs used for naming output files.
         barcodes_dir (str): Directory where barcode PNGs are stored.
         result_dir (str): Output directory for final DOCX.
     Returns:
         str: Path to the generated DOCX file or None on failure.
     """
     try:
-        if pcs_in_carton <= 0:
-            print("pcs_in_carton is <= 0; skipping DOCX generation")
+        if pcs_in_carton_list is None or not pcs_in_carton_list :
+            print("pcs_in_carton_list is <= 0; skipping DOCX generation")
             return None
         if not matched_rows:
             print("No matched rows provided; skipping DOCX generation")
             return None
+        if len(template_path_list) != len(gtin_list) or len(template_path_list) != len(pcs_in_carton_list):
+            print("Length of template_path, gtin, and pcs_in_carton lists must match; skipping DOCX generation")
+            return None
         os.makedirs(result_dir, exist_ok=True)
 
-        total = len(matched_rows)
-        print(f"Building separate batch DOCX files: {total} codes, batch size {pcs_in_carton}")
+        total = len(matched_rows) / len(template_path_list)
+        if not total.is_integer():
+            print("Total matched rows is not evenly divisible by number of templates; check inputs.")
+            return None
+        print(f"Building separate batch DOCX files: {total} codes, batch size {pcs_in_carton_list}")
 
         batch_docx_paths = []
-        for batch_index, start in enumerate(range(0, total, pcs_in_carton), start=1):
-            batch = matched_rows[start:start + pcs_in_carton]
-            # Load template fresh each time to preserve styling/pictures
-            doc = Document(template_path)
-            p = doc.add_paragraph()
-            for row in batch:
-                filename = row.get('filename')
-                image_path = os.path.join(barcodes_dir, filename) if filename else None
-                if image_path and os.path.exists(image_path):
-                    run_img = p.add_run()
-                    run_img.add_picture(image_path, width=Cm(3))
+        batch_index = 0
+        while matched_rows:
+            batch_index += 1
+            for idx, (template_path, pcs_in_carton, gtin) in enumerate(zip(template_path_list, pcs_in_carton_list, gtin_list), start=0):
+                batch = [r for r in matched_rows if r.get('gtin') == gtin][:pcs_in_carton]; [matched_rows.remove(r) for r in batch]
+                # First iteration: load template, subsequent: append to existing doc
+                if idx == 0:
+                    doc = Document(template_path)
                 else:
-                    p.add_run("[Image not found]\n")
-            
+                    # Append template content using Composer
+                    template_doc = Document(template_path)
+                    composer = Composer(doc)
+                    composer.append(template_doc)
+                    doc = composer.doc
+                p = doc.add_paragraph()
+                for row in batch:
+                    filename = row.get('filename')
+                    image_path = os.path.join(barcodes_dir, filename) if filename else None
+                    if image_path and os.path.exists(image_path):
+                        run_img = p.add_run()
+                        run_img.add_picture(image_path, width=Cm(3))
+                    else:
+                        p.add_run("[Image not found]\n")
+                if idx < len(template_path_list) - 1:
+                    p = doc.add_paragraph()
+                    p = doc.add_paragraph()
+
             # Add page break only if this is not the last batch
-            if start + pcs_in_carton < total:
+            if matched_rows:
                 p.add_run().add_break(WD_BREAK.PAGE)  # Page break at the end of batch
                         
             batch_filename = f"{str(gtin).strip()}_batch_{batch_index}.docx"
@@ -303,37 +322,43 @@ def merge_docx(docx_paths, output_path):
 
 if __name__ == "__main__":
     # Demo with Excel processing
-    input_file = "data.xlsx"
-    gtin = "04901301453990"
-    input_template = "04901301453990.docx"
-    pcs_in_carton = 9
-    
+    input_file = "file-a3960f94-38bb-4c7b-acd6-b5bece4f4906.xlsx"
+    gtin_array = ["04560119224880", "04560119224897"]
+    input_template = ["Diane_ORANGE_shampoo.docx", "Diane_ORANGE_conditioner.docx"]
+    pcs_in_carton = [10, 10]
+    all_rows = []
     print(f"Processing Excel file: {input_file}")
-    print(f"Looking for GTIN: {gtin}")
+    for idx, gtin in enumerate(gtin_array):
+        print(f"Looking for GTIN: {gtin}")
     
-    if os.path.exists(input_file):
-        matched_rows = read_xlsx_with_gtin(input_file, gtin)
-        if matched_rows:
-            print(f"\nFound {len(matched_rows)} matching rows:")
-            for i, row in enumerate(matched_rows, 1):
-                print(f"Row {i}: GTIN={row['gtin']}, Code={row['code']}")
-            # Generate barcodes (only once for all matched rows)
-            generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(100,100))
-            # Create batch DOCX files then merge them into one DOCX
-            batch_docx_files = append_codes_to_template(input_template, matched_rows, pcs_in_carton, gtin, barcodes_dir="barcodes", result_dir="result")
-            if batch_docx_files:
-                merged_docx = merge_docx(batch_docx_files, os.path.join("result", f"merged_{gtin}.docx"))
-                if merged_docx:
-                    print(f"Merged DOCX created: {merged_docx}")
-                    # Convert merged DOCX to PDF
-                    convert(merged_docx, os.path.join("result", f"merged_{gtin}.pdf"))
-                    print(f"Merged PDF created: {os.path.join('result', f'merged_{gtin}.pdf')}")
-                else:
-                    print("DOCX merge failed; PDF export skipped.")
+        if os.path.exists(input_file):
+            matched_rows = read_xlsx_with_gtin(input_file, gtin)
+            if matched_rows:
+                all_rows.extend(matched_rows)
+                print(f"\nFound {len(matched_rows)} matching rows:")
+                for i, row in enumerate(matched_rows, 1):
+                    print(f"Row {i}: GTIN={row['gtin']}, Code={row['code']}")
+                # Generate barcodes (only once for all matched rows)
+                generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(50,50))
             else:
-                print("Batch DOCX generation failed; cannot proceed to DOCX merge.")
+                print("No matching rows found")
         else:
-            print("No matching rows found")
+            print(f"File {input_file} not found")
+
+    # Create batch DOCX files then merge them into one DOCX
+    if all_rows:
+        batch_docx_files = append_codes_to_template(input_template, all_rows, pcs_in_carton, gtin_array, barcodes_dir="barcodes", result_dir="result")
+        if batch_docx_files:
+            merged_docx = merge_docx(batch_docx_files, os.path.join("result", f"merged_{gtin_array}.docx"))
+            if merged_docx:
+                print(f"Merged DOCX created: {merged_docx}")
+                # Convert merged DOCX to PDF
+                convert(merged_docx, os.path.join("result", f"merged_{gtin_array}.pdf"))
+                print(f"Merged PDF created: {os.path.join('result', f'merged_{gtin_array}.pdf')}")
+            else:
+                print("DOCX merge failed; PDF export skipped.")
+        else:
+            print("Batch DOCX generation failed; cannot proceed to DOCX merge.")
     else:
-        print(f"File {input_file} not found")
-    
+        print("No matched rows found in total; skipping DOCX generation.")
+        
