@@ -7,6 +7,9 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
+# Copy custom PHP configuration
+COPY docker/php/php.ini /usr/local/etc/php/conf.d/custom.ini
+
 # Set working directory
 WORKDIR /var/www/html
 
