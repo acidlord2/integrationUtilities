@@ -70,6 +70,7 @@ class ApiOzon
 		}
 		catch (Exception $e)
 		{
+			$this->log->write(__LINE__ . ' Exception - ' . $e->getMessage());
 		    return false;
 		}
 		return $arrayOut;
