@@ -55,25 +55,25 @@
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Яндекс</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-summit/updateStock', '_blank')">
+				<button class = "integration-button" onclick = "window.open('/beru-summit/updateStock', '_blank')">
 					Обновление остатков Саммит
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-summit/updatePrices', '_blank')">
+				<button class = "integration-button" onclick = "window.open('/beru-summit/updatePrices', '_blank')">
 					Обновление цен Саммит
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-kosmos/updateStock', '_blank')">
+				<button class = "integration-button" onclick = "window.open('/beru-kosmos/updateStock', '_blank')">
 					Обновление остатков Космос
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-kosmos/updatePrices', '_blank')">
+				<button class = "integration-button" onclick = "window.open('/beru-kosmos/updatePrices', '_blank')">
 					Обновление цен Космос
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-ullozza/updateStock', '_blank')">
+				<button class = "integration-button" onclick = "window.open('/beru-ullozza/updateStock', '_blank')">
 					Обновление остатков Юлло
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/beru-ullozza/updatePrices', '_blank')">
+				<button class = "integration-button" onclick = "window.open('/beru-ullozza/updatePrices', '_blank')">
 					Обновление цен Юлло
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ms-duplicates/remove-duplicates', '_blank')">
+				<button class = "integration-button" onclick = "window.open('/ms-duplicates/remove-duplicates', '_blank')">
 					Удаление дублей заказов
 				</button>
 			</div>

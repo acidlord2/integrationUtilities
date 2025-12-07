@@ -3,7 +3,7 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/orders.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 	//require_once('classes/log.php');
 	//$newOrdersOzon = Orders::getOzonOrders('2019-12-16T10:57:21Z', '2020-12-16T11:57:21Z', "awaiting_packaging");
 	$logger = new Log ('ozonUllo-getNewOrders.log');

@@ -298,6 +298,7 @@
 	define('OZON_API_V3', 'v3/');
 	define('OZON_API_V4', 'v4/');
 	define('OZON_API_V5', 'v5/');
+	define('OZON_API_V6', 'v6/');
 	define('OZON_API_PACKAGE_LABEL', 'posting/fbs/package-label');
 	define('OZON_API_ORDERS_LIST', 'posting/fbs/list');
 	define('OZON_API_ORDER_GET', 'posting/fbs/get');

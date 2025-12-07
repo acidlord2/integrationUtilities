@@ -78,6 +78,7 @@ class OrdersOzon
 	    $this->log->write(__LINE__ . ' setExemplar.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 	    
 	    $postdata = array(
+			'multi_box_qty' => 1,
 			'products' => array (),
 	        'posting_number' => $data['posting_number']
 	    );
@@ -94,7 +95,7 @@ class OrdersOzon
 		$postdata['products'][] = array ('quantity' => $product['quantity'], 'product_id' => $product['sku'], 'exemplars' => $exemplars);
 		
 		$this->log->write(__LINE__ . ' setExemplar.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		$url = OZON_MAINURL . OZON_API_V4 . OZON_API_EXEMPLAR_SET;
+		$url = OZON_MAINURL . OZON_API_V6 . OZON_API_EXEMPLAR_SET;
 		$i = 0;
 		while (true)
 		{
@@ -124,7 +125,7 @@ class OrdersOzon
 	    );
 	    
 		$this->log->write(__LINE__ . ' checkSetExemplarStatus.postdata - ' . json_encode ($postdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		$url = OZON_MAINURL . OZON_API_V4 . OZON_API_EXEMPLAR_STATUS;
+		$url = OZON_MAINURL . OZON_API_V5 . OZON_API_EXEMPLAR_STATUS;
 		$i = 0;
 		while (true)
 		{

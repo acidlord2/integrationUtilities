@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sportmaster/Product-v1.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');

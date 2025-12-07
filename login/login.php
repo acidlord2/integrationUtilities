@@ -15,15 +15,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             $_SESSION["authenticated"] = 'true';
             $_SESSION["user"] = $login;
-            header('Location: ' . HTTP_SERVER . (isset($_GET['url']) ? $_GET['url'] : 'index'));
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+            $host = $_SERVER['HTTP_HOST'];
+            $base_url = $protocol . $host . '/';
+            
+            header('Location: ' . $base_url . (isset($_GET['url']) ? $_GET['url'] : 'index'));
             exit();
         }
         else {
-            header('Location: ' . HTTP_SERVER . 'login/login.php?mess=Wrong+login+or+password');
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+            $host = $_SERVER['HTTP_HOST'];
+            $base_url = $protocol . $host . '/';
+            
+            header('Location: ' . $base_url . 'login/login.php?mess=Wrong+login+or+password');
             exit();
         }
     } else {
-        header('Location: ' . HTTP_SERVER . 'login/login.php?mess=Login+and+password+can+not+be+null');
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+        $host = $_SERVER['HTTP_HOST'];
+        $base_url = $protocol . $host . '/';
+        
+        header('Location: ' . $base_url . 'login/login.php?mess=Login+and+password+can+not+be+null');
         exit();
     }
 }

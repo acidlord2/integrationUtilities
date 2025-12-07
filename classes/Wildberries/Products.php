@@ -14,7 +14,7 @@ class Products
 	
 	public function __construct($shop)
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Api.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 
