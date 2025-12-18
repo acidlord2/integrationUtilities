@@ -67,7 +67,26 @@ class Supplies
 	    $this->log->write(__LINE__ . ' addOrderToSupply.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	    return $return;
 	}
-	
+
+	public function addOrdersToSupply($supplyId, $orders)
+	{
+	    $this->log->write(__LINE__ . ' addOrdersToSupply.supplyId - ' . $supplyId);
+	    $url = WB_API_MARKETPLACE_API . WB_API_SUPPLIES_MARKETPLACE . '/' . $supplyId . '/orders';
+		$return = array();
+		foreach (array_chunk($orders, 100) as $orders_chunk){
+		    $payload = array(
+		        'orders' => $orders_chunk
+		    );
+		    $this->log->write(__LINE__ . ' addOrdersToSupply.payload - ' . json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		    $return_temp = $this->apiWBClass->patchData($url, $payload);
+		    $this->log->write(__LINE__ . ' addOrdersToSupply.return - ' . json_encode($return_temp, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+			if (is_array($return_temp)) {
+				$return = array_merge($return, $return_temp);
+			}
+			usleep(500000);
+		}
+	    return $return;
+	}
 }
 
 ?>

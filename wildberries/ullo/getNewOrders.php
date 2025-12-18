@@ -1,12 +1,13 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Orders.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Supplies.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/wildberries/order.php');
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
 $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
@@ -79,6 +80,7 @@ if (count($newOrdersMS) > 0){
 $ordersMS = array_merge($ordersMS, $result);
 $ordersMSIDs = array_column ($ordersMS, 'name');
 $log->write (__LINE__ . ' ordersMSIDs - ' . json_encode ($ordersMSIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+$suppliesWBClass->addOrdersToSupply($supplyOpen['id'], array_column($newOrders, 'id'));
 
 $updateOrdersMS = array();
 foreach ($newOrders as $newOrder){
@@ -87,7 +89,6 @@ foreach ($newOrders as $newOrder){
 		continue;
 	}
 
-	$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
 	#find order in result array and return item
 	$order = array_filter($ordersMS, function($item) use ($newOrder){
 		if (!isset($item['externalCode']))

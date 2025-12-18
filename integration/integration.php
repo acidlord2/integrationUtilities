@@ -109,10 +109,10 @@
 			</div>
 			<div class = "integration-block">
 				<p class = "integration-block-header">Интеграция с Wildberries</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updateStock', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/kosmos/updateStock', '_blank')">
 					Обновить остатки WB Kosmos
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updatePrices', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/kosmos/updatePrices', '_blank')">
 					Обновить цены WB Kosmos
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/kosmos/getNewOrders', '_blank')">
@@ -121,10 +121,10 @@
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesKosmos/updateBarcodes', '_blank')">
 					Загрузить штрихкоды WB Kosmos
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/updateStock', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/ullo/updateStock', '_blank')">
 					Обновить остатки WB Ullo
 				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberriesUllo/updatePrices', '_blank')">
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/ullo/updatePrices', '_blank')">
 					Обновить цены WB Ullo
 				</button>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/wildberries/ullo/getNewOrders', '_blank')">

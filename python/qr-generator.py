@@ -322,10 +322,10 @@ def merge_docx(docx_paths, output_path):
 
 if __name__ == "__main__":
     # Demo with Excel processing
-    input_file = "file-a3960f94-38bb-4c7b-acd6-b5bece4f4906.xlsx"
-    gtin_array = ["04560119224880", "04560119224897"]
-    input_template = ["Diane_ORANGE_shampoo.docx", "Diane_ORANGE_conditioner.docx"]
-    pcs_in_carton = [10, 10]
+    input_file = "barcodes.xlsx"
+    gtin_array = ["04560119224880"]
+    input_template = ["SPAKLEAN STICKERS.docx"]
+    pcs_in_carton = [10]
     all_rows = []
     print(f"Processing Excel file: {input_file}")
     for idx, gtin in enumerate(gtin_array):

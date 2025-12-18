@@ -357,6 +357,7 @@
 	define('WB_ORDERS', 'https://suppliers-orders.wildberries.ru/api/v1/orders');
 	define('WB_API_ORDERS_NEW', 'api/v3/orders/new');
 	define('WB_API_SUPPLIES', 'api/v3/supplies');
+	define('WB_API_SUPPLIES_MARKETPLACE', 'api/marketplace/v3/supplies');
 	define('WB_API_BASE_URL', 'https://suppliers-api.wildberries.ru/');
 	define('WB_API_MARKETPLACE_API', 'https://marketplace-api.wildberries.ru/');
 	define('WB_API_CONTENT_API', 'https://content-api.wildberries.ru/');
