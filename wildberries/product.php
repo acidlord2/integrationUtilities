@@ -65,7 +65,7 @@ Class ProductTransformation
         $priceTypes = array_column($this->productMS['salePrices'], 'priceType');
         $priceKey = array_search($price, array_column($priceTypes, 'name'));
         $quantity = 0;
-        if ($priceKey !== false or (int)($this->productMS['salePrices'][$priceKey]['value']) > $this->minQuantity) {
+        if ($priceKey !== false && (int)($this->productMS['salePrices'][$priceKey]['value']) > 0) {
             $quantity = (int)$this->productMS['quantity'] - $this->minQuantity;
         }
         $wildberriesStock = array(
