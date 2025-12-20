@@ -2,6 +2,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Products.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/productsMS.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wildberries/product.php');
+
 $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
 $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
@@ -12,8 +14,8 @@ $productsWB = $productsWBclass->getCardsList();
 $productCodes = array();
 foreach ($productsWB as $product)
 {
-    if(isset($product['sizes'][0]['skus'][0]))
-        $productCodes[$product['vendorCode']] = $product['sizes'][0]['skus'][0];
+    if(isset($product['sizes'][0]['chrtID']))
+        $productCodes[$product['vendorCode']] = $product['sizes'][0]['chrtID'];
 }
 
 $log->write (__LINE__ . ' productCodes - ' . json_encode ($productCodes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

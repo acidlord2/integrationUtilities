@@ -69,8 +69,8 @@ Class ProductTransformation
             $quantity = (int)$this->productMS['quantity'] - $this->minQuantity;
         }
         $wildberriesStock = array(
-            'nmId' => (int)$this->productWBNmID,
-            'quantity' => $quantity
+            'chrtId' => (int)$this->productWBNmID,
+            'amount' => $quantity < 0 ? 0 : $quantity
         );
         return $wildberriesStock;
     }

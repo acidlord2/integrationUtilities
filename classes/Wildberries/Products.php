@@ -53,6 +53,15 @@ class Products
 		//$this->log->write(__LINE__ . ' getCardsList.return - ' . json_encode($return, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 		return $return;
 	}
+
+	public function getStock($warehouse)
+	{
+	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . $warehouse;
+	    $response = $this->apiWBClass->postData($url, array());
+	    
+	    $this->log->write(__LINE__ . ' getStock.response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+	    return $response;
+	}
 	
 	public function setPrices($data)
 	{
@@ -78,7 +87,8 @@ class Products
 	    $this->log->write(__LINE__ . ' setStock.data - ' . json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	    $url = WB_API_MARKETPLACE_API . WB_API_STOCKS . '/' . $warehouse;
 	    $return = array();
-	    foreach (array_chunk($data['stocks'], 1000) as $chunk)
+	    $this->log->write(__LINE__ . ' setStock.data.url - ' . $url);
+		foreach (array_chunk($data['stocks'], 1000) as $chunk)
 	    {
 			$postData = array(
 				'stocks' => $chunk
