@@ -13,7 +13,7 @@ from docx.enum.text import WD_BREAK
 from docxcompose.composer import Composer
 from docx2pdf import convert
 
-def generate_datamatrix(data, size=(200, 200), output_path=None, label=None, font_path=None, font_size=8, padding=4):
+def generate_datamatrix(data, size, output_path=None, label=None, font_path=None, font_size=8, padding=4):
     """
     Generate a DataMatrix barcode
     
@@ -166,7 +166,7 @@ def read_xlsx_with_gtin(file_path, target_gtin):
         print(f"Error reading Excel file: {e}")
         return []
 
-def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(5,5), overwrite=False):
+def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(10,10), overwrite=True):
     """Generate DataMatrix barcodes for each matched row.
 
     Files will be saved under output_dir named: dm_<gtin>_<index>.png
@@ -257,9 +257,11 @@ def append_codes_to_template(matched_rows, barcodes_dir="barcodes", result_dir="
 
 if __name__ == "__main__":
     # Demo with Excel processing
-    input_file = "barcodes.xlsx"
-    input_template = "SPAKLEAN-08809494549390.docx"
-    gtin = "08809494549390"
+    #input_file = "barcodes.xlsx"
+    input_file = "file-49e0eed2-1157-44aa-89c5-4b54900d2ba1.xlsx"
+    #input_file = "file-a3960f94-38bb-4c7b-acd6-b5bece4f4906.xlsx"
+    input_template = "8809934861280.docx"
+    gtin = "08809934861280"
     all_rows = []
     print(f"Processing Excel file: {input_file}")
     print(f"Looking for GTIN: {gtin}")
@@ -272,7 +274,7 @@ if __name__ == "__main__":
             for i, row in enumerate(matched_rows, 1):
                 print(f"Row {i}: GTIN={row['gtin']}, Code={row['code']}")
             # Generate barcodes (only once for all matched rows)
-            generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(20,20))
+            generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(300,300))
         else:
             print("No matching rows found")
     else:
