@@ -53,8 +53,8 @@
 					'offer_id' => $productMS['code'],
 					'product_id' => $products[$productMS['code']]['product_id'],
 					'quant_size' => 1,
-					// 'stock' => ($price == 0 ? 0 : $quantity),
-					'stock' => 0,
+					'stock' => ($price == 0 ? 0 : $quantity),
+					// 'stock' => 0,
 					'warehouse_id' => OZON_ULLO_WEARHOUSE_MAIN
 				)
 			);
