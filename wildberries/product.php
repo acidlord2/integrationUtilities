@@ -70,7 +70,8 @@ Class ProductTransformation
         }
         $wildberriesStock = array(
             'chrtId' => (int)$this->productWBNmID,
-            'amount' => $quantity < 0 ? 0 : $quantity
+            # 'amount' => $quantity < 0 ? 0 : $quantity
+            'amount' => 0
         );
         return $wildberriesStock;
     }
