@@ -15,7 +15,7 @@ class Settings
 
     public function __construct($code)
     {
-        require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
         require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Db.php');
         require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php';
         

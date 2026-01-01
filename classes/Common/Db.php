@@ -18,7 +18,7 @@ class Db
 	public function __construct($dbHostname=DB_HOSTNAME, $dbUsername=DB_USERNAME, $dbPassword=DB_PASSWORD, $dbDatabase=DB_DATABASE)
 	{
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/Log.php');
-	    require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	    require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 	    $this->log = new Log ('classes - Common - Db.log');
 	    
 	    $this->connection = mysqli_connect($dbHostname, $dbUsername, $dbPassword, $dbDatabase);

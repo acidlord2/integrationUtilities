@@ -399,6 +399,12 @@
 	define('SBMM_API_PRICE_SAVE', 'offerService/manualPrice/save');
 	define('SBMM_API_STOCK_UPDATE', 'offerService/stock/update');
 	
+	// CCD77
+	define('CCD77_ADDRESS', 'Москва, ул. 3-я Магистральная, дом 30 стр 1. проходная Гротек, 1 этаж, шоурум Корейская Косметика');
+	define('CCD77_PHONE', '+7 (925) 160-24-19');
+	define('CCD77_EMAIL', 'info@ccd77.ru');
+	define('CCD77_WORKING_HOURS', 'Пн-Пт: 10:00-17:00');
+
 	// DB
 	define('DB_HOSTNAME', 'localhost');
 	define('DB_USERNAME', 'u1003281_default');
