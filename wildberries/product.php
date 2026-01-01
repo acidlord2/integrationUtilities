@@ -72,7 +72,7 @@ Class ProductTransformation
         
         // Check if current time is less than 1767084910 + 2 hours
         $expirationTime = 1767084910 + (2 * 3600); // 1767092110
-        if (time() >= $expirationTime) {
+        if (time() < $expirationTime) {
             $this->log->write(__LINE__ . ' '. __METHOD__ . ' Time limit exceeded, returning 0 stock');
             return array(
                 'chrtId' => (int)$this->productWBNmID,
