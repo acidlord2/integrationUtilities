@@ -30,6 +30,7 @@
 	define('MS_PACKEDMP_STATE', '1ff694dd-edd2-11e8-9107-5048000d2248');
 	// Собран (Самовывоз)
 	define('MS_SHIPPICKUP_STATE', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/states/c88ff31b-0e55-11e7-7a31-d0fd0018ad64');
+	define('MS_SHIPPICKUP_STATE_ID', 'c88ff31b-0e55-11e7-7a31-d0fd0018ad64');
 	define('MS_SHIPGOODS_STATE', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/states/1ff694dd-edd2-11e8-9107-5048000d2248');
 	// отгружен	
 	define('MS_SHIPPED_STATE', 'https://api.moysklad.ru/api/remap/1.2/entity/customerorder/metadata/states/dd93f2b4-4f86-11e6-7a69-8f550000096b');

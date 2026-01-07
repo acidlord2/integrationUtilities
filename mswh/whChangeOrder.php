@@ -400,114 +400,6 @@
 			    $return = $ordersWBClass->changeOrdersStatus($data);
 			    $log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			}
-			//ccd77
-			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_CCD_ID : false)
-			{
-			    // Check delivery type and payment type
-			    $deliveryTypeId = null;
-			    $paymentTypeId = null;
-			    
-			    if (isset($orderData['attributes']) && is_array($orderData['attributes'])) {
-			        foreach ($orderData['attributes'] as $attribute) {
-			            // Delivery type attribute ID: 5c01b362-d61f-11e8-9107-504800214d3f
-			            if (isset($attribute['id']) && $attribute['id'] == MS_SHIPTYPE_ATTR_ID) {
-			                if (isset($attribute['value']['meta']['href'])) {
-			                    $deliveryTypeId = APIMS::getIdFromHref($attribute['value']['meta']['href']);
-			                }
-			            }
-			            // Payment type attribute ID: 2ada6f00-d623-11e8-9109-f8fc0021e4d1
-			            if (isset($attribute['id']) && $attribute['id'] == MS_PAYMENTTYPE_ATTR) {
-			                if (isset($attribute['value']['meta']['href'])) {
-			                    $paymentTypeId = APIMS::getIdFromHref($attribute['value']['meta']['href']);
-			                }
-			            }
-			        }
-			    }
-			    
-			    $log->write(__LINE__ . ' deliveryTypeId - ' . $deliveryTypeId);
-			    $log->write(__LINE__ . ' paymentTypeId - ' . $paymentTypeId);
-			    
-			    // Check if it's pickup with cash payment
-			    if ($deliveryTypeId == MS_SHIPTYPE_PICKUP_ID && $paymentTypeId == MS_PAYMENTTYPE_CASH_ID) {
-			        // Get agent email
-			        $agentEmail = null;
-			        if (isset($orderData['agent']['meta']['href'])) {
-			            $agentData = $apiMSClass->getData($orderData['agent']['meta']['href']);
-			            if (isset($agentData['email'])) {
-			                $agentEmail = $agentData['email'];
-			            }
-			        }
-			        
-			        $log->write(__LINE__ . ' agentEmail - ' . $agentEmail);
-			        
-			        // If agent email found, send notification
-			        if ($agentEmail) {
-			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/Email.php');
-			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/EmailApi.php');
-			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/Templates/ccd77-pickup-cash.php');
-			            
-			            try {
-			                $orderNumber = isset($orderData['externalCode']) ? $orderData['externalCode'] : '';
-			                $orderAmount = isset($orderData['sum']) ? ($orderData['sum'] / 100) : 0;
-			                
-			                $template = getPickupCashEmailTemplate($orderNumber, $orderAmount);
-			                
-			                $email = new Classes\Email\v1\Email();
-			                $email->setTo($agentEmail);
-			                $email->setSubject('Новый заказ на самовывоз с оплатой наличными - ' . $orderNumber);
-			                $email->setBody($template['body']);
-			                $email->setHtml($template['html']);
-			                
-			                $emailApi = new Classes\Email\v1\EmailApi('ccd77');
-			                $result = $emailApi->sendEmail($email);
-			                
-			                $log->write(__LINE__ . ' email sent - ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			            } catch (Exception $e) {
-			                $log->write(__LINE__ . ' email error - ' . $e->getMessage());
-			            }
-			        }
-			    }
-			    // Check if it's pickup with online payment
-			    if ($deliveryTypeId == MS_SHIPTYPE_PICKUP_ID && $paymentTypeId == MS_PAYMENTTYPE_SBERBANK_ONLINE_ID) {
-			        // Get agent email
-			        $agentEmail = null;
-			        if (isset($orderData['agent']['meta']['href'])) {
-			            $agentData = $apiMSClass->getData($orderData['agent']['meta']['href']);
-			            if (isset($agentData['email'])) {
-			                $agentEmail = $agentData['email'];
-			            }
-			        }
-			        
-			        $log->write(__LINE__ . ' agentEmail - ' . $agentEmail);
-			        
-			        // If agent email found, send notification
-			        if ($agentEmail) {
-			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/Email.php');
-			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/EmailApi.php');
-			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/Templates/ccd77-pickup-online.php');
-			            
-			            try {
-			                $orderNumber = isset($orderData['externalCode']) ? $orderData['externalCode'] : '';
-			                $orderAmount = isset($orderData['sum']) ? ($orderData['sum'] / 100) : 0;
-			                
-			                $template = getPickupOnlineEmailTemplate($orderNumber, $orderAmount);
-			                
-			                $email = new Classes\Email\v1\Email();
-			                $email->setTo($agentEmail);
-			                $email->setSubject('Новый заказ на самовывоз с оплатой онлайн - ' . $orderNumber);
-			                $email->setBody($template['body']);
-			                $email->setHtml($template['html']);
-			                
-			                $emailApi = new Classes\Email\v1\EmailApi('ccd77');
-			                $result = $emailApi->sendEmail($email);
-			                
-			                $log->write(__LINE__ . ' email sent - ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			            } catch (Exception $e) {
-			                $log->write(__LINE__ . ' email error - ' . $e->getMessage());
-			            }
-			        }
-			    }
-			}
 		}
 		// заказ подтвержден маркетплейс
 		else if ($state == MS_CONFIRMBERU_STATE_ID)
@@ -738,6 +630,118 @@
 				//update status
 				$return = $ordersYandexClass->updateStatus ($orderData['name'], 'PROCESSING', 'READY_TO_SHIP');
 				$log->write(__LINE__ . ' return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			}
+		}
+		// заказ Самовывоз
+		else if ($state == MS_SHIPPICKUP_STATE_ID)
+		{
+			//ccd77
+			if (isset ($orderData['project']['meta']['href']) ? APIMS::getIdFromHref($orderData['project']['meta']['href']) == MS_PROJECT_WB_CCD_ID : false)
+			{
+			    // Check delivery type and payment type
+			    $deliveryTypeId = null;
+			    $paymentTypeId = null;
+			    
+			    if (isset($orderData['attributes']) && is_array($orderData['attributes'])) {
+			        foreach ($orderData['attributes'] as $attribute) {
+			            // Delivery type attribute ID: 5c01b362-d61f-11e8-9107-504800214d3f
+			            if (isset($attribute['id']) && $attribute['id'] == MS_SHIPTYPE_ATTR_ID) {
+			                if (isset($attribute['value']['meta']['href'])) {
+			                    $deliveryTypeId = APIMS::getIdFromHref($attribute['value']['meta']['href']);
+			                }
+			            }
+			            // Payment type attribute ID: 2ada6f00-d623-11e8-9109-f8fc0021e4d1
+			            if (isset($attribute['id']) && $attribute['id'] == MS_PAYMENTTYPE_ATTR) {
+			                if (isset($attribute['value']['meta']['href'])) {
+			                    $paymentTypeId = APIMS::getIdFromHref($attribute['value']['meta']['href']);
+			                }
+			            }
+			        }
+			    }
+			    
+			    $log->write(__LINE__ . ' deliveryTypeId - ' . $deliveryTypeId);
+			    $log->write(__LINE__ . ' paymentTypeId - ' . $paymentTypeId);
+			    
+			    // Check if it's pickup with cash payment
+			    if ($deliveryTypeId == MS_SHIPTYPE_PICKUP_ID && $paymentTypeId == MS_PAYMENTTYPE_CASH_ID) {
+			        // Get agent email
+			        $agentEmail = null;
+			        if (isset($orderData['agent']['meta']['href'])) {
+			            $agentData = $apiMSClass->getData($orderData['agent']['meta']['href']);
+			            if (isset($agentData['email'])) {
+			                $agentEmail = $agentData['email'];
+			            }
+			        }
+			        
+			        $log->write(__LINE__ . ' agentEmail - ' . $agentEmail);
+			        
+			        // If agent email found, send notification
+			        if ($agentEmail) {
+			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/Email.php');
+			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/EmailApi.php');
+			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/Templates/ccd77-pickup-cash.php');
+			            
+			            try {
+			                $orderNumber = isset($orderData['externalCode']) ? $orderData['externalCode'] : '';
+			                $orderAmount = isset($orderData['sum']) ? ($orderData['sum'] / 100) : 0;
+			                
+			                $template = getPickupCashEmailTemplate($orderNumber, $orderAmount);
+			                
+			                $email = new Classes\Email\v1\Email();
+			                $email->setTo($agentEmail);
+			                $email->setSubject('Новый заказ на самовывоз с оплатой наличными - ' . $orderNumber);
+			                $email->setBody($template['body']);
+			                $email->setHtml($template['html']);
+			                
+			                $emailApi = new Classes\Email\v1\EmailApi('ccd77');
+			                $result = $emailApi->sendEmail($email);
+			                
+			                $log->write(__LINE__ . ' email sent - ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			            } catch (Exception $e) {
+			                $log->write(__LINE__ . ' email error - ' . $e->getMessage());
+			            }
+			        }
+			    }
+			    // Check if it's pickup with online payment
+			    if ($deliveryTypeId == MS_SHIPTYPE_PICKUP_ID && $paymentTypeId == MS_PAYMENTTYPE_SBERBANK_ONLINE_ID) {
+			        // Get agent email
+			        $agentEmail = null;
+			        if (isset($orderData['agent']['meta']['href'])) {
+			            $agentData = $apiMSClass->getData($orderData['agent']['meta']['href']);
+			            if (isset($agentData['email'])) {
+			                $agentEmail = $agentData['email'];
+			            }
+			        }
+			        
+			        $log->write(__LINE__ . ' agentEmail - ' . $agentEmail);
+			        
+			        // If agent email found, send notification
+			        if ($agentEmail) {
+			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/Email.php');
+			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/v1/EmailApi.php');
+			            require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Email/Templates/ccd77-pickup-online.php');
+			            
+			            try {
+			                $orderNumber = isset($orderData['externalCode']) ? $orderData['externalCode'] : '';
+			                $orderAmount = isset($orderData['sum']) ? ($orderData['sum'] / 100) : 0;
+			                
+			                $template = getPickupOnlineEmailTemplate($orderNumber, $orderAmount);
+			                
+			                $email = new Classes\Email\v1\Email();
+			                $email->setTo($agentEmail);
+			                $email->setSubject('Новый заказ на самовывоз с оплатой онлайн - ' . $orderNumber);
+			                $email->setBody($template['body']);
+			                $email->setHtml($template['html']);
+			                
+			                $emailApi = new Classes\Email\v1\EmailApi('ccd77');
+			                $result = $emailApi->sendEmail($email);
+			                
+			                $log->write(__LINE__ . ' email sent - ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			            } catch (Exception $e) {
+			                $log->write(__LINE__ . ' email error - ' . $e->getMessage());
+			            }
+			        }
+			    }
 			}
 		}
 		// заказ собран (доставка)
