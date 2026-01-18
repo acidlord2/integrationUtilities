@@ -404,6 +404,7 @@
 	define('CCD77_ADDRESS', 'Москва, ул. 3-я Магистральная, дом 30 стр 1. проходная Гротек, 1 этаж, шоурум Корейская Косметика');
 	define('CCD77_PHONE', '+7 (925) 160-24-19');
 	define('CCD77_EMAIL', 'info@ccd77.ru');
+	define('CCD77_NOREPLY_EMAIL', 'no-reply@ccd77.ru');
 	define('CCD77_WORKING_HOURS', 'Пн-Пт: 10:00-17:00');
 
 	// DB

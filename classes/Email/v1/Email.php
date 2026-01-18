@@ -24,7 +24,8 @@ class Email implements \JsonSerializable {
      * @param array $data Associative array with email fields
      */
     public function __construct(array $data = []) {
-        $this->from = $data['from'] ?? '';
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
+        $this->from = $data['from'] ?? CCD77_NOREPLY_EMAIL;
         $this->to = $data['to'] ?? [];
         $this->cc = $data['cc'] ?? [];
         $this->bcc = $data['bcc'] ?? [];

@@ -1,4 +1,5 @@
 <?php
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/MS/ordersMS.php');
@@ -8,7 +9,6 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Sbermegamarket/Order.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/OrdersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Orders.php');
-	require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 	// logger class
 	$log = new Log ('mswh - whChangeOrder.log');
 	// msapi class
@@ -691,7 +691,7 @@
 			                $email->setTo($agentEmail);
 			                $email->setSubject('Новый заказ на самовывоз с оплатой наличными - ' . $orderNumber);
 			                $email->setBody($template['body']);
-			                $email->setHtml($template['html']);
+			                $email->setHtmlBody($template['html']);
 			                
 			                $emailApi = new Classes\Email\v1\EmailApi('ccd77');
 			                $result = $emailApi->sendEmail($email);
@@ -731,7 +731,7 @@
 			                $email->setTo($agentEmail);
 			                $email->setSubject('Новый заказ на самовывоз с оплатой онлайн - ' . $orderNumber);
 			                $email->setBody($template['body']);
-			                $email->setHtml($template['html']);
+			                $email->setHtmlBody($template['html']);
 			                
 			                $emailApi = new Classes\Email\v1\EmailApi('ccd77');
 			                $result = $emailApi->sendEmail($email);
