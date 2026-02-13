@@ -198,14 +198,17 @@ def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(
     print(f"Generated {len(generated)} barcode files in '{output_dir}'")
     return generated
 
-def append_codes_to_template(matched_rows, barcodes_dir="barcodes", result_dir="result", template_path=None):
+def append_codes_to_template(matched_rows, barcodes_dir="barcodes", gtin=None, result_dir="result", template_path=None, template_folder=None, batch_num=None):
     """Create a single DOCX document with all barcodes.
 
     Args:
         matched_rows (list): List of dicts with 'code' and 'filename'.
         barcodes_dir (str): Directory where barcode PNGs are stored.
+        gtin (str): GTIN for filename.
         result_dir (str): Output directory for final DOCX.
         template_path (str): Path to the DOCX template file (optional).
+        template_folder (str): Folder containing the DOCX template file (optional).
+        batch_num (int): Batch number for multi-file output (optional).
     Returns:
         str: Path to the generated DOCX file or None on failure.
     """
@@ -215,8 +218,9 @@ def append_codes_to_template(matched_rows, barcodes_dir="barcodes", result_dir="
             return None
         os.makedirs(result_dir, exist_ok=True)
 
-        print(f"Creating DOCX with {len(matched_rows)} barcodes")
-
+        batch_suffix = f"_part{batch_num}" if batch_num is not None else ""
+        print(f"Creating DOCX{batch_suffix} with {len(matched_rows)} barcodes")
+        template_path = os.path.join(template_folder, template_path) if template_folder and template_path else None
         # Create final document starting with template
         doc = Document(template_path) if template_path and os.path.exists(template_path) else Document()
         
@@ -240,13 +244,11 @@ def append_codes_to_template(matched_rows, barcodes_dir="barcodes", result_dir="
                 p.add_run("[Image not found]\n")
             
             # Add page break except for the last item
-            # if i < len(matched_rows) - 1:
-            #     p = doc.add_paragraph()
-            #     # run = p.add_run()
-            #     # run.add_break(WD_BREAK.PAGE)
-            # if i > 5: break  # Limit to first 6 for testing
+            if i < len(matched_rows) - 1:
+                run = p.add_run()
+                run.add_break(WD_BREAK.PAGE)
                         
-        output_filename = f"all_barcodes.docx"
+        output_filename = f"output_{gtin}{batch_suffix}.docx"
         output_path = os.path.join(result_dir, output_filename)
         doc.save(output_path)
         print(f"Saved DOCX: {output_path}")
@@ -256,16 +258,22 @@ def append_codes_to_template(matched_rows, barcodes_dir="barcodes", result_dir="
         return None
 
 if __name__ == "__main__":
+    # Configuration
+    STICKER_SIZE = 300  # Sticker size in pixels (width, height for square stickers)
+    MAX_STICKERS_PER_FILE = 1200  # Maximum stickers per DOCX/PDF file
+    sticker_size = (STICKER_SIZE, STICKER_SIZE)
+    
     # Demo with Excel processing
-    #input_file = "barcodes.xlsx"
-    input_file = "file-49e0eed2-1157-44aa-89c5-4b54900d2ba1.xlsx"
     #input_file = "file-a3960f94-38bb-4c7b-acd6-b5bece4f4906.xlsx"
-    input_template = "8809934861280.docx"
-    gtin = "08809934861280"
+    input_file = "file-d442b15e-01a7-4e60-aa5e-538732b03d38.xlsx"
+    input_template = None
+    input_folder = "2026-02-12"
+    gtin = "04901301761385" # GTIN to search for in the Excel file
     all_rows = []
     print(f"Processing Excel file: {input_file}")
     print(f"Looking for GTIN: {gtin}")
     
+    input_template = f"{gtin}.docx" if not input_template else input_template
     if os.path.exists(input_file):
         matched_rows = read_xlsx_with_gtin(input_file, gtin)
         if matched_rows:
@@ -274,16 +282,42 @@ if __name__ == "__main__":
             for i, row in enumerate(matched_rows, 1):
                 print(f"Row {i}: GTIN={row['gtin']}, Code={row['code']}")
             # Generate barcodes (only once for all matched rows)
-            generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(300,300))
+            generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=sticker_size)
         else:
             print("No matching rows found")
     else:
         print(f"File {input_file} not found")
 
-    # Create batch DOCX files then merge them into one DOCX
+    # Create batch DOCX files and convert to PDF
     if all_rows:
-        doc_file = append_codes_to_template(all_rows, barcodes_dir="barcodes", result_dir="result", template_path=input_template)
-        convert(doc_file, os.path.join("result", f"output_{gtin}.pdf"))
+        total_rows = len(all_rows)
+        num_batches = (total_rows + MAX_STICKERS_PER_FILE - 1) // MAX_STICKERS_PER_FILE
+        
+        print(f"\nSplitting {total_rows} stickers into {num_batches} files ({MAX_STICKERS_PER_FILE} max per file)")
+        
+        for batch_idx in range(num_batches):
+            start_idx = batch_idx * MAX_STICKERS_PER_FILE
+            end_idx = min(start_idx + MAX_STICKERS_PER_FILE, total_rows)
+            batch_rows = all_rows[start_idx:end_idx]
+            
+            print(f"\nProcessing batch {batch_idx + 1}/{num_batches} (stickers {start_idx + 1}-{end_idx})...")
+            
+            batch_num = batch_idx + 1 if num_batches > 1 else None
+            doc_file = append_codes_to_template(
+                batch_rows, 
+                barcodes_dir="barcodes", 
+                gtin=gtin, 
+                result_dir="result", 
+                template_path=input_template,
+                template_folder=input_folder,
+                batch_num=batch_num
+            )
+            
+            if doc_file:
+                pdf_suffix = f"_part{batch_num}" if batch_num else ""
+                pdf_path = os.path.join("result", f"output_{gtin}{pdf_suffix}.pdf")
+                print(f"Converting to PDF: {pdf_path}")
+                convert(doc_file, pdf_path)
     else:
         print("No matched rows found in total; skipping DOCX generation.")
         
