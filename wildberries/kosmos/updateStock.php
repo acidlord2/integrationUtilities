@@ -32,10 +32,18 @@ $updated = 0;
 foreach(array_chunk(array_keys($productCodes), 100) as $chunk)
 {
     $productsMS = $productsMSClass->getAssortment($chunk);
+    if (!is_array($productsMS))
+    {
+        $log->write (__LINE__ . ' productsMS.invalid_response - ' . json_encode ($productsMS, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $productsMS = array();
+    }
 
     $data = array();
     foreach ($productsMS as $product)
     {
+        if (!isset($product['code']) || !isset($productCodes[$product['code']]))
+            continue;
+
         $productTransform = new \Wildberries\Product\ProductTransformation($product, $productCodes[$product['code']]);
         $data[] = $productTransform->transformMSToWildberriesStock('Цена WB');
     }
