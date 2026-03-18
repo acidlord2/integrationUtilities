@@ -265,10 +265,10 @@ if __name__ == "__main__":
     
     # Demo with Excel processing
     #input_file = "file-a3960f94-38bb-4c7b-acd6-b5bece4f4906.xlsx"
-    input_file = "file-d442b15e-01a7-4e60-aa5e-538732b03d38.xlsx"
+    input_file = "Spaklean file-388f1d24-27df-4848-a528-05283469eabf.xlsx"
     input_template = None
-    input_folder = "2026-02-12"
-    gtin = "04901301761385" # GTIN to search for in the Excel file
+    input_folder = "2026-02-17"
+    gtin = "08809934861273" # GTIN to search for in the Excel file
     all_rows = []
     print(f"Processing Excel file: {input_file}")
     print(f"Looking for GTIN: {gtin}")
