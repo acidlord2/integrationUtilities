@@ -42,11 +42,10 @@
 				)
 			);
 			$data['externalCode'] = (string)$order['order_id'];
-			$date = new DateTime($order['in_process_at'], new DateTimeZone('UTC'));
-			$date->setTimezone(new DateTimeZone('Europe/Moscow'));
+			$date = (new DateTime($order['in_process_at']))->setTimezone(new DateTimeZone('Europe/Moscow'));
 			$data['moment'] = $date->format('Y-m-d H:i:s');
 			
-			$date = DateTime::createFromFormat('Y-m-d\TH:i:sO', $order['shipment_date'])->setTimezone(new DateTimeZone('Europe/Moscow'));
+			$date = (new DateTime($order['shipment_date']))->setTimezone(new DateTimeZone('Europe/Moscow'));
 			$data['deliveryPlannedMoment'] = $date->format('Y-m-d H:i:s');
 			$data['agent'] = array(
 				'meta' => array(

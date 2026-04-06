@@ -264,11 +264,10 @@ if __name__ == "__main__":
     sticker_size = (STICKER_SIZE, STICKER_SIZE)
     
     # Demo with Excel processing
-    #input_file = "file-a3960f94-38bb-4c7b-acd6-b5bece4f4906.xlsx"
-    input_file = "Spaklean file-388f1d24-27df-4848-a528-05283469eabf.xlsx"
+    input_file = "file-213a812e-709e-452d-a4af-59bebe65c60b.xlsx"
     input_template = None
-    input_folder = "2026-02-17"
-    gtin = "08809934861273" # GTIN to search for in the Excel file
+    input_folder = "2026-04-01"
+    gtin = "04901301452412" # GTIN to search for in the Excel file
     all_rows = []
     print(f"Processing Excel file: {input_file}")
     print(f"Looking for GTIN: {gtin}")
