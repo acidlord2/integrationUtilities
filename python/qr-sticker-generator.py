@@ -13,6 +13,12 @@ from docx.enum.text import WD_BREAK
 from docxcompose.composer import Composer
 from docx2pdf import convert
 
+# Configuration
+IMAGE_SIZE_CM = 0.7 # Size of the barcode image in centimeters (for DOCX insertion)
+STICKER_SIZE = 300 # Sticker size in pixels (width, height for square stickers)
+MAX_STICKERS_PER_FILE = 1200  # Maximum stickers per DOCX/PDF file
+sticker_size = (STICKER_SIZE, STICKER_SIZE)
+
 def generate_datamatrix(data, size, output_path=None, label=None, font_path=None, font_size=8, padding=4):
     """
     Generate a DataMatrix barcode
@@ -166,7 +172,7 @@ def read_xlsx_with_gtin(file_path, target_gtin):
         print(f"Error reading Excel file: {e}")
         return []
 
-def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(10,10), overwrite=True):
+def generate_barcodes_for_rows(matched_rows, gtin, output_dir="barcodes", size=(300,300), overwrite=True):
     """Generate DataMatrix barcodes for each matched row.
 
     Files will be saved under output_dir named: dm_<gtin>_<index>.png
@@ -239,7 +245,7 @@ def append_codes_to_template(matched_rows, barcodes_dir="barcodes", gtin=None, r
             p = doc.add_paragraph()
             if image_path and os.path.exists(image_path):
                 run_img = p.add_run()
-                run_img.add_picture(image_path, width=Cm(1))
+                run_img.add_picture(image_path, width=Cm(IMAGE_SIZE_CM))
             else:
                 p.add_run("[Image not found]\n")
             
@@ -258,16 +264,12 @@ def append_codes_to_template(matched_rows, barcodes_dir="barcodes", gtin=None, r
         return None
 
 if __name__ == "__main__":
-    # Configuration
-    STICKER_SIZE = 300  # Sticker size in pixels (width, height for square stickers)
-    MAX_STICKERS_PER_FILE = 1200  # Maximum stickers per DOCX/PDF file
-    sticker_size = (STICKER_SIZE, STICKER_SIZE)
     
     # Demo with Excel processing
-    input_file = "file-213a812e-709e-452d-a4af-59bebe65c60b.xlsx"
+    input_file = "file-d442b15e-01a7-4e60-aa5e-538732b03d38.xlsx"
     input_template = None
-    input_folder = "2026-04-01"
-    gtin = "04901301452412" # GTIN to search for in the Excel file
+    input_folder = "2026-04-13"
+    gtin = "04901301452436" # GTIN to search for in the Excel file
     all_rows = []
     print(f"Processing Excel file: {input_file}")
     print(f"Looking for GTIN: {gtin}")
