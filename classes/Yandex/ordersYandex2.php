@@ -103,32 +103,39 @@ class OrdersYandex
 	* @delivery array - yandex delivary struct 
 	* @return array - result as json
 	*/
-	public function packOrder($orderId, $delivery)
+	public function packOrder($order)
 	{
-		$this->log->write(__LINE__ . ' packOrder.orderId - ' . $orderId);
+		$this->log->write(__LINE__ . ' packOrder.orderId - ' . $order['order']['id']);
 		
-		if (isset ($delivery['shipments'][0]['id']))
-		{
-		    $url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_CAMPAIGNS . $this->campaign . '/' . BERU_API_ORDERS . '/' . $orderId . '/' . BERU_API_SHIPMENTS . $delivery['shipments'][0]['id'] . '/' . BERU_API_BOXES . '.JSON';
-			$this->log->write(__LINE__ . " packOrder.url - " . $url);
-			$data = array (
-				'boxes' => array (
-					array (
-						'fulfilmentId' => $orderId . '-1',
-						'weight' => $delivery['shipments'][0]['weight'],
-						'width' => $delivery['shipments'][0]['width'],
-						'height' => $delivery['shipments'][0]['height'],
-						'depth' => $delivery['shipments'][0]['depth']
-					)
-				)
-			);
-			$this->log->write(__LINE__ . ' packOrder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			
-			$return = $this->apiYandexClass->putData($url, $data);
-			$this->log->write(__LINE__ . ' packOrder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			return $return;
-			//$logger->write("curl_response - " . $curl_response);
+		$url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_CAMPAIGNS . $this->campaign . '/' . BERU_API_ORDERS . '/' . $order['order']['id'] . '/' . BERU_API_BOXES . '.JSON';
+		$this->log->write(__LINE__ . " packOrder.url - " . $url);
+		$items = array();
+		if (isset($order['order']['items']) && is_array($order['order']['items'])) {
+			foreach ($order['order']['items'] as $item) {
+				if (!isset($item['id']) || !isset($item['count'])) {
+					continue;
+				}
+
+				$items[] = array(
+					'id' => (int)$item['id'],
+					'fullCount' => (int)$item['count']
+				);
+			}
 		}
+
+		$data = array(
+			'boxes' => array(
+				array(
+					'items' => $items
+				)
+			)
+		);
+		$this->log->write(__LINE__ . ' packOrder.data - ' . json_encode ($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		
+		$return = $this->apiYandexClass->putData($url, $data);
+		$this->log->write(__LINE__ . ' packOrder.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		return $return;
+		//$logger->write("curl_response - " . $curl_response);
 	}
 	/**
 	 * function getOrdersLabels - function get order labels
