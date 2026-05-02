@@ -48,6 +48,7 @@
 			)
 		);
 		OrdersBeru2::updateOrderStatus (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id'], $statusData);
+		sleep(1);
 		$orderLabels = OrdersBeru2::getOrdersLabels (BERU_API_ULLOZZA_CAMPAIGN, $orderBeru['id']);
 		if (isset ($orderLabels['result']['parcelBoxLabels'][0]['deliveryServiceId']))
 		{
