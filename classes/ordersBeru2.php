@@ -102,7 +102,7 @@ class OrdersBeru2
 		return $return;
 	}
 	// get order labels
-    public static function getOrdersLebels($campaign, $orderId)
+    public static function getOrdersLabels($campaign, $orderId)
     {
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/apiBeru.php');
