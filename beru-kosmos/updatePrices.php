@@ -34,7 +34,10 @@ foreach ($skus as $key => $sku)
                 )
             );
         }
-        $skuYandexClass->putPrices($data);
+        if (count($data['offers']) > 0)
+        {
+            $skuYandexClass->putPrices($data);
+        }
         $shopSku = array();
     }
 }
