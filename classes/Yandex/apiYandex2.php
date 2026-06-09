@@ -165,7 +165,12 @@ class APIYandex2
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerberu);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			// Only set body if data is not empty
+			if (!empty($postdata)) {
+				curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			} else {
+				curl_setopt($curl, CURLOPT_POSTFIELDS, '');
+			}
 			curl_setopt($curl, CURLOPT_FAILONERROR, true);
 			$jsonOut = curl_exec($curl);
 			$arrayOut = json_decode ($jsonOut, true);

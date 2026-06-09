@@ -60,7 +60,7 @@ class SkuYandex2
 	}
 
 	/**
-	* function offerMappings - function gets yandex offers new
+	* function offerMappings - function gets yandex offers using API v2
 	*
 	* @return array - result as array of offers
 	*/
@@ -70,29 +70,37 @@ class SkuYandex2
 	    $offers = [];
 	    while (true)
 	    {
-	        $url = BERU_API_BASE_URL . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_OFFER_MAPPINGS . ($pageToken == '' ? '' : '?page_token=' . $pageToken);
-			$data = array (
-				'limit' => 200
-			);
-			$this->log->write(__LINE__ . ' offerMappings.url - ' . $url);
-			
-			$return = $this->apiYandexClass->postData($url, $data);
-			//$this->log->write(__LINE__ . ' offerMappings.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-			if (count($return['result']['offerMappings']))
-			{
-			    $offers = array_merge ($offers, $return['result']['offerMappings']);
-			}
-			if (isset($return['result']['paging']['nextPageToken']))
-			{
-			    $pageToken = $return['result']['paging']['nextPageToken'];
-			}
-			else
-			{
-			    break;
-			}
+	        $queryParams = array(
+	            'language' => 'RU',
+	            'limit' => 100
+	        );
+	        if (!empty($pageToken)) {
+	            $queryParams['pageToken'] = $pageToken;
+	        }
+	        
+	        $url = BERU_API_BASE_URL . BERU_API_VERSION . BERU_API_BUSINESSES . $this->businessId . '/' . BERU_API_OFFER_MAPPINGS . '?' . http_build_query($queryParams);
+	        $data = array();
+	        
+	        $this->log->write(__LINE__ . ' offerMappings.url - ' . $url);
+	        
+	        $return = $this->apiYandexClass->postData($url, $data);
+	        //$this->log->write(__LINE__ . ' offerMappings.return - ' . json_encode ($return, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	        
+	        if (isset($return['result']['offerMappings']) && is_array($return['result']['offerMappings']))
+	        {
+	            $offers = array_merge($offers, $return['result']['offerMappings']);
+	        }
+	        
+	        if (isset($return['result']['paging']['nextPageToken']) && !empty($return['result']['paging']['nextPageToken']))
+	        {
+	            $pageToken = $return['result']['paging']['nextPageToken'];
+	        }
+	        else
+	        {
+	            break;
+	        }
 	    }
 	    return $offers;
-	    //$logger->write("curl_response - " . $curl_response);
 	}
 
 	/**
