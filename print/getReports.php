@@ -15,8 +15,11 @@
 	if (count ($idsArray) == 0) {
 		return;
 	}
-	if ($agent == 'Ozon') {
-		$report = ReportsMS::findReportByName ('customerorder', 'Товарный чек OZON');
+	if ($agent == 'Ozon' && $org == 'Ullo') {
+		$report = ReportsMS::findReportByName ('customerorder', 'Товарный чек OZON ЮЛЛО');
+	}
+	elseif ($agent == 'Ozon' && $org == 'Kaori') {
+	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек OZON КАОРИ');
 	}
 	elseif ($agent == 'Beru' && $org == '4cleaning') {
 	    $report = ReportsMS::findReportByName ('customerorder', 'Товарный чек BERU ROMASHKA');
