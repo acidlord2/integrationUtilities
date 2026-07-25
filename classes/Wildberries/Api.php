@@ -14,6 +14,7 @@ class Api
     private $shop = NULL;
     private $header = NULL;
 	private $log;
+	private $lastHttpCode = NULL;
     
 	public function __construct($shop)
 	{
@@ -34,6 +35,15 @@ class Api
    	    );
 	}
 	
+	/**
+	 * HTTP status of the last call. WB answers 204 with an empty body on success for some
+	 * methods, so the decoded body alone does not tell whether the call worked.
+	 */
+	public function getLastHttpCode()
+	{
+		return $this->lastHttpCode;
+	}
+
     public function postData($url, $postdata)
 	{
 		$curl = curl_init($url);
@@ -42,6 +52,7 @@ class Api
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 		$jsonOut = curl_exec($curl);
+		$this->lastHttpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$arrayOut = json_decode ($jsonOut, true);
 		
 		if (curl_errno($curl))
@@ -59,6 +70,7 @@ class Api
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		$jsonOut = curl_exec($curl);
+		$this->lastHttpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$arrayOut = json_decode ($jsonOut, true);
 		
 		if (curl_errno($curl))
@@ -77,6 +89,7 @@ class Api
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 		$jsonOut = curl_exec($curl);
+		$this->lastHttpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$arrayOut = json_decode ($jsonOut, true);
 		
 		if (curl_errno($curl))
@@ -95,6 +108,7 @@ class Api
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 		$jsonOut = curl_exec($curl);
+		$this->lastHttpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		$arrayOut = json_decode ($jsonOut, true);
 
 		if(curl_errno($curl))

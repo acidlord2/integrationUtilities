@@ -266,10 +266,10 @@ def append_codes_to_template(matched_rows, barcodes_dir="barcodes", gtin=None, r
 if __name__ == "__main__":
     
     # Demo with Excel processing
-    input_file = "file-d442b15e-01a7-4e60-aa5e-538732b03d38.xlsx"
+    input_file = "Stickers/extracted/file-e1e12f60-83f9-4790-a102-9468539e3385.xlsx"
     input_template = None
-    input_folder = "2026-04-13"
-    gtin = "04901301452436" # GTIN to search for in the Excel file
+    input_folder = "Stickers"
+    gtin = "04901301263049" # GTIN to search for in the Excel file
     all_rows = []
     print(f"Processing Excel file: {input_file}")
     print(f"Looking for GTIN: {gtin}")

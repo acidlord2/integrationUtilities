@@ -157,6 +157,15 @@ Class OrderTransformation
     public function transformWildberriesStickerToMS($orderMS, $supplyOpen)
     {
         $this->log->write(__LINE__ . ' '. __METHOD__ . ' Processing sticker for order: ' . $this->orderWB['barcode']);
+        // order may already carry (part of) these attributes when the sticker is filled in later - replace them
+        $stickerAttributes = array(MS_BARCODE_ATTR_ID, MS_DELIVERYNUMBER_ATTR, MS_DELIVERYSERVICE_ATTR, MS_WB_FILE_ATTR);
+        $orderMS["attributes"] = array_values(array_filter(
+            $orderMS["attributes"] ?? array(),
+            function ($attribute) use ($stickerAttributes) {
+                return !isset($attribute['id']) || !in_array($attribute['id'], $stickerAttributes);
+            }
+        ));
+
         $orderMS["attributes"][] = array(
 			'meta' => array (
 				'href' => MS_ATTR . MS_BARCODE_ATTR_ID,

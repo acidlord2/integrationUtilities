@@ -8,53 +8,108 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Orders.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Wildberries/Supplies.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/wildberries/order.php');
 
+$shop = 'Ullo';
+
 $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
 $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
+
+/**
+ * Gets stickers for the passed WB orders and returns MS orders ready to be updated with them.
+ *
+ * @param string $shop
+ * @param object $ordersWBClass
+ * @param array $orderIds - WB order ids
+ * @param array $ordersMSByName - map 'WB<id>' => MS order
+ * @param array $supplyOpen - open WB supply
+ * @param object $log
+ * @param int $maxAttempts - passes over the orders WB did not return a sticker for
+ * @return array - MS orders to post
+ */
+function buildStickerUpdates($shop, $ordersWBClass, $orderIds, $ordersMSByName, $supplyOpen, $log, $maxAttempts = 4)
+{
+	$updates = array();
+	if (!count($orderIds))
+		return $updates;
+
+	$stickers = $ordersWBClass->getStickersMap($orderIds, $maxAttempts);
+
+	foreach ($orderIds as $orderId)
+	{
+		if (!isset($ordersMSByName['WB' . $orderId]))
+			continue;
+
+		if (!isset($stickers[(int)$orderId]))
+		{
+			$log->write(__LINE__ . ' sticker.missing orderId=' . $orderId);
+			continue;
+		}
+
+		$orderTransformer = new \Wildberries\Order\OrderTransformation($shop, $stickers[(int)$orderId]);
+		$updates[] = $orderTransformer->transformWildberriesStickerToMS($ordersMSByName['WB' . $orderId], $supplyOpen);
+	}
+
+	return $updates;
+}
 
 $startDate = date('Y-m-d', strtotime('-2 days')) . 'T00:00:00.000+03:00';
 $endDate = NULL;
 $status = 0;
 
-$ordersWBClass = new \Classes\Wildberries\v1\Orders('Ullo');
-$suppliesWBClass = new \Classes\Wildberries\v1\Supplies('Ullo');
+$ordersWBClass = new \Classes\Wildberries\v1\Orders($shop);
+$suppliesWBClass = new \Classes\Wildberries\v1\Supplies($shop);
 
 $newOrders = $ordersWBClass->getNewOrders();
 
-if (!count($newOrders))
-{
-	echo 'Processed 0 orders';
-	return;
-}
-
-$ordersIDs = array_column ($newOrders, 'id');
-$filter = '';
-foreach ($ordersIDs as $ordersID){
-	$filter .= 'name=WB' . $ordersID . ';';
-}
-
 $ordersMSClass = new OrdersMS();
-$ordersMS = $ordersMSClass->findOrders($filter);
+$productMSClass = new ProductsMS();
+
+$ordersMS = array();
+if (count($newOrders))
+{
+	$ordersIDs = array_column ($newOrders, 'id');
+	$filter = '';
+	foreach ($ordersIDs as $ordersID){
+		$filter .= 'name=WB' . $ordersID . ';';
+	}
+
+	$ordersMS = $ordersMSClass->findOrders($filter);
+}
 $ordersMSIDs = array_column ($ordersMS, 'name');
 
-$productMSClass = new ProductsMS();
-$productMS0 = $productMSClass->findProductsByCode('000-0000');
-
 $newOrdersMS = array();
-$changeStatus = array();
 
-// check if supply exists
+$openSupplies = $suppliesWBClass->getOpenSupplies();
+
+// orders go into an open non-B2B supply - B2B supplies are created and filled by WB itself
 $supplyOpen = null;
-$supplies = $suppliesWBClass->getSupplies();
-foreach ($supplies as $supply)
-	if ($supply['closedAt'] == null)
+foreach ($openSupplies as $supply)
+	if (empty($supply['isB2b']))
 	{
 		$supplyOpen = $supply;
 		break;
 	}
 
-if ($supplyOpen === null)
+// nothing to place and no open supply to check for missing stickers - nothing to do
+if (!count($newOrders) && !count($openSupplies))
+{
+	echo 'Processed 0 orders';
+	return;
+}
+
+if ($supplyOpen === null && count($newOrders))
+{
 	$supplyOpen = $suppliesWBClass->createSupply('WB' . date('Y-m-d H:i:s'));
+	if (isset($supplyOpen['id']))
+		$openSupplies[] = $supplyOpen;
+	else
+	{
+		$log->write (__LINE__ . ' Could not create a supply - ' . json_encode ($supplyOpen, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$supplyOpen = null;
+	}
+}
+
+$productMS0 = count($newOrders) ? $productMSClass->findProductsByCode('000-0000') : array();
 
 foreach ($newOrders as &$newOrder)
 {
@@ -63,16 +118,18 @@ foreach ($newOrders as &$newOrder)
 		$log->write ('Already loaded - ' . $newOrder['id']);
 		continue;
 	}
-		
+
 	$positions = array();
 
 	$productMS = $productMSClass->findProductsByCode($newOrder['article']);
 	$productMS = isset($productMS[0]) ? $productMS : $productMS0;
 	$newOrder['productMS'] = $productMS;
 
-	$orderTransformer = new \Wildberries\Order\OrderTransformation('Ullo', $newOrder);
+	$orderTransformer = new \Wildberries\Order\OrderTransformation($shop, $newOrder);
 	$newOrdersMS[] = $orderTransformer->transformWildberriesToMS();
 }
+unset($newOrder);
+
 $result = array();
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
@@ -80,32 +137,89 @@ if (count($newOrdersMS) > 0){
 $ordersMS = array_merge($ordersMS, $result);
 $ordersMSIDs = array_column ($ordersMS, 'name');
 $log->write (__LINE__ . ' ordersMSIDs - ' . json_encode ($ordersMSIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-$suppliesWBClass->addOrdersToSupply($supplyOpen['id'], array_column($newOrders, 'id'));
+
+$ordersMSByName = array();
+foreach ($ordersMS as $orderMS)
+	if (isset($orderMS['name']))
+		$ordersMSByName[$orderMS['name']] = $orderMS;
 
 $updateOrdersMS = array();
-foreach ($newOrders as $newOrder){
-	if (!in_array('WB' . $newOrder['id'], $ordersMSIDs))
+$handledIDs = array();
+
+if (count($newOrders) && $supplyOpen !== null)
+{
+	// B2B orders belong to a B2B supply, which only WB can create and fill - trying to add
+	// them to our supply fails and would be retried on every run
+	$addIDs = array();
+	$b2bIDs = array();
+	foreach ($newOrders as $newOrder)
 	{
-		continue;
+		if (!empty($newOrder['options']['isB2B']))
+			$b2bIDs[] = $newOrder['id'];
+		else
+			$addIDs[] = $newOrder['id'];
 	}
 
-	#find order in result array and return item
-	$order = array_filter($ordersMS, function($item) use ($newOrder){
-		if (!isset($item['externalCode']))
-			return false;
-		return $item['externalCode'] == $newOrder['id'];
-		usleep(200000);
-	});
+	if (count($b2bIDs))
+		$log->write (__LINE__ . ' B2B orders left for WB to place into a B2B supply - ' . json_encode ($b2bIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-	$order = reset($order);
-	// get sticker
-	$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
-	if (isset($stickers['stickers'][0]))
+	if (count($addIDs))
 	{
-		$orderTransformer = new \Wildberries\Order\OrderTransformation('Ullo', $stickers['stickers'][0]);
-		$updateOrdersMS[] = $orderTransformer->transformWildberriesStickerToMS($order, $supplyOpen);
+		$log->write (__LINE__ . ' Adding orders to supply - ');
+		// only orders WB actually accepted can have a sticker - adding to a supply is what
+		// moves them from status new to confirm
+		$addedIDs = $suppliesWBClass->addOrdersToSupply($supplyOpen['id'], $addIDs);
+		// WB needs a moment to generate the sticker after the order is put into a supply
+		usleep(1000000);
+
+		foreach ($addedIDs as $addedID)
+			if (isset($ordersMSByName['WB' . $addedID]))
+				$handledIDs[(int)$addedID] = (int)$addedID;
+
+		$updateOrdersMS = buildStickerUpdates($shop, $ordersWBClass, array_values($handledIDs), $ordersMSByName, $supplyOpen, $log);
 	}
 }
+
+// an order in a supply is not returned by /orders/new anymore, so this is the only chance
+// to pick up the ones left without a sticker earlier. B2B supplies are included: their
+// orders are in status confirm and do have stickers, we just never put them there ourselves
+foreach ($openSupplies as $supply)
+{
+	$backfillIDs = array();
+	foreach ($suppliesWBClass->getSupplyOrderIds($supply['id']) as $supplyOrderID)
+	{
+		if (isset($handledIDs[(int)$supplyOrderID]))
+			continue;
+		$backfillIDs[] = (int)$supplyOrderID;
+	}
+
+	if (!count($backfillIDs))
+		continue;
+
+	$backfillNames = array();
+	foreach ($backfillIDs as $backfillID)
+		$backfillNames[] = 'WB' . $backfillID;
+
+	$backfillIDs = array();
+	$backfillOrdersMSByName = array();
+	foreach ($ordersMSClass->findOrdersByNames($backfillNames) as $orderMS)
+	{
+		if ($ordersMSClass->getAttribute($orderMS, MS_WB_FILE_ATTR) !== false)
+			continue;
+		$backfillOrdersMSByName[$orderMS['name']] = $orderMS;
+		$backfillIDs[] = (int)substr($orderMS['name'], 2);
+	}
+
+	if (count($backfillIDs))
+	{
+		$log->write (__LINE__ . ' sticker.backfill supply=' . $supply['id'] . ' orders - ' . json_encode ($backfillIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$updateOrdersMS = array_merge(
+			$updateOrdersMS,
+			buildStickerUpdates($shop, $ordersWBClass, $backfillIDs, $backfillOrdersMSByName, $supply, $log, 2)
+		);
+	}
+}
+
 if (count($updateOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($updateOrdersMS);
 }
