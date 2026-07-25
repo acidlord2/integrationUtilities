@@ -33,6 +33,10 @@ class Supplies
 			$url = WB_API_MARKETPLACE_API . WB_API_SUPPLIES . '?limit=1000&next=' . $next;
 			$this->log->write(__LINE__ . ' getSupplies.url - ' . $url);
 			$response = $this->apiWBClass->getData($url);
+			$httpCode = (int)$this->apiWBClass->getLastHttpCode();
+			// an expired token answers 401 and used to look exactly like "no supplies"
+			if ($httpCode !== 200)
+				$this->log->write(__LINE__ . ' getSupplies.FAILED shop=' . $this->shop . ' http=' . $httpCode . ' response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 			if (!isset($response['supplies']) || !count($response['supplies']))
 				break;
 			$return = array_merge($return, $response['supplies']);

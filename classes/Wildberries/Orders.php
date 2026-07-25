@@ -33,6 +33,10 @@ class Orders
 			$url = WB_API_MARKETPLACE_API . WB_API_ORDERS_NEW . '?' . $startDateUrl . $endDateUrl  . '&take=1000&skip=' . $skip;
 			$this->log->write(__LINE__ . ' getNewOrders.url - ' . $url);
 			$response = $this->apiWBClass->getData($url);
+			$httpCode = (int)$this->apiWBClass->getLastHttpCode();
+			// an expired token answers 401 and used to look exactly like "no new orders"
+			if ($httpCode !== 200)
+				$this->log->write(__LINE__ . ' getNewOrders.FAILED shop=' . $this->shop . ' http=' . $httpCode . ' response - ' . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 			if (!isset($response['orders']) || !count($response['orders']))
 				break;
 			$return = array_merge($return, $response['orders']);

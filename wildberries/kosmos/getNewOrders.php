@@ -10,6 +10,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/wildberries/order.php');
 
 $shop = 'Kosmos';
 
+// the sticker pass talks to WB and MS a lot - use the maximum the server allows
+@set_time_limit(300);
+
 $logName = ltrim(str_replace(['/', '\\'], ' - ', str_replace($_SERVER['DOCUMENT_ROOT'], '', __FILE__)), " -");
 $logName .= '.log';
 $log = new \Classes\Common\Log($logName);
@@ -50,6 +53,32 @@ function buildStickerUpdates($shop, $ordersWBClass, $orderIds, $ordersMSByName, 
 	}
 
 	return $updates;
+}
+
+/**
+ * Writes sticker updates to MS in small batches instead of one big request.
+ * A sticker is a png, so a single request with a whole supply in it is megabytes and minutes -
+ * if the host kills the script half way through, nothing at all gets saved. In batches
+ * whatever was written stays written and the next run continues from there.
+ *
+ * @return int - number of orders written
+ */
+function flushStickerUpdates($ordersMSClass, $updates, $log, $chunkSize = 20)
+{
+	$written = 0;
+	foreach (array_chunk($updates, $chunkSize) as $chunk)
+	{
+		$result = $ordersMSClass->createCustomerorder($chunk);
+		if (is_array($result) && isset($result[0]['id']))
+		{
+			$written += count($chunk);
+			continue;
+		}
+
+		$log->write(__LINE__ . ' sticker.writeFailed orders=' . count($chunk) . ' response - ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	}
+
+	return $written;
 }
 
 $startDate = date('Y-m-d', strtotime('-2 days')) . 'T00:00:00.000+03:00';
@@ -143,7 +172,7 @@ foreach ($ordersMS as $orderMS)
 	if (isset($orderMS['name']))
 		$ordersMSByName[$orderMS['name']] = $orderMS;
 
-$updateOrdersMS = array();
+$stickersWritten = 0;
 $handledIDs = array();
 
 if (count($newOrders) && $supplyOpen !== null)
@@ -176,21 +205,36 @@ if (count($newOrders) && $supplyOpen !== null)
 			if (isset($ordersMSByName['WB' . $addedID]))
 				$handledIDs[(int)$addedID] = (int)$addedID;
 
-		$updateOrdersMS = buildStickerUpdates($shop, $ordersWBClass, array_values($handledIDs), $ordersMSByName, $supplyOpen, $log);
+		// written before the backfill: new orders must never be starved by mop-up work
+		$stickersWritten += flushStickerUpdates(
+			$ordersMSClass,
+			buildStickerUpdates($shop, $ordersWBClass, array_values($handledIDs), $ordersMSByName, $supplyOpen, $log),
+			$log
+		);
 	}
 }
 
 // an order in a supply is not returned by /orders/new anymore, so this is the only chance
 // to pick up the ones left without a sticker earlier. B2B supplies are included: their
-// orders are in status confirm and do have stickers, we just never put them there ourselves
+// orders are in status confirm and do have stickers, we just never put them there ourselves.
+// Bounded per run so the runtime stays predictable as a supply grows towards a few hundred orders
+$backfillScanLimit = 200;
+$backfillWriteLimit = 100;
+
 foreach ($openSupplies as $supply)
 {
+	if ($backfillWriteLimit <= 0)
+		break;
+
+	// newest first: an order the run above failed on is at the end of the supply
 	$backfillIDs = array();
-	foreach ($suppliesWBClass->getSupplyOrderIds($supply['id']) as $supplyOrderID)
+	foreach (array_reverse($suppliesWBClass->getSupplyOrderIds($supply['id'])) as $supplyOrderID)
 	{
 		if (isset($handledIDs[(int)$supplyOrderID]))
 			continue;
 		$backfillIDs[] = (int)$supplyOrderID;
+		if (count($backfillIDs) >= $backfillScanLimit)
+			break;
 	}
 
 	if (!count($backfillIDs))
@@ -204,6 +248,8 @@ foreach ($openSupplies as $supply)
 	$backfillOrdersMSByName = array();
 	foreach ($ordersMSClass->findOrdersByNames($backfillNames) as $orderMS)
 	{
+		if (count($backfillIDs) >= $backfillWriteLimit)
+			break;
 		if ($ordersMSClass->getAttribute($orderMS, MS_WB_FILE_ATTR) !== false)
 			continue;
 		$backfillOrdersMSByName[$orderMS['name']] = $orderMS;
@@ -213,16 +259,15 @@ foreach ($openSupplies as $supply)
 	if (count($backfillIDs))
 	{
 		$log->write (__LINE__ . ' sticker.backfill supply=' . $supply['id'] . ' orders - ' . json_encode ($backfillIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-		$updateOrdersMS = array_merge(
-			$updateOrdersMS,
-			buildStickerUpdates($shop, $ordersWBClass, $backfillIDs, $backfillOrdersMSByName, $supply, $log, 2)
+		$written = flushStickerUpdates(
+			$ordersMSClass,
+			buildStickerUpdates($shop, $ordersWBClass, $backfillIDs, $backfillOrdersMSByName, $supply, $log, 2),
+			$log
 		);
+		$stickersWritten += $written;
+		$backfillWriteLimit -= count($backfillIDs);
 	}
 }
 
-if (count($updateOrdersMS) > 0){
-	$result = $ordersMSClass->createCustomerorder($updateOrdersMS);
-}
-
-echo 'Processed ' . count ($newOrders) . ', created ' . count ($newOrdersMS), ', stickers updated ' . count ($updateOrdersMS);
+echo 'Processed ' . count ($newOrders) . ', created ' . count ($newOrdersMS), ', stickers updated ' . $stickersWritten;
 ?>
