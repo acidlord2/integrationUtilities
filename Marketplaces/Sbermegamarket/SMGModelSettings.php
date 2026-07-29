@@ -14,10 +14,10 @@ class SMGModelClass
 	private $apiVersion;
 	private $settings;
 	
-	public function __construct ($token);
+	public function __construct ($token)
 	{
 		$this->token = $token;
-		$this->$baseurl = 
+		$this->baseurl = 'https://api.sbermegamarket.ru';
 	}
 	
     public static function postData($company, $service_url, $postdata, &$jsonOut, &$arrayOut)
