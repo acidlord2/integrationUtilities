@@ -24,18 +24,19 @@ if (!$isCli)
     if (!isset($_SERVER['DOCUMENT_ROOT']) || $_SERVER['DOCUMENT_ROOT'] === '')
         $_SERVER['DOCUMENT_ROOT'] = dirname(__DIR__);
 
+    // Sent before auth.php on purpose: that file emits a stray newline after its closing tag,
+    // so any header() call after requiring it fails with "headers already sent".
+    header('Content-Type: text/plain; charset=utf-8');
+
     // The output carries the egress IP, the DB host and masked credentials, so over HTTP this
     // sits behind the normal app login like every other page. auth.php sends the redirect but
     // does not stop execution, so the session is re-checked here before anything is printed.
     require_once($_SERVER['DOCUMENT_ROOT'] . '/login/auth.php');
     if (empty($_SESSION['authenticated']) || $_SESSION['authenticated'] !== 'true')
     {
-        header('Content-Type: text/plain; charset=utf-8');
         echo "not authenticated - log in first\n";
         exit(1);
     }
-
-    header('Content-Type: text/plain; charset=utf-8');
 }
 else
 {
@@ -45,7 +46,7 @@ else
 require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 
 // ---------------------------------------------------------------- which sections to run
-$all = array('env', 'db', 'ms', 'wb', 'ozon', 'yandex');
+$all = array('env', 'db', 'net', 'ms', 'wb', 'ozon', 'yandex');
 if ($isCli)
     $only = array_values(array_filter(array_slice($argv, 1)));
 else
@@ -95,7 +96,7 @@ function mask($v)
  *
  * @return array
  */
-function probe($label, $method, $url, $headers = array(), $body = null, $expect = '2xx + json')
+function probe($label, $method, $url, $headers = array(), $body = null, $expect = '2xx + json', $resolve = null)
 {
     global $CONNECT_TIMEOUT, $TOTAL_TIMEOUT;
 
@@ -105,8 +106,15 @@ function probe($label, $method, $url, $headers = array(), $body = null, $expect 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $CONNECT_TIMEOUT);
     curl_setopt($curl, CURLOPT_TIMEOUT, $TOTAL_TIMEOUT);
-    curl_setopt($curl, CURLOPT_ENCODING, '');
+    // 'gzip', not '': an empty string advertises every encoding the local curl supports
+    // (brotli, zstd on newer builds) and a decode the runtime cannot finish surfaces as
+    // CURLE_WRITE_ERROR(23) on an otherwise perfectly good 200. gzip is also what the
+    // application's own clients ask for, so this matches production behaviour.
+    curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    // pin the hostname to a known address, to tell a bad resolver apart from a blocked route
+    if ($resolve !== null)
+        curl_setopt($curl, CURLOPT_RESOLVE, array($resolve));
     curl_setopt($curl, CURLOPT_HEADERFUNCTION, function ($ch, $line) use (&$respHeaders) {
         $parts = explode(':', $line, 2);
         if (count($parts) === 2)
@@ -128,8 +136,17 @@ function probe($label, $method, $url, $headers = array(), $body = null, $expect 
     $code = (int)($info['http_code'] ?? 0);
     $json = is_string($raw) ? json_decode($raw, true) : null;
 
-    // classify
-    if ($errNo)
+    // classify. Order matters: a curl error that arrives *after* a status line is a local
+    // receive/decode problem, not a connectivity one - reporting it as NETWORK sends you
+    // hunting for a firewall that is not there.
+    if ($errNo && $code >= 200 && $code < 400)
+    {
+        $stage = 'LOCAL';
+        $verdict = 'WARN';
+        $note = 'remote answered HTTP ' . $code . ' but curl(' . $errNo . ') ' . $errMsg
+              . ' - transport reached the API, the failure is on this host (decode/write)';
+    }
+    elseif ($errNo)
     {
         // 6 = DNS, 7 = refused/unreachable, 28 = timeout, 35/60 = TLS
         $stage = 'NETWORK';
@@ -309,6 +326,75 @@ if (in_array('db', $only, true))
     }
 }
 
+// ------------------------------------------------------------------------------- network
+if (in_array('net', $only, true))
+{
+    section('NETWORK REACHABILITY  (dns + raw tcp:443, before any credentials)');
+    out('  Separates the three ways an integration goes dark: the resolver, the route, or the');
+    out('  remote refusing this particular source address.');
+    out();
+
+    $hosts = array(
+        'api.moysklad.ru'                => '185.71.64.179',
+        'marketplace-api.wildberries.ru' => null,
+        'api-seller.ozon.ru'             => null,
+        'api.partner.market.yandex.ru'   => null,
+    );
+
+    foreach ($hosts as $host => $knownIp)
+    {
+        $ips = @gethostbynamel($host);
+        if (!$ips)
+        {
+            out(sprintf('  [FAIL] %-32s dns: no A record (resolver problem)', $host));
+            $fail++;
+            continue;
+        }
+        out(sprintf('         %-32s dns: %s', $host, implode(', ', $ips)));
+
+        $t0 = microtime(true);
+        $errno = 0;
+        $errstr = '';
+        $fp = @fsockopen('tcp://' . $ips[0], 443, $errno, $errstr, $CONNECT_TIMEOUT);
+        $ms = (microtime(true) - $t0) * 1000;
+
+        if ($fp)
+        {
+            fclose($fp);
+            out(sprintf('  [PASS] %-32s tcp %s:443 open in %.0f ms', '', $ips[0], $ms));
+            $pass++;
+        }
+        else
+        {
+            out(sprintf('  [FAIL] %-32s tcp %s:443 BLOCKED after %.0f ms (errno %d %s)',
+                '', $ips[0], $ms, $errno, $errstr));
+            $fail++;
+
+            // resolved address unreachable - is the published address reachable instead?
+            if ($knownIp !== null && $knownIp !== $ips[0])
+            {
+                $t0 = microtime(true);
+                $fp2 = @fsockopen('tcp://' . $knownIp, 443, $errno, $errstr, $CONNECT_TIMEOUT);
+                $ms2 = (microtime(true) - $t0) * 1000;
+                if ($fp2)
+                {
+                    fclose($fp2);
+                    out(sprintf('  [WARN] %-32s but %s:443 IS open -> this host resolves %s to the wrong address',
+                        '', $knownIp, $host));
+                    $warn++;
+                }
+                else
+                    out(sprintf('         %-32s known address %s:443 also blocked (%d %s)',
+                        '', $knownIp, $errno, $errstr));
+            }
+        }
+    }
+    out();
+    out('  If dns resolves but tcp is blocked on one host only, the remote is dropping traffic');
+    out('  from this server\'s address (or the host firewall is). If every host is blocked, it');
+    out('  is this server\'s egress. Give the provider the "egress ip" from the ENVIRONMENT block.');
+}
+
 // ------------------------------------------------------------------------------- MoySklad
 if (in_array('ms', $only, true))
 {
@@ -330,6 +416,19 @@ if (in_array('ms', $only, true))
         record($r);
         if ($r['verdict'] === 'PASS')
             out('         user: ' . ($r['json']['name'] ?? '?') . '  uid: ' . ($r['json']['uid'] ?? '?'));
+        elseif ($r['code'] === 0)
+        {
+            // no status line came back at all. Repeat against the published address: if that
+            // works the resolver is wrong, if it also hangs the route itself is blocked.
+            out('         no HTTP response - retrying pinned to the published address');
+            $r2 = probe('bearer / pinned 185.71.64.179', 'GET', $base . 'context/employee',
+                array('Content-type: application/json', 'Accept-Encoding: gzip',
+                      'Authorization: Bearer ' . $cfg['ms_token']),
+                null,
+                '200 -> resolver at fault; another timeout -> route/IP block',
+                'api.moysklad.ru:443:185.71.64.179');
+            record($r2);
+        }
         out();
     }
 
