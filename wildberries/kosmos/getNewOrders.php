@@ -163,6 +163,11 @@ $result = array();
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
 }
+if (!is_array($result))
+{
+	$log->write (__LINE__ . ' createCustomerorder failed, response - ' . json_encode ($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+	$result = array();
+}
 $ordersMS = array_merge($ordersMS, $result);
 $ordersMSIDs = array_column ($ordersMS, 'name');
 $log->write (__LINE__ . ' ordersMSIDs - ' . json_encode ($ordersMSIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -181,13 +186,26 @@ if (count($newOrders) && $supplyOpen !== null)
 	// them to our supply fails and would be retried on every run
 	$addIDs = array();
 	$b2bIDs = array();
+	$notInMSIDs = array();
 	foreach ($newOrders as $newOrder)
 	{
+		// Adding an order to a supply removes it from /orders/new permanently, so an order
+		// whose MoySklad counterpart is missing has to be left where it is. Otherwise a
+		// MoySklad outage drops it silently and no later run can ever pick it up again.
+		if (!isset($ordersMSByName['WB' . $newOrder['id']]))
+		{
+			$notInMSIDs[] = $newOrder['id'];
+			continue;
+		}
+
 		if (!empty($newOrder['options']['isB2B']))
 			$b2bIDs[] = $newOrder['id'];
 		else
 			$addIDs[] = $newOrder['id'];
 	}
+
+	if (count($notInMSIDs))
+		$log->write (__LINE__ . ' Not in MS, left in /orders/new for the next run - ' . json_encode ($notInMSIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
 	if (count($b2bIDs))
 		$log->write (__LINE__ . ' B2B orders left for WB to place into a B2B supply - ' . json_encode ($b2bIDs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));

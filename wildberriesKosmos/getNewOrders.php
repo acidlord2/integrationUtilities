@@ -183,14 +183,16 @@ foreach ($newOrders as $newOrder)
 }
 if (count($newOrdersMS) > 0){
 	$result = $ordersMSClass->createCustomerorder($newOrdersMS);
-	if(!is_null($result)){
+	// postData() returns false on a MoySklad error, and a bulk create answers with per-row
+	// errors instead of created orders - both are non-null, so !is_null() let the loop below
+	// run and hand every order to the supply with nothing created in MoySklad.
+	if (is_array($result) && count($result) && !isset($result[0]['errors'])){
 		foreach ($newOrders as $newOrder){
 			if (array_search('WB' . $newOrder['id'], $ordersMSIDs) !== false)
 			{
 				continue;
 			}
 
-			$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
 			#find order in result array and return item
 			$order = array_filter($result, function($item) use ($newOrder){
 				if (!isset($item['externalCode']))
@@ -199,6 +201,16 @@ if (count($newOrdersMS) > 0){
 			});
 			
 			$order = reset($order);
+			// Hand the order to the supply only once it really exists in MoySklad.
+			// addOrderToSupply() removes it from /api/v3/orders/new permanently, so doing this
+			// before the order is confirmed loses it for good whenever MoySklad is unavailable.
+			if (!isset($order['id']))
+			{
+				$logger->write ('Not created in MS, left in /orders/new - ' . $newOrder['id']);
+				continue;
+			}
+
+			$suppliesWBClass->addOrderToSupply($supplyOpen['id'], (string)$newOrder['id']);
 			// get sticker
 			$stickers = $ordersWBClass->getStickers(array($newOrder['id']));
 			if (isset($stickers['stickers'][0]))
