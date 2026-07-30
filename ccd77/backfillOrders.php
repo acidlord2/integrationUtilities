@@ -789,25 +789,31 @@ $skips = array();
 $counterpartyCache = array();
 $created = 0;
 $verified = 0;
+$newCustomers = 0;
 
 out('');
 foreach ($todo as $order)
 {
     $counterparty = counterpartyFor($ms, $order, $counterpartyCache, $createCounterparties && $mode === 'live');
+    $newCustomer = false;
 
-    // a dry run must not create counterparties, so a customer who has none yet cannot be fully
-    // previewed - report it as what it is instead of pretending the order is ready
     if (is_string($counterparty))
     {
+        // A dry run must not create anything, so a customer who has no counterparty yet cannot get
+        // a real agent href. Preview the order against a stand-in rather than hiding it: otherwise
+        // the first run of a new shop shows nothing at all and there is no payload to check.
         if ($mode === 'dry' && strpos($counterparty, 'counterparty missing') === 0)
         {
-            out(sprintf('   ?  ccd-%-8s %s  new customer - counterparty would be created on a live run',
-                $order['id'], $order['dateCreated']));
+            $newCustomer = true;
+            $counterparty = array('meta' => array(
+                'href' => MsClient::BASE . 'counterparty/WOULD-BE-CREATED-ON-A-LIVE-RUN'));
+        }
+        else
+        {
+            $skips[] = 'ccd-' . $order['id'] . ' - ' . $counterparty;
+            out(sprintf('   !! SKIP  ccd-%-8s %s', $order['id'], $counterparty));
             continue;
         }
-        $skips[] = 'ccd-' . $order['id'] . ' - ' . $counterparty;
-        out(sprintf('   !! SKIP  ccd-%-8s %s', $order['id'], $counterparty));
-        continue;
     }
 
     $built = buildPayload($order, $settings, $byCode, $placeholder, $counterparty);
@@ -822,16 +828,20 @@ foreach ($todo as $order)
     foreach ($built['positions'] as $position)
         $sum += $position['price'] * ($position['quantity'] ?? 1);
 
-    out(sprintf('      %-12s %s  %-14s pos=%d sum=%.2f  %s',
-        $built['name'], $order['dateCreated'], $order['status'], count($built['positions']), $sum / 100,
-        $order['billing']['phone']));
+    out(sprintf('   %s  %-12s %s  %-14s pos=%d sum=%.2f  %s',
+        $newCustomer ? '+' : ' ', $built['name'], $order['dateCreated'], $order['status'],
+        count($built['positions']), $sum / 100, $order['billing']['phone']));
+
+    if ($newCustomer)
+        $newCustomers++;
 
     $payloads[] = $built;
     $payloadNames[] = $built['name'];
 }
 
 out('');
-out('payloads    ' . count($payloads) . ' ready' . (count($skips) ? ', ' . count($skips) . ' skipped' : ''));
+out('payloads    ' . count($payloads) . ' ready' . (count($skips) ? ', ' . count($skips) . ' skipped' : '')
+  . ($newCustomers ? '   (+ marks ' . $newCustomers . ' order(s) whose counterparty does not exist yet)' : ''));
 
 if ($mode === 'dry')
 {
