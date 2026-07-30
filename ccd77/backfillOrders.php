@@ -229,35 +229,63 @@ function fetchExport($url, $key, $since, $sinceId, $statuses, $limit)
     $separator = strpos($url, '?') === false ? '?' : '&';
     $full = $url . (count($query) ? $separator . http_build_query($query) : '');
 
-    $curl = curl_init($full);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 15);
-    // the whole order history can be several MB over a shared host - be patient
-    curl_setopt($curl, CURLOPT_TIMEOUT, 600);
-    curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
-    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+    // the export scans the whole order table, so a shared host answers 503 if it is asked twice in
+    // quick succession. Retried with a growing pause rather than failing the run.
+    $attempts = 4;
+    $delay = 5;
+    $lastProblem = '';
 
-    $raw = curl_exec($curl);
-    $errNo = curl_errno($curl);
-    $errMsg = curl_error($curl);
-    $code = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    curl_close($curl);
+    for ($attempt = 1; $attempt <= $attempts; $attempt++)
+    {
+        $curl = curl_init($full);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 15);
+        // the whole order history can be several MB over a shared host - be patient
+        curl_setopt($curl, CURLOPT_TIMEOUT, 600);
+        curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 
-    if ($errNo)
-        return 'could not reach the exporter: curl(' . $errNo . ') ' . $errMsg;
+        $raw = curl_exec($curl);
+        $errNo = curl_errno($curl);
+        $errMsg = curl_error($curl);
+        $code = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
 
-    if ($code !== 200)
-        return 'exporter answered HTTP ' . $code . ': ' . trim(substr((string)$raw, 0, 300));
+        if (!$errNo && $code === 200)
+        {
+            $export = json_decode($raw, true);
+            if (is_array($export) && isset($export['orders']) && isset($export['settings']))
+            {
+                $export['_bytes'] = strlen($raw);
+                $export['_raw'] = $raw;
+                return $export;
+            }
 
-    $export = json_decode($raw, true);
-    if (!is_array($export) || !isset($export['orders']) || !isset($export['settings']))
-        return 'the exporter did not return an export (HTTP 200): ' . trim(substr((string)$raw, 0, 300));
+            // a 200 that is not an export is the exporter's own error report - no point retrying
+            return 'the exporter did not return an export (HTTP 200): ' . trim(substr((string)$raw, 0, 300));
+        }
 
-    $export['_bytes'] = strlen($raw);
-    $export['_raw'] = $raw;
-    return $export;
+        if ($errNo)
+            $lastProblem = 'could not reach the exporter: curl(' . $errNo . ') ' . $errMsg;
+        else
+            $lastProblem = 'exporter answered HTTP ' . $code . ': '
+                         . trim(preg_replace('/\s+/', ' ', strip_tags((string)$raw)));
+
+        // 4xx will not fix itself - a wrong key or a bad argument stays wrong
+        if (!$errNo && $code >= 400 && $code < 500)
+            return $lastProblem;
+
+        if ($attempt < $attempts)
+        {
+            out('     .. export retry ' . $attempt . ' in ' . $delay . 's (' . substr($lastProblem, 0, 80) . ')');
+            sleep($delay);
+            $delay = min($delay * 2, 40);
+        }
+    }
+
+    return $lastProblem . ' (after ' . $attempts . ' attempts)';
 }
 
 // -------------------------------------------------------------------------------- helpers
@@ -391,6 +419,18 @@ function counterpartyFor($ms, $order, &$cache, $create)
 }
 
 /**
+ * Joins ms_base_url with an entity path from wp_gms_settings.
+ *
+ * The plugin concatenates the two raw, which works because the site stores the base without a
+ * trailing slash and every value with a leading one. Normalising only one side produces
+ * '.../entity//organization/...', so both sides are trimmed here.
+ */
+function msHref($base, $path)
+{
+    return rtrim($base, '/') . '/' . ltrim($path, '/');
+}
+
+/**
  * Builds the MoySklad customerorder for a WooCommerce order.
  *
  * This mirrors the WordPress plugin field for field, on purpose: a backfilled order has to be
@@ -401,7 +441,7 @@ function counterpartyFor($ms, $order, &$cache, $create)
  */
 function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
 {
-    $base = rtrim($settings['ms_base_url'], '/') . '/';
+    $base = $settings['ms_base_url'];
 
     if (!count($order['items']))
         return 'order has no line items';
@@ -444,12 +484,12 @@ function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
     }
 
     // delivery method decides both the shipping position and the "способ доставки" attribute
-    $delivery = $base . $settings['delivery_pickup'];
+    $delivery = msHref($base, $settings['delivery_pickup']);
     foreach ($order['shipping'] as $shipping)
     {
         $positions[] = array(
             'assortment' => array('meta' => array(
-                'href'      => $base . $settings['delivery'],
+                'href'      => msHref($base, $settings['delivery']),
                 'type'      => 'service',
                 'mediaType' => 'application/json'
             )),
@@ -461,18 +501,18 @@ function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
         );
 
         if ($shipping['methodId'] === 'KC2008_Pickup_Method')
-            $delivery = $base . $settings['delivery_yandex'];
+            $delivery = msHref($base, $settings['delivery_yandex']);
         elseif ($shipping['methodId'] === 'wc_russian_post_postal')
-            $delivery = $base . $settings['delivery_rpost'];
+            $delivery = msHref($base, $settings['delivery_rpost']);
         elseif ($shipping['methodId'] === 'official_cdek')
-            $delivery = $base . $settings['delivery_sdek'];
+            $delivery = msHref($base, $settings['delivery_sdek']);
         else
-            $delivery = $base . $settings['delivery_pickup'];
+            $delivery = msHref($base, $settings['delivery_pickup']);
     }
 
     $payment = in_array($order['paymentMethod'], array('rbspayment', 'alfabank'), true)
-        ? $base . $settings['payment_sber']
-        : $base . $settings['payment_cash'];
+        ? msHref($base, $settings['payment_sber'])
+        : msHref($base, $settings['payment_cash']);
 
     // moment is site time, exactly what the plugin's get_date_created()->format() produced
     $created = new DateTime($order['dateCreated']);
@@ -483,7 +523,7 @@ function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
     return array(
         'name'         => 'ccd-' . $order['id'],
         'organization' => array('meta' => array(
-            'href' => $base . $settings['organization'], 'type' => 'organization', 'mediaType' => 'application/json')),
+            'href' => msHref($base, $settings['organization']), 'type' => 'organization', 'mediaType' => 'application/json')),
         'externalCode' => (string)$order['id'],
         'moment'       => $created->format('Y-m-d H:i:s'),
         'deliveryPlannedMoment' => $planned->format('Y-m-d H:i:s'),
@@ -492,11 +532,11 @@ function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
         'agent'        => array('meta' => array(
             'href' => $counterparty['meta']['href'], 'type' => 'counterparty', 'mediaType' => 'application/json')),
         'state'        => array('meta' => array(
-            'href' => $base . $settings['state'], 'type' => 'state', 'mediaType' => 'application/json')),
+            'href' => msHref($base, $settings['state']), 'type' => 'state', 'mediaType' => 'application/json')),
         'store'        => array('meta' => array(
-            'href' => $base . $settings['store'], 'type' => 'store', 'mediaType' => 'application/json')),
+            'href' => msHref($base, $settings['store']), 'type' => 'store', 'mediaType' => 'application/json')),
         'project'      => array('meta' => array(
-            'href' => $base . $settings['project'], 'type' => 'project', 'mediaType' => 'application/json')),
+            'href' => msHref($base, $settings['project']), 'type' => 'project', 'mediaType' => 'application/json')),
         'positions'    => $positions,
         'attributes'   => array(
             // Тип оплаты
