@@ -72,12 +72,16 @@ $fromJson = '';
 $fromUrl = '';
 $exportKey = getenv('CCD77_EXPORT_KEY') ?: EXPORT_KEY;
 $saveTo = '';
-$msToken = getenv('MS_TOKEN') ?: '';
+$msToken = '';
+$msTokenFromEnv = getenv('MS_TOKEN') ?: '';
+$fetchToken = false;
 
 foreach ($args as $arg)
 {
     if ($arg === '--from-url')
         $fromUrl = EXPORT_URL;
+    elseif ($arg === '--fetch-token')
+        $fetchToken = true;
     elseif (strpos($arg, '--from-url=') === 0)
         $fromUrl = substr($arg, 11);
     elseif (strpos($arg, '--export-key=') === 0)
@@ -156,6 +160,9 @@ class MsClient
     /**
      * Retries 429 and 5xx with a growing delay - a backfill is the one thing guaranteed to hit
      * the account's rate limit, and a throttled read must never look like "not found".
+     *
+     * 403 is deliberately not retried: MoySklad answers it for a rotated or revoked token, and
+     * failing straight away says so instead of hiding it behind half a minute of backoff.
      */
     private function request($method, $url, $body, $attempts = 4)
     {
@@ -211,11 +218,14 @@ class MsClient
  *
  * @return array|string - the decoded export, or a string describing the failure
  */
-function fetchExport($url, $key, $since, $sinceId, $statuses, $limit)
+function fetchExport($url, $key, $since, $sinceId, $statuses, $limit, $withToken = false)
 {
     $query = array();
     if ($key !== '')
         $query['key'] = $key;
+    // ask the site for its own MoySklad token, so a rotated one does not have to be copied by hand
+    if ($withToken)
+        $query['with-token'] = 1;
     if ($since !== null)
         $query['since'] = $since;
     if ($sinceId > 0)
@@ -439,7 +449,7 @@ function msHref($base, $path)
  *
  * @return array|string - the payload, or a string explaining why it was skipped
  */
-function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
+function buildPayload($order, $settings, $byCode, $placeholder, $counterparty, $siteTz)
 {
     $base = $settings['ms_base_url'];
 
@@ -514,8 +524,16 @@ function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
         ? msHref($base, $settings['payment_sber'])
         : msHref($base, $settings['payment_cash']);
 
-    // moment is site time, exactly what the plugin's get_date_created()->format() produced
-    $created = new DateTime($order['dateCreated']);
+    // The plugin writes UTC, not site time: this site has no timezone_string (only gmt_offset), so
+    // WooCommerce's get_date_created()->format() hands back the underlying UTC value and every
+    // order created by the webhook sits in MoySklad three hours early. Verified against orders the
+    // webhook wrote: shop 09:48 MSK -> moment 06:48, shop 16:27 -> 13:27.
+    //
+    // The before-noon rule below is therefore applied to the UTC hour too, which is what the plugin
+    // does - it reads the hour off the same object. Using site time would move the planned date of
+    // everything ordered between 12:00 and 15:00 MSK to the next day.
+    $created = new DateTime($order['dateCreated'], new DateTimeZone($siteTz));
+    $created->setTimezone(new DateTimeZone('UTC'));
     $planned = clone $created;
     if ((int)$created->format('H') >= 12)
         $planned->modify('+1 day');
@@ -591,7 +609,7 @@ if ($fromUrl !== '')
     // ------------------------------------------------------------- from the site over http
     out('source      ' . $fromUrl . '  (key ' . ($exportKey === '' ? 'none' : 'sent') . ')');
 
-    $exported = fetchExport($fromUrl, $exportKey, $since, $sinceId, $statuses, 0);
+    $exported = fetchExport($fromUrl, $exportKey, $since, $sinceId, $statuses, 0, $fetchToken);
     if (is_string($exported))
     {
         out('[FAIL] ' . $exported);
@@ -612,9 +630,10 @@ if ($fromUrl !== '')
 
     $settings = $exported['settings'];
     $counts = $exported['statusCounts'] ?? array();
+    $siteTz = $exported['source']['timezone'] ?? 'Europe/Moscow';
 
     out('exported    ' . ($exported['generated'] ?? '?') . '  on ' . ($exported['source']['host'] ?? '?'));
-    out('schema      ' . ($exported['source']['schema'] ?? '?') . '  tz ' . ($exported['source']['timezone'] ?? '?'));
+    out('schema      ' . ($exported['source']['schema'] ?? '?') . '  tz ' . $siteTz);
     out('in export   ' . count($exported['orders']) . ' order(s)');
 }
 elseif ($fromJson !== '')
@@ -635,6 +654,7 @@ elseif ($fromJson !== '')
 
     $settings = $exported['settings'];
     $counts = $exported['statusCounts'] ?? array();
+    $siteTz = $exported['source']['timezone'] ?? 'Europe/Moscow';
 
     out('source      ' . $fromJson);
     out('exported    ' . ($exported['generated'] ?? '?') . '  on ' . ($exported['source']['host'] ?? '?'));
@@ -671,6 +691,7 @@ else
     }
 
     $counts = $db->statusCounts();
+    $siteTz = $db->timezone()->getName();
 }
 
 $countsOut = array();
@@ -678,16 +699,35 @@ foreach ($counts as $status => $count)
     $countsOut[] = $status . '=' . $count;
 out('shop orders ' . (count($countsOut) ? implode('  ', $countsOut) : '(not reported)'));
 
-// the export masks the token on purpose - it has to be supplied here
-if ($msToken !== '')
-    $settings['ms_token'] = $msToken;
+// Token precedence: an explicit --ms-token, then whatever the site itself is configured with
+// (--fetch-token), then the environment. The site wins over the environment on purpose - when the
+// token is rotated, the shop is the place that gets updated, and a stale MS_TOKEN sitting in a
+// shell would otherwise quietly override the fresh one.
+$exportToken = isset($settings['ms_token']) && strpos((string)$settings['ms_token'], 'MASKED:') !== 0
+    ? (string)$settings['ms_token'] : '';
+$tokenSource = '';
 
-if (!isset($settings['ms_token']) || $settings['ms_token'] === '' || strpos($settings['ms_token'], 'MASKED:') === 0)
+if ($msToken !== '')
+    $tokenSource = '--ms-token';
+elseif ($exportToken !== '')
 {
-    out('[FAIL] no MoySklad token. The export masks it - pass --ms-token=... or set MS_TOKEN,');
-    out('       or re-export with --with-token if you would rather carry it in the file.');
+    $msToken = $exportToken;
+    $tokenSource = 'the shop (wp_gms_settings)';
+}
+elseif ($msTokenFromEnv !== '')
+{
+    $msToken = $msTokenFromEnv;
+    $tokenSource = 'MS_TOKEN in the environment';
+}
+
+if ($msToken === '')
+{
+    out('[FAIL] no MoySklad token. The export masks it by default - add --fetch-token to take the');
+    out('       shop\'s own token over https, or pass --ms-token=..., or set MS_TOKEN.');
     exit(1);
 }
+
+$settings['ms_token'] = $msToken;
 
 $required = array('ms_base_url', 'ms_token', 'organization', 'project', 'state', 'store', 'delivery',
                   'delivery_rpost', 'delivery_sdek', 'delivery_yandex', 'delivery_pickup',
@@ -713,7 +753,7 @@ if (strpos($base, 'http') !== 0)
 
 out('ms base     ' . $base);
 out('ms token    ' . substr($settings['ms_token'], 0, 6) . str_repeat('*', 6) . substr($settings['ms_token'], -4)
-  . ' [len ' . strlen($settings['ms_token']) . ']');
+  . ' [len ' . strlen($settings['ms_token']) . ']  from ' . $tokenSource);
 
 $ms = new MsClient($settings['ms_token']);
 
@@ -721,7 +761,9 @@ $ms = new MsClient($settings['ms_token']);
 $who = $ms->get('https://api.moysklad.ru/api/remap/1.2/context/employee');
 if (!is_array($who) || !isset($who['name']))
 {
-    out('[FAIL] MoySklad rejected the plugin token: http ' . $ms->lastCode() . ' ' . $ms->lastError());
+    out('[FAIL] MoySklad rejected this token: http ' . $ms->lastCode() . ' ' . $ms->lastError());
+    if ($ms->lastCode() === 401 || $ms->lastCode() === 403)
+        out('       Rotated? --fetch-token takes the shop\'s current one instead of a stored copy.');
     exit(1);
 }
 out('ms user     ' . $who['name']);
@@ -856,7 +898,7 @@ foreach ($todo as $order)
         }
     }
 
-    $built = buildPayload($order, $settings, $byCode, $placeholder, $counterparty);
+    $built = buildPayload($order, $settings, $byCode, $placeholder, $counterparty, $siteTz);
     if (is_string($built))
     {
         $skips[] = 'ccd-' . $order['id'] . ' - ' . $built;
