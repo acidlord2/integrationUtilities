@@ -12,17 +12,25 @@
  * using the entity ids from the plugin's own wp_gms_settings table. It requires nothing from the
  * marketplace integration and changes nothing outside MoySklad.
  *
- * Two ways to feed it, because the shop database only listens on localhost of the hosting server:
+ * Three ways to feed it, because the shop database only listens on localhost of the hosting server:
  *
- *   1. from a json export (run ccd77/exportOrders.php there, copy the file, work from anywhere)
+ *   1. over http from the exporter on the site - no file to move around
+ *      php ccd77/backfillOrders.php --from-url --since=2026-07-28 dry
+ *
+ *   2. from a json file that exporter produced
  *      php ccd77/backfillOrders.php --from-json=ccd77-orders-2026-07-30_0915.json dry
  *
- *   2. straight from the database, when running on the server itself
+ *   3. straight from the database, when running on the server itself
  *      php ccd77/backfillOrders.php dry --since=2026-07-28
  *
+ *     --from-url[=URL]  fetch the export over http. Without a URL it uses EXPORT_URL below and
+ *                       forwards --since/--status/--since-id/--limit to the exporter, so only the
+ *                       orders actually wanted come over the wire.
+ *     --export-key=KEY  key the exporter demands; also CCD77_EXPORT_KEY in the environment
+ *     --save=FILE       keep a copy of the fetched export (it holds customer data - off by default)
  *     --from-json=FILE  read orders and settings from an export instead of the database
- *     --ms-token=TOKEN  MoySklad token; also MS_TOKEN in the environment. Needed with --from-json
- *                       unless the export was made with --with-token.
+ *     --ms-token=TOKEN  MoySklad token; also MS_TOKEN in the environment. Needed with an export
+ *                       unless it was made with --with-token.
  *     --status=LIST     comma separated WooCommerce statuses, default wc-processing,wc-completed
  *                       ('all' for every status present)
  *     --since-id=N      only orders with an id above N
@@ -39,7 +47,20 @@ require_once(__DIR__ . '/ccdDb.php');
 
 date_default_timezone_set('Europe/Moscow');
 
+/** where --from-url goes when it is given no url of its own, and the key that endpoint wants */
+define('EXPORT_URL', 'https://kids-universe.ru/ccd77/exportOrders.php');
+define('EXPORT_KEY', 'k7f2a9c4e1b83d');
+
 // -------------------------------------------------------------------------------- arguments
+// $argv is missing under the web SAPI and whenever register_argc_argv is off - reading it
+// unguarded would silently drop every option, including the one that keeps this a dry run
+if (!isset($argv) || !is_array($argv))
+{
+    echo "this script is command line only, and php cli has no \$argv here.\n";
+    echo "enable register_argc_argv in php.ini, or run it from a machine that can reach MoySklad.\n";
+    exit(1);
+}
+
 $args = array_slice($argv, 1);
 $mode = 'dry';
 $statusArg = '';
@@ -48,11 +69,22 @@ $since = null;
 $max = 0;
 $createCounterparties = true;
 $fromJson = '';
+$fromUrl = '';
+$exportKey = getenv('CCD77_EXPORT_KEY') ?: EXPORT_KEY;
+$saveTo = '';
 $msToken = getenv('MS_TOKEN') ?: '';
 
 foreach ($args as $arg)
 {
-    if (strpos($arg, '--status=') === 0)
+    if ($arg === '--from-url')
+        $fromUrl = EXPORT_URL;
+    elseif (strpos($arg, '--from-url=') === 0)
+        $fromUrl = substr($arg, 11);
+    elseif (strpos($arg, '--export-key=') === 0)
+        $exportKey = substr($arg, 13);
+    elseif (strpos($arg, '--save=') === 0)
+        $saveTo = substr($arg, 7);
+    elseif (strpos($arg, '--status=') === 0)
         $statusArg = substr($arg, 9);
     elseif (strpos($arg, '--since-id=') === 0)
         $sinceId = (int)substr($arg, 11);
@@ -168,6 +200,64 @@ class MsClient
             $this->lastError = 'http ' . $this->lastCode;
         return null;
     }
+}
+
+// -------------------------------------------------------------------------------- export over http
+/**
+ * Fetches the export from the site's own exportOrders.php endpoint.
+ *
+ * The filters are forwarded so the shop only sends the orders that are actually wanted: the full
+ * history is several megabytes, and the endpoint can narrow it server side.
+ *
+ * @return array|string - the decoded export, or a string describing the failure
+ */
+function fetchExport($url, $key, $since, $sinceId, $statuses, $limit)
+{
+    $query = array();
+    if ($key !== '')
+        $query['key'] = $key;
+    if ($since !== null)
+        $query['since'] = $since;
+    if ($sinceId > 0)
+        $query['since-id'] = $sinceId;
+    if (count($statuses))
+        $query['status'] = implode(',', $statuses);
+    if ($limit > 0)
+        $query['limit'] = $limit;
+
+    // a url that already carries its own query string keeps it, ours is merged on top
+    $separator = strpos($url, '?') === false ? '?' : '&';
+    $full = $url . (count($query) ? $separator . http_build_query($query) : '');
+
+    $curl = curl_init($full);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 15);
+    // the whole order history can be several MB over a shared host - be patient
+    curl_setopt($curl, CURLOPT_TIMEOUT, 600);
+    curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+
+    $raw = curl_exec($curl);
+    $errNo = curl_errno($curl);
+    $errMsg = curl_error($curl);
+    $code = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    if ($errNo)
+        return 'could not reach the exporter: curl(' . $errNo . ') ' . $errMsg;
+
+    if ($code !== 200)
+        return 'exporter answered HTTP ' . $code . ': ' . trim(substr((string)$raw, 0, 300));
+
+    $export = json_decode($raw, true);
+    if (!is_array($export) || !isset($export['orders']) || !isset($export['settings']))
+        return 'the exporter did not return an export (HTTP 200): ' . trim(substr((string)$raw, 0, 300));
+
+    $export['_bytes'] = strlen($raw);
+    $export['_raw'] = $raw;
+    return $export;
 }
 
 // -------------------------------------------------------------------------------- helpers
@@ -446,12 +536,50 @@ function buildPayload($order, $settings, $byCode, $placeholder, $counterparty)
 // -------------------------------------------------------------------------------- run
 out('ccd77 order backfill - ' . date('Y-m-d H:i:s T') . '  mode=' . strtoupper($mode));
 
+// an empty list means "no status filter", which is what 'all' asks for
+$statuses = \Ccd77\CcdDb::STATUS_EXPORTED;
+if ($statusArg === 'all')
+    $statuses = array();
+elseif ($statusArg !== '')
+    $statuses = array_map('trim', explode(',', $statusArg));
+
 $db = null;
 $exported = null;
 
-if ($fromJson !== '')
+if ($fromUrl !== '')
 {
-    // ------------------------------------------------------------- from a json export
+    // ------------------------------------------------------------- from the site over http
+    out('source      ' . $fromUrl . '  (key ' . ($exportKey === '' ? 'none' : 'sent') . ')');
+
+    $exported = fetchExport($fromUrl, $exportKey, $since, $sinceId, $statuses, 0);
+    if (is_string($exported))
+    {
+        out('[FAIL] ' . $exported);
+        exit(1);
+    }
+
+    out('fetched     ' . number_format($exported['_bytes'] / 1024, 1) . ' KB');
+
+    if ($saveTo !== '')
+    {
+        if (file_put_contents($saveTo, $exported['_raw']) === false)
+            out('[WARN] could not save a copy to ' . $saveTo);
+        else
+            out('saved       ' . $saveTo . '  (contains customer data - delete it when done)');
+    }
+
+    unset($exported['_raw'], $exported['_bytes']);
+
+    $settings = $exported['settings'];
+    $counts = $exported['statusCounts'] ?? array();
+
+    out('exported    ' . ($exported['generated'] ?? '?') . '  on ' . ($exported['source']['host'] ?? '?'));
+    out('schema      ' . ($exported['source']['schema'] ?? '?') . '  tz ' . ($exported['source']['timezone'] ?? '?'));
+    out('in export   ' . count($exported['orders']) . ' order(s)');
+}
+elseif ($fromJson !== '')
+{
+    // ------------------------------------------------------------- from a json file
     if (!is_readable($fromJson))
     {
         out('[FAIL] cannot read ' . $fromJson);
@@ -484,8 +612,8 @@ else
     {
         out('[FAIL] ' . $e->getMessage());
         out('       The shop database only listens on localhost of the hosting server. Either run');
-        out('       this there, point it elsewhere with CCD77_DB_HOST / CCD77_DB_PORT, or export the');
-        out('       orders there with ccd77/exportOrders.php and use --from-json=FILE here.');
+        out('       this there, point it elsewhere with CCD77_DB_HOST / CCD77_DB_PORT, or - simplest -');
+        out('       use --from-url to pull the export from the site over http.');
         exit(1);
     }
 
@@ -559,13 +687,7 @@ if (!is_array($who) || !isset($who['name']))
 out('ms user     ' . $who['name']);
 
 // ------------------------------------------------------------------ orders
-$statuses = \Ccd77\CcdDb::STATUS_EXPORTED;
-if ($statusArg === 'all')
-    $statuses = array_keys($counts);
-elseif ($statusArg !== '')
-    $statuses = array_map('trim', explode(',', $statusArg));
-
-out('statuses    ' . implode(', ', $statuses)
+out('statuses    ' . (count($statuses) ? implode(', ', $statuses) : 'all')
   . ($sinceId ? '   since-id=' . $sinceId : '')
   . ($since !== null ? '   since=' . $since : '')
   . ($max ? '   max=' . $max : ''));

@@ -7,7 +7,16 @@
  * The json it produces is the input for ccd77/backfillOrders.php --from-json=FILE, which does the
  * MoySklad half and can run from anywhere.
  *
- *   php ccd77/exportOrders.php --since=2026-07-28
+ *   cli:      php ccd77/exportOrders.php --since=2026-07-28
+ *   browser:  /ccd77/exportOrders.php?key=<EXPORT_KEY>&since=2026-07-28
+ *
+ * Over HTTP the json is streamed straight to the browser as a download and no file is written:
+ * this script lives inside the site's document root, so anything it saved next to itself would be
+ * downloadable by anyone who guessed the name - and the export is a list of customers with their
+ * phone numbers and addresses. Pass out=FILE to force a file anyway.
+ *
+ * HTTP also needs the key below, because the same reasoning means the export must not be one
+ * unauthenticated GET away for anybody who finds the url.
  *
  *     --since=DATE      only orders created at or after DATE, in site time ('2026-07-28' is fine)
  *     --since-id=N      only orders with an id above N
@@ -26,6 +35,60 @@ require_once(__DIR__ . '/ccdDb.php');
 
 date_default_timezone_set('Europe/Moscow');
 
+/**
+ * Shared secret for running this over HTTP. Change it, or empty it to refuse HTTP entirely and
+ * allow only the command line.
+ */
+define('EXPORT_KEY', 'k7f2a9c4e1b83d');
+
+$isCli = (php_sapi_name() === 'cli');
+
+if (!$isCli)
+{
+    // plain text so the report is readable in a browser instead of collapsing into one line
+    if (!headers_sent())
+        header('Content-Type: text/plain; charset=utf-8');
+
+    if (EXPORT_KEY === '' || !isset($_GET['key']) || !hash_equals(EXPORT_KEY, (string)$_GET['key']))
+    {
+        http_response_code(403);
+        echo "forbidden - this export needs ?key=<EXPORT_KEY> (see the top of this file)\n";
+        exit(1);
+    }
+}
+
+/**
+ * Arguments from the command line, or from the query string when running under a web server.
+ *
+ * $argv does not exist under the web SAPI (and not even in cli when register_argc_argv is off),
+ * so reading it unguarded silently drops every filter - which is how an export meant to start at
+ * one date ends up containing the entire order history.
+ *
+ * @return array - list of '--key=value' strings
+ */
+function arguments($isCli)
+{
+    if ($isCli)
+    {
+        if (!isset($GLOBALS['argv']) || !is_array($GLOBALS['argv']))
+        {
+            echo "[FAIL] php cli has no \$argv - register_argc_argv is off in php.ini,\n";
+            echo "       so no options can be read. Enable it, or run this over http instead.\n";
+            exit(1);
+        }
+        return array_slice($GLOBALS['argv'], 1);
+    }
+
+    $args = array();
+    foreach ($_GET as $key => $value)
+    {
+        if ($key === 'key')
+            continue;
+        $args[] = is_array($value) ? '' : ($value === '' || $value === '1' ? '--' . $key : '--' . $key . '=' . $value);
+    }
+    return array_values(array_filter($args));
+}
+
 $since = null;
 $sinceId = 0;
 $statuses = array();
@@ -34,7 +97,7 @@ $outFile = '';
 $withToken = false;
 $dbName = null;
 
-foreach (array_slice($argv, 1) as $arg)
+foreach (arguments($isCli) as $arg)
 {
     if (strpos($arg, '--since=') === 0)
         $since = substr($arg, 8);
@@ -64,10 +127,14 @@ if ($since !== null && preg_match('/^\d{4}-\d{2}-\d{2}$/', $since))
 if ($since !== null && strtotime($since) === false)
     die("--since is not a date I can read: $since\n");
 
-if ($outFile === '')
+// over http the default is to stream the download and leave nothing behind on disk
+$streamToBrowser = (!$isCli && $outFile === '');
+
+if ($outFile === '' && $isCli)
     $outFile = 'ccd77-orders-' . date('Y-m-d_Hi') . '.json';
 
-echo "ccd77 order export - " . date('Y-m-d H:i:s T') . "\n";
+if (!$streamToBrowser)
+    echo "ccd77 order export - " . date('Y-m-d H:i:s T') . "\n";
 
 try
 {
@@ -80,11 +147,14 @@ catch (Exception $e)
     exit(1);
 }
 
-echo 'schema      ' . $db->schema() . "\n";
-echo 'site tz     ' . $db->timezone()->getName() . "\n";
-echo 'filters     since=' . ($since ?? '-') . '  since-id=' . $sinceId
-   . '  status=' . (count($statuses) ? implode(',', $statuses) : 'all')
-   . '  limit=' . ($limit ?: '-') . "\n";
+if (!$streamToBrowser)
+{
+    echo 'schema      ' . $db->schema() . "\n";
+    echo 'site tz     ' . $db->timezone()->getName() . "\n";
+    echo 'filters     since=' . ($since ?? '-') . '  since-id=' . $sinceId
+       . '  status=' . (count($statuses) ? implode(',', $statuses) : 'all')
+       . '  limit=' . ($limit ?: '-') . "\n";
+}
 
 try
 {
@@ -101,6 +171,20 @@ if ($json === false)
 {
     echo '[FAIL] could not encode the export: ' . json_last_error_msg() . "\n";
     exit(1);
+}
+
+if ($streamToBrowser)
+{
+    // straight to the browser: nothing is left in the document root to be found later
+    if (!headers_sent())
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Disposition: attachment; filename="ccd77-orders-' . date('Y-m-d_Hi') . '.json"');
+        header('Content-Length: ' . strlen($json));
+        header('Cache-Control: no-store');
+    }
+    echo $json;
+    exit(0);
 }
 
 if (file_put_contents($outFile, $json) === false)
@@ -140,6 +224,16 @@ if ($noPhone)
 echo 'settings    ' . count($export['settings']) . ' key(s) from wp_gms_settings'
    . ($withToken ? ' (ms_token INCLUDED)' : ' (ms_token masked)') . "\n";
 echo 'file        ' . realpath($outFile) . '  (' . number_format(strlen($json) / 1024, 1) . " KB)\n";
+
+// a file of customer names, phones and addresses must not be left where the web server serves it
+$docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? realpath($_SERVER['DOCUMENT_ROOT']) : '';
+if ($docRoot !== '' && $docRoot !== false && strpos(realpath($outFile), $docRoot) === 0)
+{
+    echo "\n";
+    echo "[WARN]      this file is inside the document root, so it may be downloadable by anyone\n";
+    echo "            who guesses the url. Delete it as soon as you have copied it:\n";
+    echo '              rm ' . realpath($outFile) . "\n";
+}
 echo "\nDownload that file and hand it to the backfill:\n";
 echo "  php ccd77/backfillOrders.php --from-json=" . basename($outFile) . " dry\n";
 
