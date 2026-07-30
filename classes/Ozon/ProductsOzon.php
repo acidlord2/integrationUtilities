@@ -13,7 +13,7 @@ class ProductsOzon
 	
 	public function __construct($organization)
 	{
-	    require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	    require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/ApiOzon.php');
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	    $this->organization = $organization;

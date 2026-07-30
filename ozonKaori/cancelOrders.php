@@ -2,7 +2,6 @@
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersOzon.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ordersMS.php');
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
-	//require_once($_SERVER['DOCUMENT_ROOT'] . '/api/apiMS.php');
 	$logger = new Log ('ozonKaori - cancelOrders.log');
 
 	if (isset($_GET['period']))

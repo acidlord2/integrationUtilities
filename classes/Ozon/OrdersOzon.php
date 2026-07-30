@@ -15,7 +15,7 @@ class OrdersOzon
 	public function __construct($organization) {
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 	    require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Ozon/ApiOzon.php');
-	    require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+	    require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
         $this->organization = $organization;
         $this->log = new Log('classes - Ozon - OrderOzon.log');
         $this->apiOzonClass = new ApiOzon($organization);
