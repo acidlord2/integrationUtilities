@@ -103,6 +103,19 @@ if (count($newOrders))
 	}
 
 	$ordersMS = $ordersMSClass->findOrders($filter);
+
+	// A failed lookup must never be read as "they are all already loaded". findOrders returns
+	// null when MoySklad answered something unusable - a 504, a concurrency limit - and
+	// array_search($name, null) returns null, which !== false, so every order below would be
+	// logged "Already loaded" and quietly skipped. That is how 19 waiting orders were passed over
+	// in silence on 2026-09-03. Abort instead: the orders stay in /orders/new and the next run
+	// picks them up.
+	if (!is_array($ordersMS))
+	{
+		$log->write (__LINE__ . ' MoySklad order lookup failed - aborting so the orders stay in /orders/new');
+		echo 'MoySklad lookup failed, 0 processed';
+		return;
+	}
 }
 $ordersMSIDs = array_column ($ordersMS, 'name');
 

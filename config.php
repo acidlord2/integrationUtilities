@@ -219,6 +219,8 @@
 	define('MS_LOGCOMM', '2820265f-bef5-11ea-0a80-01ba001c11e1');
 	define('MS_CANCELLED', '05d3f45a-518d-11e9-9109-f8fc000a2635');
 	define('MS_LIMIT', 100);
+	// how many times a MoySklad call is retried on a transient failure (429/1049/1073 or 5xx)
+	define('MS_RETRY_ATTEMPTS', 3);
 	define('MS_DELIVERY_SERVICE', '000051');
 	define('MS_SELFDELIVERY_SERVICE', '00001');
 	define('MS_PICKUP_SERVICE', '00002');

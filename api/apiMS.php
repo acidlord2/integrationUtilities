@@ -126,10 +126,16 @@ class APIMS
 		//$logger->write ('getMSData.cache - ' . json_encode (self::$cache, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
 		$cache = $this->getCache ($service_url);
-		
+
 		if ($cache)
 			return $cache;
-		
+
+		// Bounded, so a struggling MoySklad cannot wedge a cron run forever. The rate-limit
+		// retry below used to be an unbounded while(true) with a flat 1 s sleep, which hammers a
+		// service that has just asked for less traffic.
+		$attempt = 0;
+		$delay = 1;
+
 		while (true)
 		{
 			$curl = curl_init($service_url);
@@ -158,15 +164,31 @@ class APIMS
 				$tmp = false;
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
-					{
-						sleep(1);
 						$tmp = true;
-						continue;
-					}
-				if ($tmp)
+
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
 			}
-			
+
+			// A gateway error carries no errors key, so the block above never saw it: getData
+			// returned false, findOrders turned that into null, and getNewOrders read null as
+			// "already loaded" for every order - 19 orders skipped in silence on 2026-09-03.
+			// MoySklad answers 504 often enough under load that this has to be retried.
+			if ($info['http_code'] >= 500 && $attempt < MS_RETRY_ATTEMPTS)
+			{
+				$this->logger->write (__LINE__ . ' getData.retry http=' . $info['http_code']
+					. ' attempt=' . ($attempt + 1) . ' in ' . $delay . 's - ' . $service_url);
+				$attempt++;
+				sleep($delay);
+				$delay = min($delay * 2, 8);
+				continue;
+			}
+
 			if ($info['http_code'] < 400)
 			{
 				$cache = $this->setCache ($service_url, $arrayOut);
