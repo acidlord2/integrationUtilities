@@ -149,6 +149,12 @@
 					Отмененные заказы Спортмастер Ullo
 				</button>
 			</div>
+			<div class = "integration-block">
+				<p class = "integration-block-header">Интеграция с сайтом ccd77</p>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ccd77/pullMissingOrders.php', '_blank')">
+					Недостающие заказы ccd77
+				</button>
+			</div>
 		</div>
 		<script type="text/javascript" src="/js/upload.js"></script>
 		<script>
