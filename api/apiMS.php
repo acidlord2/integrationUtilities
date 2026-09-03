@@ -49,26 +49,21 @@ class APIMS
 	{
 		if ($this->header)
 			return $this->header;
-		
-		// Fetch parameter ms_token
-		$result = Db::exec_query ("select value from settings where code = 'ms_token'");
-		
-		if (mysqli_num_rows($result) > 0) {
-			$row = mysqli_fetch_assoc($result);
-			$this->token = $row['value'];
-		}
-		else
+
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
+
+		$this->token = Settings::getSettingsValues('ms_token');
+
+		if ($this->token === '' || $this->token === false)
 			die("No settings parameter 'ms_token'");
-		
-		mysqli_free_result($result);
-		
+
 		// REST Header
 		$this->header = array (
 			'Content-type: application/json',
-		    'Accept-Encoding: gzip',
+			'Accept-Encoding: gzip',
 			'Authorization: Bearer ' . $this->token
 		);
-		
+
 		return $this->header;
 	}
 	

@@ -7,9 +7,38 @@
  */
 class MSAPI
 {
-	private static $client_id = false;
-	private static $client_pass = false;
+	private static $token = false;
+	private static $header = false;
+
 	private static $cache = array ();
+
+	/**
+	 * MoySklad REST header. Auth is a Bearer access token (settings.ms_token);
+	 * Basic auth with ms_user/ms_password is no longer used - api/apiMS.php moved
+	 * off it and these call sites have to match, or they answer 401 while the rest
+	 * of the app works.
+	 */
+	private static function getHeader ()
+	{
+		if (self::$header)
+			return self::$header;
+
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
+
+		self::$token = Settings::getSettingsValues('ms_token');
+
+		if (self::$token === '' || self::$token === false)
+			die("No settings parameter 'ms_token'");
+
+		// REST Header
+		self::$header = array (
+			'Content-type: application/json',
+			'Accept-Encoding: gzip',
+			'Authorization: Bearer ' . self::$token
+		);
+
+		return self::$header;
+	}
 
     public static function getMSData($service_url, &$jsonOut, &$arrayOut)
 	{
@@ -22,41 +51,7 @@ class MSAPI
 			if (strtotime ('now') - $cacheItem['time'] > 60)
 				unset (self::$cache[$key]);
 		
-		if (!self::$client_pass || !self::$client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = self::$client_id;
-		$client_pass = self::$client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = self::getHeader();
 
 		//$logger->write ('getMSData.cache - ' . json_encode (self::$cache, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
@@ -125,41 +120,7 @@ class MSAPI
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log('classes - msApi.log');
 		
-		if (!self::$client_pass || !self::$client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-
-		$client_id = self::$client_id;
-		$client_pass = self::$client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = self::getHeader();
 
 		while (true)
 		{
@@ -203,41 +164,7 @@ class MSAPI
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log('classes - msApi.log');
 		
-		if (!self::$client_pass || !self::$client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = self::$client_id;
-		$client_pass = self::$client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = self::getHeader();
 
 		while (true)
 		{
@@ -281,41 +208,7 @@ class MSAPI
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log('classes - msApi.log');
 		
-		if (!self::$client_pass || !self::$client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = self::$client_id;
-		$client_pass = self::$client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = self::getHeader();
 
 		while (true)
 		{
@@ -358,40 +251,7 @@ class MSAPI
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
 		$logger = new Log('classes - msApi.log');
 		
-		if (!self::$client_pass || !self::$client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				self::$client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		$client_id = self::$client_id;
-		$client_pass = self::$client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = self::getHeader();
 
 		while (true)
 		{

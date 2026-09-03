@@ -9,10 +9,39 @@ class APIMS
 {
 	private $logger;
 	
-	private $client_id = false;
-	private $client_pass = false;
+	private $token = false;
+	private $header = false;
+
 	
 	private $cache = array ();
+
+	/**
+	 * MoySklad REST header. Auth is a Bearer access token (settings.ms_token);
+	 * Basic auth with ms_user/ms_password is no longer used - api/apiMS.php moved
+	 * off it and these call sites have to match, or they answer 401 while the rest
+	 * of the app works.
+	 */
+	private function getHeader ()
+	{
+		if ($this->header)
+			return $this->header;
+
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
+
+		$this->token = Settings::getSettingsValues('ms_token');
+
+		if ($this->token === '' || $this->token === false)
+			die("No settings parameter 'ms_token'");
+
+		// REST Header
+		$this->header = array (
+			'Content-type: application/json',
+			'Accept-Encoding: gzip',
+			'Authorization: Bearer ' . $this->token
+		);
+
+		return $this->header;
+	}
 
 	public function __construct()
 	{
@@ -48,41 +77,7 @@ class APIMS
 	
     public function getData($service_url)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = $this->getHeader();
 
 		//$logger->write ('getMSData.cache - ' . json_encode (self::$cache, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 		
@@ -131,41 +126,7 @@ class APIMS
 	
     public function postData($service_url, $postdata)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = $this->getHeader();
 
 		while (true)
 		{
@@ -204,41 +165,7 @@ class APIMS
 
     public function putData($service_url, $postdata)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = $this->getHeader();
 
 		while (true)
 		{
@@ -275,41 +202,7 @@ class APIMS
 	
 	public function deleteData($service_url)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = $this->getHeader();
 
 		while (true)
 		{
@@ -345,41 +238,7 @@ class APIMS
 	
     public function postBlobData($service_url, $postdata)
 	{
-		if (!$this->client_pass || !$this->client_id)
-		{
-			// Fetch parameter ms_user
-			$result = Db::exec_query ("select value from settings where code = 'ms_user'");
-			
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_id = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_user'");
-			
-			mysqli_free_result($result);
-
-			// Fetch parameter ms_password
-			$result = Db::exec_query ("select value from settings where code = 'ms_password'");
-
-			if (mysqli_num_rows($result) > 0) {
-				$row = mysqli_fetch_assoc($result);
-				$this->client_pass = $row['value'];
-			}
-			else
-				die("No settings parameter 'ms_password'");
-			
-			mysqli_free_result($result);
-		}
-		
-		$client_id = $this->client_id;
-		$client_pass = $this->client_pass;
-		// REST Header
-		$curl_post_headerms = array (
-			'Content-type: application/json', 
-		    'Accept-Encoding: gzip',
-		    'Authorization: Basic ' . base64_encode("$client_id:$client_pass")
-		);
+		$curl_post_headerms = $this->getHeader();
 
 		while (true)
 		{

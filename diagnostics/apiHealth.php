@@ -432,17 +432,13 @@ if (in_array('ms', $only, true))
         out();
     }
 
-    if (!empty($cfg['ms_user']) && !empty($cfg['ms_password']))
+    // Basic auth (ms_user/ms_password) is no longer used by any call site - api/apiMS.php,
+    // classes/apiMS.php, classes/msApi.php and classes/MS/apiMS.php all send Bearer ms_token.
+    // Probing it here only produced a guaranteed failure that masked the real verdict.
+    if (!empty($cfg['ms_user']) || !empty($cfg['ms_password']))
     {
-        // the legacy client (api/apiMS.php) authenticates this way, so it has to be checked too.
-        // entity/store, not customerorder: the order table has ~1M rows and takes ~9s to page.
-        $r = probe('basic / entity/store', 'GET', $base . 'entity/store?limit=1',
-            array('Content-type: application/json', 'Accept-Encoding: gzip',
-                  'Authorization: Basic ' . base64_encode($cfg['ms_user'] . ':' . $cfg['ms_password'])),
-            null, '200 + json with meta.size (number of warehouses)');
-        record($r);
-        if ($r['verdict'] === 'PASS')
-            out('         warehouses: ' . ($r['json']['meta']['size'] ?? '?'));
+        out('  note: ms_user/ms_password are still stored but unused - every MoySklad client');
+        out('        authenticates with Bearer ms_token. Safe to delete from settings.');
         out();
     }
 }

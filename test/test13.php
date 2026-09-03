@@ -1,11 +1,15 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/docker-config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/db.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/log.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/settings.php');
 $log = new Log('test13.log');
 
+// was a hardcoded Basic credential - read the token from settings like every other client
 $curl_post_headerms = array (
     'Content-type: application/json',
     'Accept-Encoding: gzip',
-    'Authorization: Basic YWNpZGxvcmRAMTBrb2xnb3RvazpWazZrRzQ4a2VmdTRuaVI='
+    'Authorization: Bearer ' . Settings::getSettingsValues('ms_token')
 );
 
 
