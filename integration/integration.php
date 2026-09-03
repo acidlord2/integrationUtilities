@@ -155,6 +155,15 @@
 					Недостающие заказы ccd77
 				</button>
 			</div>
+			<div class = "integration-block">
+				<p class = "integration-block-header">Диагностика</p>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/diagnostics/settings.php', '_blank')">
+					Настройки сервера
+				</button>
+				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/diagnostics/apiHealth.php', '_blank')">
+					Проверка доступности API
+				</button>
+			</div>
 		</div>
 		<script type="text/javascript" src="/js/upload.js"></script>
 		<script>
