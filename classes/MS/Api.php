@@ -1,5 +1,6 @@
 <?php
 namespace Classes\MS;
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/MsThrottle.php');
 /**
  *
  * @class MS Api

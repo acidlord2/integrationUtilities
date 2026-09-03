@@ -1,5 +1,6 @@
 <?php
 namespace Classes\MS\v2;
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/MsThrottle.php');
 /**
  *
  * @class MS Api
@@ -112,6 +113,7 @@ class Api
 		while (true)
 		{
 		    $curl = $this->initCurl($url);
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$info = curl_getinfo($curl);			
 			curl_close($curl);
@@ -147,6 +149,7 @@ class Api
 			$curl = $this->initCurl($url);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$info = curl_getinfo($curl);
 			curl_close($curl);
@@ -182,6 +185,7 @@ class Api
 			$curl = $this->initCurl($url);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$info = curl_getinfo($curl);
 			curl_close($curl);
@@ -216,6 +220,7 @@ class Api
 		{
 			$curl = $this->initCurl($url);
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$info = curl_getinfo($curl);
 			curl_close($curl);
@@ -250,6 +255,7 @@ class Api
 			$curl = $this->initCurl($url);
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$info = curl_getinfo($curl);
 			curl_close($curl);

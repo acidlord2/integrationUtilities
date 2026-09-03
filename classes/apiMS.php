@@ -1,4 +1,5 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/MsThrottle.php');
 /**
  *
  * @class APIMS
@@ -63,6 +64,9 @@ class APIMS
 			return true;
 		}
 		
+		$attempt = 0;
+		$delay = 1;
+
 		while (true)
 		{
 			$curl = curl_init($service_url);
@@ -70,6 +74,7 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			// Automatically handle gzip/unzip for the response
 			curl_setopt($curl, CURLOPT_ENCODING, 'gzip,deflate');
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$arrayOut = json_decode ($jsonOut, true);
 			$info = curl_getinfo($curl);			
@@ -88,12 +93,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 			}
 			
 			if ($info['http_code'] < 400)
@@ -121,6 +134,9 @@ class APIMS
 		
 		$curl_post_headerms = self::getHeader();
 
+		$attempt = 0;
+		$delay = 1;
+
 		while (true)
 		{
 			$curl = curl_init($service_url);
@@ -141,12 +157,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 				else
 					return false;
 			}
@@ -164,6 +188,9 @@ class APIMS
 		$logger = new Log('msapi.log');
 		
 		$curl_post_headerms = self::getHeader();
+
+		$attempt = 0;
+		$delay = 1;
 
 		while (true)
 		{
@@ -185,12 +212,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 				else
 					return false;
 			}
@@ -208,6 +243,9 @@ class APIMS
 		$logger = new Log('msapi.log');
 		
 		$curl_post_headerms = self::getHeader();
+
+		$attempt = 0;
+		$delay = 1;
 
 		while (true)
 		{
@@ -228,12 +266,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 				else
 					return false;
 			}
@@ -259,6 +305,7 @@ class APIMS
 		curl_setopt($curl_order, CURLOPT_POSTFIELDS, json_encode($postdata));
 		curl_setopt($curl_order, CURLOPT_SSL_VERIFYHOST, FALSE);
 		curl_setopt($curl_order, CURLOPT_SSL_VERIFYPEER, FALSE);
+		\Classes\Common\MsThrottle::acquire(__METHOD__);
 		$jsonOut = curl_exec($curl_order);
 		$info = curl_getinfo($curl_order);
 

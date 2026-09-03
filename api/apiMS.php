@@ -1,4 +1,5 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/Common/MsThrottle.php');
 /**
  *
  * @class MS Api
@@ -142,6 +143,7 @@ class APIMS
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_post_headerms);
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$curlErrNo = curl_errno($curl);
 			$curlErr = curl_error($curl);
@@ -203,6 +205,9 @@ class APIMS
 	{
 		$curl_post_headerms = $this->getHeader();
 
+		$attempt = 0;
+		$delay = 1;
+
 		while (true)
 		{
 			$curl = curl_init($service_url);
@@ -211,6 +216,7 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$curlErrNo = curl_errno($curl);
 			$curlErr = curl_error($curl);
@@ -229,12 +235,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 				else
 					return false;
 			}
@@ -248,6 +262,9 @@ class APIMS
 	{
 		$curl_post_headerms = $this->getHeader();
 
+		$attempt = 0;
+		$delay = 1;
+
 		while (true)
 		{
 			$curl = curl_init($service_url);
@@ -256,6 +273,7 @@ class APIMS
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$curlErrNo = curl_errno($curl);
 			$curlErr = curl_error($curl);
@@ -272,12 +290,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 				else
 					return false;
 			}
@@ -291,6 +317,9 @@ class APIMS
 	{
 		$curl_post_headerms = $this->getHeader();
 
+		$attempt = 0;
+		$delay = 1;
+
 		while (true)
 		{
 			$curl = curl_init($service_url);
@@ -298,6 +327,7 @@ class APIMS
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 			$curlErrNo = curl_errno($curl);
 			$curlErr = curl_error($curl);
@@ -314,12 +344,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 				else
 					return false;
 			}
@@ -333,6 +371,9 @@ class APIMS
 	{
 		$curl_post_headerms = $this->getHeader();
 
+		$attempt = 0;
+		$delay = 1;
+
 		while (true)
 		{
 		    $curl = curl_init($service_url);
@@ -341,6 +382,7 @@ class APIMS
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
+			\Classes\Common\MsThrottle::acquire(__METHOD__);
 			$jsonOut = curl_exec($curl);
 		    $curlErrNo = curl_errno($curl);
 		    $curlErr = curl_error($curl);
@@ -357,12 +399,20 @@ class APIMS
 				foreach ($arrayOut['errors'] as $error)
 					if (isset($error['code']) ? ($error['code'] == 1049 || $error['code'] == 1073) : false)
 					{
-						usleep(10000);
 						$tmp = true;
-						continue;
 					}
-				if ($tmp)
+				// Was an unbounded retry with a 10 ms sleep: about a hundred rejected requests a
+				// second. That is what got the account's JSON API access suspended on 2026-09-03
+				// ("более 400 запросов за минуту, которые завершились ошибкой 429").
+				if ($tmp && $attempt < MS_RETRY_ATTEMPTS)
+				{
+					$attempt++;
+					sleep($delay);
+					$delay = min($delay * 2, 8);
 					continue;
+				}
+				if ($tmp)
+					return false;
 				else
 					return false;
 			}
@@ -383,6 +433,7 @@ class APIMS
 		curl_setopt($curl, CURLOPT_ENCODING, '');
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Follow redirects (302)
+		\Classes\Common\MsThrottle::acquire(__METHOD__);
 		$response = curl_exec($curl);
 		$curlErrNo = curl_errno($curl);
 		$curlErr = curl_error($curl);
