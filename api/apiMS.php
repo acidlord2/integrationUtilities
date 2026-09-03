@@ -66,7 +66,59 @@ class APIMS
 
 		return $this->header;
 	}
-	
+
+	/**
+	 * Logs a MoySklad call that did not come back as usable JSON.
+	 *
+	 * Only the errors key used to be logged, so the two failures that actually take the app down
+	 * were invisible: a transport failure (curl_exec false, http_code 0 - the caller then gets the
+	 * null body back as if it were a real answer) and an HTTP >= 400 whose body is not JSON, such
+	 * as an nginx error page. Silence on those is what let a MoySklad outage look like
+	 * "0 new orders" for hours.
+	 *
+	 * Says nothing when the call succeeded.
+	 *
+	 * @param int $line - __LINE__ of the call site
+	 * @param string $method - which api method
+	 * @param string $url
+	 * @param int $curlErrNo - curl_errno()
+	 * @param string $curlErr - curl_error()
+	 * @param array $info - curl_getinfo()
+	 * @param string $body - raw response body
+	 * @param mixed $decoded - json_decode() of the body
+	 */
+	private function logFailure ($line, $method, $url, $curlErrNo, $curlErr, $info, $body, $decoded)
+	{
+		$httpCode = isset($info['http_code']) ? (int)$info['http_code'] : 0;
+
+		if ($curlErrNo)
+		{
+			$this->logger->write ($line . ' ' . $method . '.transportFailed - could not reach MoySklad'
+				. ' | curl ' . $curlErrNo . ' ' . $curlErr
+				. ' | connect ' . round($info['connect_time'] ?? 0, 2) . 's'
+				. ' total ' . round($info['total_time'] ?? 0, 2) . 's'
+				. ' | ip ' . ($info['primary_ip'] ?? '?')
+				. ' | url ' . $url);
+			return;
+		}
+
+		if (!is_array($decoded))
+		{
+			$this->logger->write ($line . ' ' . $method . '.notJson - http ' . $httpCode
+				. ' | content-type ' . ($info['content_type'] ?? '?')
+				. ' | ip ' . ($info['primary_ip'] ?? '?')
+				. ' | url ' . $url
+				. ' | body ' . substr(preg_replace('/\s+/', ' ', (string)$body), 0, 300));
+			return;
+		}
+
+		// decoded fine but the server refused - the errors key is logged by the caller
+		if ($httpCode >= 400 && !isset($decoded['errors']))
+			$this->logger->write ($line . ' ' . $method . '.httpError - http ' . $httpCode
+				. ' | url ' . $url
+				. ' | body ' . substr(json_encode($decoded, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 0, 300));
+	}
+
     public function getData($service_url)
 	{
 		$curl_post_headerms = $this->getHeader();
@@ -85,13 +137,20 @@ class APIMS
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			$jsonOut = curl_exec($curl);
+			$curlErrNo = curl_errno($curl);
+			$curlErr = curl_error($curl);
 			//$this->logger->write (__LINE__ . ' getMSData.jsonOut - ' . $jsonOut);
             $arrayOut = json_decode ($jsonOut, true);
-			$info = curl_getinfo($curl);			
+			$info = curl_getinfo($curl);
 			curl_close($curl);
-			
+
 			//$logger->write ('getMSData.arrayOut - ' . json_encode ($arrayOut, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 			//$this->logger->write ('getMSData.info - ' . json_encode ($info, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+
+			// A failure that carries no errors key used to be completely silent: getData returns
+			// false/null, findOrders turns that into null, and getNewOrders reads null as
+			// "already loaded" for every order. Name the cause here or it cannot be diagnosed.
+			$this->logFailure(__LINE__, 'getData', $service_url, $curlErrNo, $curlErr, $info, $jsonOut, $arrayOut);
 
 			if (isset($arrayOut['errors']))
 			{
@@ -131,8 +190,13 @@ class APIMS
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 			$jsonOut = curl_exec($curl);
-		    $arrayOut = json_decode ($jsonOut, true);
+			$curlErrNo = curl_errno($curl);
+			$curlErr = curl_error($curl);
+			$arrayOut = json_decode ($jsonOut, true);
+			$info = curl_getinfo($curl);
 			curl_close($curl);
+
+			$this->logFailure(__LINE__, 'postData', $service_url, $curlErrNo, $curlErr, $info, $jsonOut, $arrayOut);
 
 			if (isset($arrayOut['errors']))
 			{
@@ -171,8 +235,13 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 			$jsonOut = curl_exec($curl);
-            $arrayOut = json_decode ($jsonOut, true);
+			$curlErrNo = curl_errno($curl);
+			$curlErr = curl_error($curl);
+			$arrayOut = json_decode ($jsonOut, true);
+			$info = curl_getinfo($curl);
 			curl_close($curl);
+
+			$this->logFailure(__LINE__, 'putData', $service_url, $curlErrNo, $curlErr, $info, $jsonOut, $arrayOut);
  			
 			if (isset($arrayOut['errors']))
 			{
@@ -208,8 +277,13 @@ class APIMS
 			curl_setopt($curl, CURLOPT_ENCODING, '');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			$jsonOut = curl_exec($curl);
-		    $arrayOut = json_decode ($jsonOut, true);
+			$curlErrNo = curl_errno($curl);
+			$curlErr = curl_error($curl);
+			$arrayOut = json_decode ($jsonOut, true);
+			$info = curl_getinfo($curl);
 			curl_close($curl);
+
+			$this->logFailure(__LINE__, 'deleteData', $service_url, $curlErrNo, $curlErr, $info, $jsonOut, $arrayOut);
  			
 			if (isset($arrayOut['errors']))
 			{
@@ -246,10 +320,14 @@ class APIMS
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postdata));
 			$jsonOut = curl_exec($curl);
+		    $curlErrNo = curl_errno($curl);
+		    $curlErr = curl_error($curl);
 		    $arrayOut = json_decode ($jsonOut, true);
 		    $info = curl_getinfo($curl);
 		    curl_close($curl);
-			
+
+		    $this->logFailure(__LINE__, 'postBlobData', $service_url, $curlErrNo, $curlErr, $info, $jsonOut, $arrayOut);
+
 			if (isset($arrayOut['errors']))
 			{
 			    $this->logger->write (__LINE__ . ' postBlobData.arrayOut[errors] - ' . json_encode ($arrayOut['errors'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -284,16 +362,29 @@ class APIMS
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Follow redirects (302)
 		$response = curl_exec($curl);
-		$info = curl_getinfo($curl);			
+		$curlErrNo = curl_errno($curl);
+		$curlErr = curl_error($curl);
+		$info = curl_getinfo($curl);
 		curl_close($curl);
-		$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' $info[http_code] - ' . $info['http_code']);
-		if ($info['http_code'] < 400)
+
+		if ($curlErrNo)
 		{
-			return $response;
-		}
-		else
-			$logger->write (__LINE__ . ' ' . __METHOD__ . ' response - ' . json_encode ($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+			$this->logger->write (__LINE__ . ' ' . __METHOD__ . '.transportFailed - could not reach MoySklad'
+				. ' | curl ' . $curlErrNo . ' ' . $curlErr
+				. ' | ip ' . ($info['primary_ip'] ?? '?')
+				. ' | url ' . $service_url);
 			return false;
+		}
+
+		$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' $info[http_code] - ' . $info['http_code']);
+
+		if ($info['http_code'] < 400)
+			return $response;
+
+		// was an unbraced else calling an undefined $logger, which fatals instead of returning false
+		$this->logger->write (__LINE__ . ' ' . __METHOD__ . ' http ' . $info['http_code'] . ' response - '
+			. substr(preg_replace('/\s+/', ' ', (string)$response), 0, 300));
+		return false;
 	}
 
     public static function getIdFromHref ($url)
