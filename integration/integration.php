@@ -30,30 +30,6 @@
 				</div>
 			</div>
 			<div class = "integration-block">
-				<p class = "integration-block-header">4cleaning</p>
-				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/prices/impprices', '_blank')">
-					Обновить цены 4cleaning
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/impquan/impquan', '_blank')">
-					Обновить остатки 4cleaning
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://4cleaning.ru/index.php?route=extension/impproductdata/imp', '_blank')">
-					Обновить штрихкоды и весогабариты товаров 4cleaning
-				</button>
-			</div>
-			<div class = "integration-block">
-				<p class = "integration-block-header">10kids</p>
-				<button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/prices/impprices', '_blank')">
-					Обновить цены 10kids
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/impquan/impquan', '_blank')">
-					Обновить остатки 10kids
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://10kids.ru/index.php?route=extension/impquan/impbarcode', '_blank')">
-					Обновить штрихкоды товаров 10kids
-				</button>
-			</div>
-			<div class = "integration-block">
 				<p class = "integration-block-header">Яндекс</p>
 				<button class = "integration-button" onclick = "window.open('/beru-summit/updateStock', '_blank')">
 					Обновление остатков Саммит
@@ -135,21 +111,6 @@
 				</button>
 			</div>
 			<div class = "integration-block">
-				<p class = "integration-block-header">Интеграция со Спортмастер</p>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/updateStock', '_blank')">
-					Обновить остатки Спортмастер Ullo
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/updatePrices', '_blank')">
-					Обновить цены Спортмастер Ullo
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/importOrders', '_blank')">
-					Загрузить заказы Спортмастер Ullo
-				</button>
-				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/sportmaster/ullo/cancelOrders', '_blank')">
-					Отмененные заказы Спортмастер Ullo
-				</button>
-			</div>
-			<div class = "integration-block">
 				<p class = "integration-block-header">Интеграция с сайтом ccd77</p>
 				<button class = "integration-button" onclick = "window.open('https://kids-universe.ru/ccd77/pullMissingOrders.php', '_blank')">
 					Недостающие заказы ccd77
@@ -166,21 +127,6 @@
 			</div>
 		</div>
 		<script type="text/javascript" src="/js/upload.js"></script>
-		<script>
-			function openImgUrl () {
-				var period = document.getElementById("period").value;
-				var shipping = document.getElementById("shipping").value;
-				var baseUrl = 'https://4cleaning.ru/index.php?route=extension/importorders/img';
-				if (period != "all") {
-					baseUrl = baseUrl + '&from=' + period + '&to=' + period;
-				}
-				baseUrl = baseUrl + '&status=' + shipping;
-				window.open(baseUrl, '_blank') ;
-			}
-			//document.getElementById("submit").onclick = function (e) {
-			//	e.preventDefault();
-			//}
-		</script>
 	</body>
 </html>
 
